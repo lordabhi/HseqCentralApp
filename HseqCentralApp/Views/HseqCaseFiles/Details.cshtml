@@ -1,0 +1,34 @@
+﻿@model HseqCentralApp.Models.HseqCaseFile
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>HseqCaseFile</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CaseNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CaseNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AlfrescoNoderef)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AlfrescoNoderef)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.HseqCaseFileID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

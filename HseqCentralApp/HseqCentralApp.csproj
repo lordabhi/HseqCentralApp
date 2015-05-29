@@ -165,8 +165,22 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\DiscrepancyType.cs" />
+    <Compile Include="Controllers\DiscrepancyTypesController.cs" />
+    <Compile Include="Models\Fis.cs" />
+    <Compile Include="Controllers\FisController.cs" />
+    <Compile Include="Models\HseqCaseFile.cs" />
+    <Compile Include="Controllers\HseqCaseFilesController.cs" />
+    <Compile Include="Models\HseqCentralAppContext.cs" />
+    <Compile Include="Models\HseqCentralInitializer.cs" />
+    <Compile Include="Models\HseqRecord.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Ncr.cs" />
+    <Compile Include="Controllers\NcrsController.cs" />
+    <Compile Include="Models\NcrSource.cs" />
+    <Compile Include="Models\NcrState.cs" />
+    <Compile Include="Models\RecordType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -226,6 +240,26 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Ncrs\Create.cshtml" />
+    <Content Include="Views\Ncrs\Delete.cshtml" />
+    <Content Include="Views\Ncrs\Details.cshtml" />
+    <Content Include="Views\Ncrs\Edit.cshtml" />
+    <Content Include="Views\Ncrs\Index.cshtml" />
+    <Content Include="Views\DiscrepancyTypes\Create.cshtml" />
+    <Content Include="Views\DiscrepancyTypes\Delete.cshtml" />
+    <Content Include="Views\DiscrepancyTypes\Details.cshtml" />
+    <Content Include="Views\DiscrepancyTypes\Edit.cshtml" />
+    <Content Include="Views\DiscrepancyTypes\Index.cshtml" />
+    <Content Include="Views\Fis\Create.cshtml" />
+    <Content Include="Views\Fis\Delete.cshtml" />
+    <Content Include="Views\Fis\Details.cshtml" />
+    <Content Include="Views\Fis\Edit.cshtml" />
+    <Content Include="Views\Fis\Index.cshtml" />
+    <Content Include="Views\HseqCaseFiles\Create.cshtml" />
+    <Content Include="Views\HseqCaseFiles\Delete.cshtml" />
+    <Content Include="Views\HseqCaseFiles\Details.cshtml" />
+    <Content Include="Views\HseqCaseFiles\Edit.cshtml" />
+    <Content Include="Views\HseqCaseFiles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
