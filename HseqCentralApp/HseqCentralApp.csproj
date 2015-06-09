@@ -171,8 +171,10 @@
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\ApplicationGroupManager.cs" />
     <Compile Include="Models\ApplicationGroupStore.cs" />
+    <Compile Include="Models\BusinessArea.cs" />
     <Compile Include="Models\DiscrepancyType.cs" />
     <Compile Include="Controllers\DiscrepancyTypesController.cs" />
+    <Compile Include="Models\DispositionType.cs" />
     <Compile Include="Models\Fis.cs" />
     <Compile Include="Controllers\FisController.cs" />
     <Compile Include="Models\GroupStoreBase.cs" />

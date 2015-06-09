@@ -14,6 +14,7 @@ namespace HseqCentralApp.Controllers
     public class NcrsController : Controller
     {
         private HseqCentralAppContext db = new HseqCentralAppContext();
+        private ApplicationDbContext appDb = new ApplicationDbContext();
 
         // GET: Ncrs
         public ActionResult Index()
@@ -41,13 +42,16 @@ namespace HseqCentralApp.Controllers
         public ActionResult Create()
         {
             ViewBag.RecordType = RecordType.NCR;
-            ViewBag.EnteredBy = "Test User";
-            ViewBag.ReportedBy = "Test User, Sales";
+            ViewBag.EnteredBy = User.Identity.Name;
+            ViewBag.ReportedBy = User.Identity.Name;
             ViewBag.QualityCoordinator = "Mr. Paul Smith";
             ViewBag.Status = "Pending";
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name");
+            
             return View();
         }
 
@@ -70,6 +74,9 @@ namespace HseqCentralApp.Controllers
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name");
+            
             return View("Create", ncr);
         }
 
@@ -110,6 +117,9 @@ namespace HseqCentralApp.Controllers
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", ncr.HseqCaseFileID);
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+
             return View(ncr);
         }
 
@@ -118,7 +128,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,NcrSource,NcrState,DiscrepancyTypeID")] Ncr ncr)
+        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,NcrSource,NcrState,DiscrepancyTypeID,BusinessAreaID, DispositionTypeID")] Ncr ncr)
         {
             if (ModelState.IsValid)
             {
@@ -165,6 +175,9 @@ namespace HseqCentralApp.Controllers
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", ncr.HseqCaseFileID);
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+
             return View(ncr);
         }
 
@@ -182,6 +195,8 @@ namespace HseqCentralApp.Controllers
             }
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", ncr.HseqCaseFileID);
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
             return View(ncr);
         }
 
@@ -190,7 +205,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,NcrSource,NcrState,DiscrepancyTypeID")] Ncr ncr)
+        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,NcrSource,NcrState,DiscrepancyTypeID,BusinessAreaID, DispositionTypeID")] Ncr ncr)
         {
             if (ModelState.IsValid)
             {
@@ -200,6 +215,9 @@ namespace HseqCentralApp.Controllers
             }
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", ncr.HseqCaseFileID);
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+
             return View(ncr);
         }
 

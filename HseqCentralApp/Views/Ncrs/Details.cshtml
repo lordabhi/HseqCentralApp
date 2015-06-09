@@ -16,10 +16,10 @@
             @Html.ActionLink(Model.HseqCaseFile.CaseNo + "", "Details", "HseqCaseFiles", new { id = Model.HseqCaseFile.HseqCaseFileID }, null)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.DiscrepancyType.Name)
+            @Html.DisplayNameFor(model => model.RecordType)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.DiscrepancyType.Name)
+            @Html.DisplayFor(model => model.RecordType)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.NcrSource)
@@ -46,12 +46,6 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.RecordType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.RecordType)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.EnteredBy)
         </dt>
         <dd>
@@ -68,6 +62,18 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.QualityCoordinator)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscrepancyType.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DiscrepancyType.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BusinessArea.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BusinessArea.Name)
         </dd>
 
     </dl>

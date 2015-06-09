@@ -13,7 +13,7 @@ using HseqCentralApp.Models;
 
 namespace HseqCentralApp.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class UsersAdminController : Controller
     {
         public UsersAdminController()
@@ -164,6 +164,19 @@ namespace HseqCentralApp.Controllers
                     Selected = userGroups.Any(g => g.Id == group.Id)
                 };
                 model.GroupsList.Add(listItem);
+            }
+
+            var allRoles = this.RoleManager.Roles;
+
+            foreach (var role in allRoles)
+            {
+                var listItem = new SelectListItem()
+                {
+                    Text = role.Name,
+                    Value = role.Id,
+                    //Selected = userGroups.Any(g => g.Id == role.Id)
+                };
+                model.RolesList.Add(listItem);
             }
 
             return View(model);

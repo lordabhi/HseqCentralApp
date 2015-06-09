@@ -29,6 +29,10 @@ namespace HseqCentralApp.Models
 
         public System.Data.Entity.DbSet<HseqCentralApp.Models.HseqRecord> HseqRecords { get; set; }
 
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.BusinessArea> BusinessAreas { get; set; }
+
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.DispositionType> DispositionTypes { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<HseqRecord>().HasMany(m => m.LinkedRecords).WithMany();

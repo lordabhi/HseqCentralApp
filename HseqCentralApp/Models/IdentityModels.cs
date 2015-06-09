@@ -26,7 +26,18 @@ namespace HseqCentralApp.Models
             this.Id = Guid.NewGuid().ToString();
 
             // Add any custom User properties/code here
+
+            
         }
+
+        [Display(Name = "First Name")]
+        public String FirstName { get; set; }
+        
+        [Display(Name = "Last Name")]
+        public String LastName { get; set; }
+
+        [Display(Name = "Department")]
+        public String Department { get; set; }
 
 
         public async Task<ClaimsIdentity>
@@ -131,10 +142,7 @@ namespace HseqCentralApp.Models
     }
 
 
-    public class ApplicationRoleStore
-    : RoleStore<ApplicationRole, string, ApplicationUserRole>,
-    IQueryableRoleStore<ApplicationRole, string>,
-    IRoleStore<ApplicationRole, string>, IDisposable
+    public class ApplicationRoleStore : RoleStore<ApplicationRole, string, ApplicationUserRole>, IQueryableRoleStore<ApplicationRole, string>, IRoleStore<ApplicationRole, string>, IDisposable
     {
         public ApplicationRoleStore()
             : base(new IdentityDbContext())

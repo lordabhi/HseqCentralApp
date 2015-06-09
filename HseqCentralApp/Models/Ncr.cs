@@ -18,9 +18,20 @@ namespace HseqCentralApp.Models
 
         public NcrState NcrState { get; set; }
 
+        
         public int DiscrepancyTypeID { get; set; }
 
         public virtual DiscrepancyType DiscrepancyType { get; set; }
+
+        
+        public int BusinessAreaID { get; set; }
+
+        public virtual BusinessArea BusinessArea { get; set; }
+
+
+        public int DispositionTypeID { get; set; }
+
+        public virtual DispositionType DispositionType { get; set; }
 
     }
 }
