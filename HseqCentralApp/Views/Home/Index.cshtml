@@ -6,12 +6,12 @@
     <br /><br /><br />
     <h4> NCR </h4>
     @Html.ActionLink("Report a non-conformance", "Create", "Ncrs")
-    <br /><br /><br />
+    <br /><br />
     @Html.ActionLink("View Existing non-conformance Records", "Index", "Ncrs")
-    <br /><br /><br />
+    <br /><br />
     <h4> FIS </h4>
     @Html.ActionLink("Report a Feedback/Improvrment Suggestion", "Create", "Fis")
-    <br /><br /><br />
+    <br /><br />
     @Html.ActionLink("View Existing Feedback/Improvrment Suggestions", "Index", "Fis")
 
 
@@ -20,4 +20,26 @@
     <br />
     @Html.ActionLink("Discrepancy Type", "Index", "DiscrepancyTypes")
     <br /><br /><br />
+
+    @if (User.Identity.IsAuthenticated)
+        {
+            if (User.IsInRole("Admin"))
+            {
+                <h3> Admin Area</h3>
+                <br />
+
+                  @Html.ActionLink("Manage Groups", "Index", "GroupsAdmin")
+        
+                   <br /><br />
+                   @Html.ActionLink("Manage Roles", "Index", "RolesAdmin")
+                   <br /><br />
+                   @Html.ActionLink("Manage Users", "Index", "UsersAdmin")
+                    
+                    <br /><br /><br />
+            }
+        }
+
+
+    
+
 </div>

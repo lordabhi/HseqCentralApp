@@ -10,6 +10,7 @@ using HseqCentralApp.Models;
 
 namespace HseqCentralApp.Controllers
 {
+    //[Authorize(Roles = "Admin, CanEdit")]
     public class NcrsController : Controller
     {
         private HseqCentralAppContext db = new HseqCentralAppContext();

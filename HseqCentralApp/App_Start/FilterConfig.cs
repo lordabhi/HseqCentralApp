@@ -7,6 +7,8 @@ namespace HseqCentralApp
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
+            //Global filter for Authentication
+            filters.Add(new System.Web.Mvc.AuthorizeAttribute());
             filters.Add(new HandleErrorAttribute());
         }
     }
