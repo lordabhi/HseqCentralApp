@@ -159,6 +159,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BusinessAreasController.cs" />
+    <Compile Include="Controllers\DispositionTypesController.cs" />
     <Compile Include="Controllers\GroupsAdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -285,6 +287,16 @@
     <Content Include="Views\UsersAdmin\Edit.cshtml" />
     <Content Include="Views\UsersAdmin\Index.cshtml" />
     <Content Include="Views\Account\DisplayEmail.cshtml" />
+    <Content Include="Views\BusinessAreas\Create.cshtml" />
+    <Content Include="Views\BusinessAreas\Delete.cshtml" />
+    <Content Include="Views\BusinessAreas\Details.cshtml" />
+    <Content Include="Views\BusinessAreas\Edit.cshtml" />
+    <Content Include="Views\BusinessAreas\Index.cshtml" />
+    <Content Include="Views\DispositionTypes\Create.cshtml" />
+    <Content Include="Views\DispositionTypes\Delete.cshtml" />
+    <Content Include="Views\DispositionTypes\Details.cshtml" />
+    <Content Include="Views\DispositionTypes\Edit.cshtml" />
+    <Content Include="Views\DispositionTypes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

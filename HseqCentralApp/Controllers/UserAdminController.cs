@@ -152,7 +152,10 @@ namespace HseqCentralApp.Controllers
             var model = new EditUserViewModel()
             {
                 Id = user.Id,
-                Email = user.Email
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Department = user.Department
             };
 
             foreach (var group in allGroups)

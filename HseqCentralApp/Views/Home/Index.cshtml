@@ -4,6 +4,8 @@
 <h2>Welcome to HSEQ Central</h2>
 <div class="row">
     <br /><br /><br />
+    <h3> Records Area</h3>
+    <br /><br />
     <h4> NCR </h4>
     @Html.ActionLink("Report a non-conformance", "Create", "Ncrs")
     <br /><br />
@@ -19,7 +21,12 @@
     <h3> Configurations </h3>
     <br />
     @Html.ActionLink("Discrepancy Type", "Index", "DiscrepancyTypes")
-    <br /><br /><br />
+    <br /><br />
+    @Html.ActionLink("Business Area", "Index", "BusinessAreas")
+    <br /><br />
+    @Html.ActionLink("Disposition Type", "Index", "DispositionTypes")
+    <br /><br />
+    <br />
 
     @if (User.Identity.IsAuthenticated)
         {

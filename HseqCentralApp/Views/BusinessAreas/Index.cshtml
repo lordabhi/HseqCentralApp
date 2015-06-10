@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HseqCentralApp.Models.DiscrepancyType>
+﻿@model IEnumerable<HseqCentralApp.Models.BusinessArea>
 
 @{
     ViewBag.Title = "Index";
@@ -23,9 +23,10 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.DiscrepancyTypeID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.DiscrepancyTypeID }) 
-            @*@Html.ActionLink("Delete", "Delete", new { id=item.DiscrepancyTypeID })*@
+            @Html.ActionLink("Edit", "Edit", new { id=item.BusinessAreaID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.BusinessAreaID })
+             @*|
+            @Html.ActionLink("Delete", "Delete", new { id=item.BusinessAreaID })*@
         </td>
     </tr>
 }
