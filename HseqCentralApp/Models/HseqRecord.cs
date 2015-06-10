@@ -42,22 +42,28 @@ namespace HseqCentralApp.Models
         [Required]
         public String Description { get; set; }
 
+        [Display(Name = "Record Type")]
         public RecordType RecordType { get; set; }
 
+        [Display(Name = "Entered By")]
         public String EnteredBy { get; set; }
 
+        [Display(Name = "Reported By")]
         public String ReportedBy { get; set; }
 
+        [Display(Name = "Quality Coordinator")]
         public String QualityCoordinator { get; set; }
 
-
-        //public Nullable<int> MainRecordId { get; set; }
         public virtual ICollection<HseqRecord> LinkedRecords { get; set; }
-        //public virtual HseqRecord MainRecord { get; set; }
-
 
         public int? HseqCaseFileID { get; set; }
 
         public virtual HseqCaseFile HseqCaseFile { get; set; }
+
+        [Display(Name = "Job Number")]
+        public String JobNumber { get; set; }
+
+        [Display(Name = "Drawing Number")]
+        public String DrawingNumber { get; set; }
     }
 }

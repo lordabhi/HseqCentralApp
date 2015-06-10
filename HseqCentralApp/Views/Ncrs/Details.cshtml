@@ -75,7 +75,27 @@
         <dd>
             @Html.DisplayFor(model => model.BusinessArea.Name)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DispositionType.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DispositionType.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.JobNumber)
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.JobNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DrawingNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DrawingNumber)
+        </dd>
     </dl>
 
 
@@ -139,7 +159,8 @@
     @Html.ActionLink("Create FIS", "CreateLinked", "Fis",
         new
         {
-            recordId = Model.HseqRecordID
+            recordId = Model.HseqRecordID,
+            recordSource = "NCR"
         },
         null)
 </p>

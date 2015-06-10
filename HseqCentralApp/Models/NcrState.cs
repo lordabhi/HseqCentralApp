@@ -8,6 +8,7 @@ namespace HseqCentralApp.Models
     public enum NcrState
     {
         New,
+        Pending,
         DispositionProposed,
         DispositionApproved,
         Closed

@@ -7,12 +7,22 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HseqCentralApp.Models;
+using HseqCentralApp.Services;
 
 namespace HseqCentralApp.Controllers
 {
     public class FisController : Controller
     {
         private HseqCentralAppContext db = new HseqCentralAppContext();
+
+        RecordService _RecordService;
+
+        public FisController() : this(new RecordService()){}
+
+        public FisController(RecordService service) 
+        {
+            _RecordService = service;
+        }
 
         // GET: Fis
         public ActionResult Index()
@@ -40,19 +50,37 @@ namespace HseqCentralApp.Controllers
         public ActionResult Create()
         {
 
-            ViewBag.RecordType = RecordType.FIS;
-            ViewBag.EnteredBy = "Test User";
-            ViewBag.ReportedBy = "Test User, Sales";
-            ViewBag.QualityCoordinator = "Mr. Paul Smith";
-            ViewBag.Status = "Pending";
+            var defaults = _RecordService.PopulateRecordTypeDefaults(RecordType.FIS);
+
+            PopulateDefaults(defaults);
+
+            //ViewBag.RecordType = RecordType.FIS;
+            //ViewBag.EnteredBy = "Test User";
+            //ViewBag.ReportedBy = "Test User, Sales";
+            //ViewBag.QualityCoordinator = "Mr. Paul Smith";
+            //ViewBag.Status = "Pending";
+
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
 
             return View();
         }
 
-        public ActionResult CreateLinked(int recordId)
+        private void PopulateDefaults(dynamic defaults)
         {
-            HseqRecord linkedRecord = db.NcrRecords.Find(recordId);
+            ViewBag.RecordType = defaults.RecordType;
+            ViewBag.EnteredBy = defaults.EnteredBy;
+            ViewBag.ReportedBy = defaults.ReportedBy;
+            ViewBag.QualityCoordinator = defaults.QualityCoordinator;
+            //ViewBag.Status = defaults.Status;
+            ViewBag.NcrState = defaults.NcrState;
+        }
+
+        public ActionResult CreateLinked(int recordId, String recordSource)
+        {
+            HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
+
+            //HseqRecord linkedRecord = db.NcrRecords.Find(recordId);
+            
             Fis fis = new Fis(linkedRecord);
             fis.RecordType = RecordType.FIS;
             fis.HseqRecordID = linkedRecord.HseqRecordID;
@@ -63,6 +91,7 @@ namespace HseqCentralApp.Controllers
             //ViewBag.Status = "Pending";
 
             TempData["recordId"] = linkedRecord.HseqRecordID;
+            TempData["recordSource"] = recordSource;
 
             linkedRecord.LinkedRecords.Add(fis);
 
@@ -84,8 +113,10 @@ namespace HseqCentralApp.Controllers
                 if (TempData["recordId"] != null)
                 {
                     var recordId = (int)TempData["recordId"];
+                    var recordSource = (string)TempData["recordSource"];
 
-                    HseqRecord linkedRecord = db.NcrRecords.Find(recordId);
+                    //HseqRecord linkedRecord = db.NcrRecords.Find(recordId);
+                    HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
 
                     if (linkedRecord != null)
                     {
@@ -99,6 +130,7 @@ namespace HseqCentralApp.Controllers
                     linkedRecord.LinkedRecords.Add(fis);
 
                     TempData["recordId"] = null;
+                    TempData["recordSource"] = null;
                 }
 
                 db.SaveChanges();
@@ -122,16 +154,7 @@ namespace HseqCentralApp.Controllers
             if (ModelState.IsValid)
             {
 
-                int caseNo = 1;
-
-                IList<HseqCaseFile> hseqCaseFilesList = db.HseqCaseFiles.ToList();
-
-                if (hseqCaseFilesList != null && hseqCaseFilesList.LongCount() > 0)
-                {
-
-                    caseNo = hseqCaseFilesList.Max(p => p.CaseNo) + 1;
-
-                }
+                int caseNo = _RecordService.GetNextCaseNumber(db);
 
                 HseqCaseFile hseqCaseFile = new HseqCaseFile();
 
@@ -145,7 +168,6 @@ namespace HseqCentralApp.Controllers
                 /////
                 hseqCaseFile.HseqRecords.Add(fis);
 
-
                 db.FisRecords.Add(fis);
                 db.SaveChanges();
 
@@ -158,9 +180,6 @@ namespace HseqCentralApp.Controllers
                 fis.AlfrescoNoderef = caseNo;
 
                 db.SaveChanges();
-
-
-
 
                 return RedirectToAction("Index");
             }

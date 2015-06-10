@@ -7,14 +7,25 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HseqCentralApp.Models;
+using HseqCentralApp.Services;
 
 namespace HseqCentralApp.Controllers
 {
     //[Authorize(Roles = "Admin, CanEdit")]
     public class NcrsController : Controller
     {
+
         private HseqCentralAppContext db = new HseqCentralAppContext();
-        private ApplicationDbContext appDb = new ApplicationDbContext();
+        //private ApplicationDbContext appDb = new ApplicationDbContext();
+
+        RecordService _RecordService;
+
+        public NcrsController() : this(new RecordService()){}
+
+        public NcrsController(RecordService service) 
+        {
+            _RecordService = service;
+        }
 
         // GET: Ncrs
         public ActionResult Index()
@@ -41,11 +52,13 @@ namespace HseqCentralApp.Controllers
         // GET: Ncrs/Create
         public ActionResult Create()
         {
-            ViewBag.RecordType = RecordType.NCR;
-            ViewBag.EnteredBy = User.Identity.Name;
-            ViewBag.ReportedBy = User.Identity.Name;
-            ViewBag.QualityCoordinator = "Mr. Paul Smith";
-            ViewBag.Status = "Pending";
+            
+
+          var defaults = _RecordService.PopulateRecordTypeDefaults(RecordType.NCR);
+
+           PopulateDefaults(defaults);
+
+           //var test = ViewBag.Foo;
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
@@ -55,10 +68,21 @@ namespace HseqCentralApp.Controllers
             return View();
         }
 
-
-        public ActionResult CreateLinked(int recordId)
+        private void PopulateDefaults(dynamic defaults)
         {
-            HseqRecord linkedRecord = db.FisRecords.Find(recordId);
+            ViewBag.RecordType = defaults.RecordType;
+            ViewBag.EnteredBy = defaults.EnteredBy;
+            ViewBag.ReportedBy = defaults.ReportedBy;
+            ViewBag.QualityCoordinator = defaults.QualityCoordinator;
+            //ViewBag.Status = defaults.Status;
+            ViewBag.NcrState = defaults.NcrState;
+        }
+
+
+        public ActionResult CreateLinked(int recordId, String recordSource)
+        {
+            HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
+
             Ncr ncr = new Ncr(linkedRecord);
             ncr.RecordType = RecordType.NCR;
             ncr.HseqRecordID = linkedRecord.HseqRecordID;
@@ -69,6 +93,7 @@ namespace HseqCentralApp.Controllers
             //ViewBag.Status = "Pending";
 
             TempData["recordId"] = linkedRecord.HseqRecordID;
+            TempData["recordSource"] = recordSource;
 
             linkedRecord.LinkedRecords.Add(ncr);
 
@@ -93,8 +118,11 @@ namespace HseqCentralApp.Controllers
                 if (TempData["recordId"] != null)
                 {
                     var recordId = (int)TempData["recordId"];
+                    var recordSource = (string)TempData["recordSource"];
 
-                    HseqRecord linkedRecord = db.FisRecords.Find(recordId);
+                    HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
+
+                    //HseqRecord linkedRecord = db.FisRecords.Find(recordId);
 
                     if (linkedRecord != null)
                     {
@@ -108,6 +136,7 @@ namespace HseqCentralApp.Controllers
                     linkedRecord.LinkedRecords.Add(ncr);
 
                     TempData["recordId"] = null;
+                    TempData["recordSource"] = null;
                 }
 
                 db.SaveChanges();
@@ -128,20 +157,11 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,NcrSource,NcrState,DiscrepancyTypeID,BusinessAreaID, DispositionTypeID")] Ncr ncr)
+        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,NcrSource,NcrState,DiscrepancyTypeID,BusinessAreaID,DispositionTypeID")] Ncr ncr)
         {
             if (ModelState.IsValid)
             {
-                int caseNo = 1;
-
-                IList<HseqCaseFile> hseqCaseFilesList = db.HseqCaseFiles.ToList();
-
-                if (hseqCaseFilesList != null && hseqCaseFilesList.LongCount() > 0)
-                {
-
-                    caseNo = hseqCaseFilesList.Max(p => p.CaseNo) + 1;
-
-                }
+                int caseNo = _RecordService.GetNextCaseNumber(db);
 
                 HseqCaseFile hseqCaseFile = new HseqCaseFile();
 
@@ -181,6 +201,8 @@ namespace HseqCentralApp.Controllers
             return View(ncr);
         }
 
+
+
         // GET: Ncrs/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -205,7 +227,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,NcrSource,NcrState,DiscrepancyTypeID,BusinessAreaID, DispositionTypeID")] Ncr ncr)
+        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,NcrSource,NcrState,DiscrepancyTypeID,BusinessAreaID,DispositionTypeID")] Ncr ncr)            
         {
             if (ModelState.IsValid)
             {
