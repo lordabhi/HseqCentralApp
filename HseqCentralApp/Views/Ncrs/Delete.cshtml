@@ -114,6 +114,24 @@
         <dd>
             @Html.DisplayFor(model => model.DrawingNumber)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DispositionType.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DispositionType.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DispositionApprover.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DispositionApprover.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DispositionNote)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DispositionNote)
+        </dd>
     </dl>
 
     @using (Html.BeginForm())

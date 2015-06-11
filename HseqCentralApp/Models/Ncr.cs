@@ -42,5 +42,14 @@ namespace HseqCentralApp.Models
 
         public virtual DispositionType DispositionType { get; set; }
 
+        [Display(Name = "Disposition Approver")]
+        public string DispositionApproverID { get; set; }
+
+        public virtual ApplicationUser DispositionApprover { get; set; }
+
+        [Display(Name = "Disposition Notes")]
+        public String DispositionNote { get; set; }
+
+
     }
 }

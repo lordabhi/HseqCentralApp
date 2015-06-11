@@ -16,7 +16,7 @@ namespace HseqCentralApp.Services
     public class RecordService
     {
         //private HseqCentralAppContext db = new HseqCentralAppContext();
-        private ApplicationDbContext appDb = new ApplicationDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         private ApplicationUser currentUser;
         private dynamic ViewBag;
@@ -52,7 +52,7 @@ namespace HseqCentralApp.Services
 
         public ApplicationUser GetCurrentUser() {
 
-            ApplicationUser currentUser = appDb.Users.Where(m => m.Email == HttpContext.Current.User.Identity.Name).First();
+            ApplicationUser currentUser = db.Users.Where(m => m.Email == HttpContext.Current.User.Identity.Name).First();
             return currentUser;
         
         }
