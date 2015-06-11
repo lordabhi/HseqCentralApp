@@ -14,7 +14,7 @@ namespace HseqCentralApp
     {
         protected void Application_Start()
         {
-            Database.SetInitializer<HseqCentralAppContext>(new HseqCentralInitializer());
+            //Database.SetInitializer<ApplicationDbContext>(new HseqCentralInitializer());
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

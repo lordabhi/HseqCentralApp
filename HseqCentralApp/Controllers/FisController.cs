@@ -13,7 +13,8 @@ namespace HseqCentralApp.Controllers
 {
     public class FisController : Controller
     {
-        private HseqCentralAppContext db = new HseqCentralAppContext();
+        //private HseqCentralAppContext db = new HseqCentralAppContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         RecordService _RecordService;
 

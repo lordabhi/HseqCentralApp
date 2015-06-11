@@ -11,7 +11,8 @@ namespace HseqCentralApp.Models
 {
     public class DiscrepancyTypesController : Controller
     {
-        private HseqCentralAppContext db = new HseqCentralAppContext();
+        //private HseqCentralAppContext db = new HseqCentralAppContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: DiscrepancyTypes
         public ActionResult Index()

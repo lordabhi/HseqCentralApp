@@ -6,9 +6,10 @@ using System.Web;
 
 namespace HseqCentralApp.Models
 {
-    public class HseqCentralInitializer : DropCreateDatabaseIfModelChanges<HseqCentralAppContext>
+    public class HseqCentralInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
     {
-        protected override void Seed(HseqCentralAppContext context)
+        //protected override void Seed(HseqCentralAppContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
 
             //Discrepancy Types

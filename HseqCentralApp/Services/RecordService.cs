@@ -57,7 +57,7 @@ namespace HseqCentralApp.Services
         
         }
 
-        internal HseqRecord GetSourceRecord(int recordId, string recordSource, HseqCentralAppContext db)
+        internal HseqRecord GetSourceRecord(int recordId, string recordSource, ApplicationDbContext db)
         {
 
             HseqRecord linkedRecord = null;
@@ -74,7 +74,7 @@ namespace HseqCentralApp.Services
             return linkedRecord;
         }
 
-        internal int GetNextCaseNumber(HseqCentralAppContext db)
+        internal int GetNextCaseNumber(ApplicationDbContext db)
         {
             int caseNo = 1;
 

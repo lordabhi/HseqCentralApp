@@ -12,7 +12,8 @@ namespace HseqCentralApp.Controllers
 {
     public class DispositionTypesController : Controller
     {
-        private HseqCentralAppContext db = new HseqCentralAppContext();
+        //private HseqCentralAppContext db = new HseqCentralAppContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: DispositionTypes
         public ActionResult Index()

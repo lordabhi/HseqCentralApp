@@ -69,14 +69,47 @@ namespace HseqCentralApp.Models
 
 
     // Must be expressed in terms of our custom types:
-    public class ApplicationDbContext
-        : IdentityDbContext<ApplicationUser, ApplicationRole,
-        string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>
     {
-        public ApplicationDbContext()
-            : base("HseqCentralAppContext")
+        public ApplicationDbContext(): base("HseqCentralAppContext")
         {
         }
+
+        //Abhi///
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.HseqCaseFile> HseqCaseFiles { get; set; }
+
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.Ncr> NcrRecords { get; set; }
+
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.Fis> FisRecords { get; set; }
+
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.DiscrepancyType> DiscrepancyTypes { get; set; }
+
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.HseqRecord> HseqRecords { get; set; }
+
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.BusinessArea> BusinessAreas { get; set; }
+
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.DispositionType> DispositionTypes { get; set; }
+
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<HseqRecord>().HasMany(m => m.LinkedRecords).WithMany();
+
+        //    //one-to-many 
+        //    modelBuilder.Entity<HseqRecord>()
+        //                .HasOptional<HseqCaseFile>(h => h.HseqCaseFile)
+        //                .WithMany(h => h.HseqRecords)
+        //                .HasForeignKey(h => h.HseqCaseFileID);
+
+        //    //modelBuilder.Entity<HseqCaseFile>()
+        //    //                        .HasMany<HseqRecord>(s => s.HseqRecords)
+        //    //                        .WithRequired(s => s.HseqCaseFile)
+        //    //                        .HasForeignKey(s => s.HseqCaseFileID);
+
+        //}
+        //Abhi end///
+
+
+
 
         static ApplicationDbContext()
         {
@@ -117,17 +150,29 @@ namespace HseqCentralApp.Models
                     ApplicationGroupId = gr.ApplicationGroupId
                 }).ToTable("ApplicationGroupRoles");
 
+            /////////////////////////////////
+            modelBuilder.Entity<HseqRecord>().HasMany(m => m.LinkedRecords).WithMany();
+
+            //one-to-many 
+            modelBuilder.Entity<HseqRecord>()
+                        .HasOptional<HseqCaseFile>(h => h.HseqCaseFile)
+                        .WithMany(h => h.HseqRecords)
+                        .HasForeignKey(h => h.HseqCaseFileID);
+
+            //modelBuilder.Entity<HseqCaseFile>()
+            //                        .HasMany<HseqRecord>(s => s.HseqRecords)
+            //                        .WithRequired(s => s.HseqCaseFile)
+            //                        .HasForeignKey(s => s.HseqCaseFileID);
+            /////////////////////////////////////////////////////////////////////
+
         }
+
     }
 
 
     // Most likely won't need to customize these either, but they were needed because we implemented
     // custom versions of all the other types:
-    public class ApplicationUserStore
-        : UserStore<ApplicationUser, ApplicationRole, string,
-            ApplicationUserLogin, ApplicationUserRole,
-            ApplicationUserClaim>, IUserStore<ApplicationUser, string>,
-        IDisposable
+    public class ApplicationUserStore : UserStore<ApplicationUser, ApplicationRole, string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>, IUserStore<ApplicationUser, string>, IDisposable
     {
         public ApplicationUserStore()
             : this(new IdentityDbContext())
