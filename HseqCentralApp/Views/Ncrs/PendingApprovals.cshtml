@@ -1,0 +1,69 @@
+﻿@model IEnumerable<HseqCentralApp.Models.Ncr>
+
+@{
+    ViewBag.Title = "Pending Approvals";
+}
+<h2>Pending Approvals</h2>
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.HseqCaseFile.CaseNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RecordType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NcrState)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NcrSource)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DiscrepancyType.Name)
+        </th>
+
+
+        <th></th>
+    </tr>
+    @foreach (var item in ViewBag.PendingApprovals)
+    {
+        
+        <tr>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.HseqCaseFile.CaseNo)*@
+                @*@Html.ActionLink(item.HseqCaseFile.CaseNo + "", "Details", "HseqCaseFiles", new { id = item.HseqCaseFile.HseqCaseFileID }, null)*@
+                @item.HseqCaseFile.CaseNo
+            </td>
+            <td>
+                @item.RecordType
+            </td>
+            <td>
+                @item.NcrState
+            </td>
+            <td>
+                @item.NcrSource
+            </td>
+
+            <td>
+                @item.DiscrepancyType.Name
+            </td>
+
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.HseqRecordID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.HseqRecordID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.HseqRecordID }) |
+                @Html.ActionLink("Create FIS", "CreateLinked", "Fis",
+                    new
+                    {
+                        recordId = item.HseqRecordID,
+                        recordSource = "NCR"
+                    },
+                    null)
+            </td>
+        </tr>
+    }
+</table>

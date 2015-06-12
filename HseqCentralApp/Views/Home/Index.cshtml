@@ -3,50 +3,68 @@
 }
 <h2>Welcome to HSEQ Central</h2>
 <div class="row">
-    <br /><br /><br />
-    <h3> Records Area</h3>
-    <br /><br />
-    <h4> NCR </h4>
-    @Html.ActionLink("Report a non-conformance", "Create", "Ncrs")
-    <br /><br />
-    @Html.ActionLink("View Existing non-conformance Records", "Index", "Ncrs")
-    <br /><br />
-    <h4> FIS </h4>
-    @Html.ActionLink("Report a Feedback/Improvrment Suggestion", "Create", "Fis")
-    <br /><br />
-    @Html.ActionLink("View Existing Feedback/Improvement Suggestions", "Index", "Fis")
-
-
-    <br /><br /><br />
-    <h3> Configurations </h3>
-    <br />
-    @Html.ActionLink("Discrepancy Type", "Index", "DiscrepancyTypes")
-    <br /><br />
-    @Html.ActionLink("Business Area", "Index", "BusinessAreas")
-    <br /><br />
-    @Html.ActionLink("Disposition Type", "Index", "DispositionTypes")
-    <br /><br />
-    <br />
-
-    @if (User.Identity.IsAuthenticated)
-        {
-            if (User.IsInRole("Admin"))
-            {
-                <h3> Admin Area</h3>
+    <table cellpadding="50">
+        <tr>
+            <td>
+                <br />
+                <h3> Records Area</h3>
+                <br />
+                <h4> NCR </h4>
+                @Html.ActionLink("Report a non-conformance", "Create", "Ncrs")
+                <br />
+                <br />
+                @Html.ActionLink("View Existing non-conformance Records", "Index", "Ncrs")
+                <br />
+                <br />
+                <h4> FIS </h4>
+                @Html.ActionLink("Report a Feedback / Improvement Suggestion", "Create", "Fis")
+                <br />
+                <br />
+                @Html.ActionLink("View Existing Feedback / Improvement Suggestions", "Index", "Fis")
+                <br />
                 <br />
 
-                  @Html.ActionLink("Manage Groups", "Index", "GroupsAdmin")
-        
-                   <br /><br />
-                   @Html.ActionLink("Manage Roles", "Index", "RolesAdmin")
-                   <br /><br />
-                   @Html.ActionLink("Manage Users", "Index", "UsersAdmin")
-                    
-                    <br /><br /><br />
-            }
-        }
+                @*<h4> Pending Approvals </h4>
 
+                @Html.ActionLink("Pending Approvals", "PendingApproval", "Ncrs")*@
+            </td>
+            <td>
+                <h3> Configurations </h3>
+                <br />
+                @Html.ActionLink("Discrepancy Type", "Index", "DiscrepancyTypes")
+                <br />
+                <br />
+                @Html.ActionLink("Business Area", "Index", "BusinessAreas")
+                <br />
+                <br />
+                @Html.ActionLink("Disposition Type", "Index", "DispositionTypes")
+                </td>
 
-    
+            <td>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Admin"))
+                    {
+                        <h3> Admin Area</h3>
+                        <br />
 
+                        @Html.ActionLink("Manage Groups", "Index", "GroupsAdmin")
+
+                        <br />
+                        <br />
+                        @Html.ActionLink("Manage Roles", "Index", "RolesAdmin")
+                        <br />
+                        <br />
+                        @Html.ActionLink("Manage Users", "Index", "UsersAdmin")
+
+                        <br />
+                        <br />
+
+                        @Html.ActionLink("Manage Disposition Approvers", "Index", "ApproverDispositions")
+
+                    }
+                }
+            </td>
+        </tr>
+    </table>
 </div>

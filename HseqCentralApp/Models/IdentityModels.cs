@@ -93,6 +93,8 @@ namespace HseqCentralApp.Models
 
         public System.Data.Entity.DbSet<HseqCentralApp.Models.DispositionType> DispositionTypes { get; set; }
 
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.ApproverDisposition> ApproverDispositions { get; set; }
+        
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
         //    modelBuilder.Entity<HseqRecord>().HasMany(m => m.LinkedRecords).WithMany();

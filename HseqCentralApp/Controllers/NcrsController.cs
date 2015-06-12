@@ -49,6 +49,33 @@ namespace HseqCentralApp.Controllers
             return View(ncr);
         }
 
+        
+            public ActionResult PendingApproval(){
+
+                //var remainingUsers = from u in db.Users
+                //                     where !(from a in db.ApproverDispositions
+                //                             where a.ApproverID == u.Id
+                //                             select a.ApproverID).Contains(u.Id)
+                //                     select u;
+
+                var currentUser = _RecordService.GetCurrentUser();
+
+                var x = from a in db.ApproverDispositions
+                        where a.ApproverID == currentUser.Id
+                        select a;
+
+                var xid = x.FirstOrDefault().ApproverDispositionID;
+                IEnumerable<Ncr> PendingApprovals = from ncr in db.NcrRecords
+                                                    where ncr.DispositionApproverID == xid.ToString()
+                                                    select ncr;
+
+                ViewBag.PendingApprovals = PendingApprovals;
+
+                
+                return View("PendingApprovals");
+
+            }
+
         // GET: Ncrs/Create
         public ActionResult Create()
         {
@@ -64,19 +91,9 @@ namespace HseqCentralApp.Controllers
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name");
-            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FullName");
+            ViewBag.DispositionApproverID = new SelectList(db.ApproverDispositions, "ApproverDispositionID", "FullName");
 
             return View();
-        }
-
-        private void PopulateDefaults(dynamic defaults)
-        {
-            ViewBag.RecordType = defaults.RecordType;
-            ViewBag.EnteredBy = defaults.EnteredBy;
-            ViewBag.ReportedBy = defaults.ReportedBy;
-            ViewBag.QualityCoordinator = defaults.QualityCoordinator;
-            //ViewBag.Status = defaults.Status;
-            ViewBag.NcrState = defaults.NcrState;
         }
 
 
@@ -102,7 +119,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name");
-            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FullName");
+            ViewBag.DispositionApproverID = new SelectList(db.ApproverDispositions, "ApproverDispositionID", "FullName");
 
             return View("Create", ncr);
         }
@@ -150,7 +167,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
-            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FullName");
+            ViewBag.DispositionApproverID = new SelectList(db.ApproverDispositions, "ApproverDispositionID", "FullName");
 
             return View(ncr);
         }
@@ -200,7 +217,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
-            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FullName");
+            ViewBag.DispositionApproverID = new SelectList(db.ApproverDispositions, "ApproverDispositionID", "FullName");
             
             return View(ncr);
         }
@@ -223,7 +240,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
-            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FullName", ncr.DispositionApproverID);
+            ViewBag.DispositionApproverID = new SelectList(db.ApproverDispositions, "ApproverDispositionID", "FullName", ncr.DispositionApproverID);
 
             return View(ncr);
         }
@@ -247,7 +264,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
 
             Console.Write(ncr.DispositionApproverID);
-            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FullName", ncr.DispositionApproverID);
+            ViewBag.DispositionApproverID = new SelectList(db.ApproverDispositions, "ApproverDispositionID", "FullName", ncr.DispositionApproverID);
 
             return View(ncr);
         }
@@ -313,5 +330,17 @@ namespace HseqCentralApp.Controllers
             }
             base.Dispose(disposing);
         }
+
+        private void PopulateDefaults(dynamic defaults)
+        {
+            ViewBag.RecordType = defaults.RecordType;
+            ViewBag.EnteredBy = defaults.EnteredBy;
+            ViewBag.ReportedBy = defaults.ReportedBy;
+            ViewBag.QualityCoordinator = defaults.QualityCoordinator;
+            //ViewBag.Status = defaults.Status;
+            ViewBag.NcrState = defaults.NcrState;
+        }
+
     }
+
 }

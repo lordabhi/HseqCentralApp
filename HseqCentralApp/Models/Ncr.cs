@@ -17,10 +17,11 @@ namespace HseqCentralApp.Models
 
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Select a source")]
-
         [Display(Name = "Source")]
         public NcrSource NcrSource { get; set; }
 
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Select a state")]
         [Display(Name = "State")]
         public NcrState NcrState { get; set; }
 
@@ -45,7 +46,7 @@ namespace HseqCentralApp.Models
         [Display(Name = "Disposition Approver")]
         public string DispositionApproverID { get; set; }
 
-        public virtual ApplicationUser DispositionApprover { get; set; }
+        public virtual ApproverDisposition DispositionApprover { get; set; }
 
         [Display(Name = "Disposition Notes")]
         public String DispositionNote { get; set; }
