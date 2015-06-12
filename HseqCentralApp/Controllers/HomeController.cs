@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Postal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,10 @@ namespace HseqCentralApp.Controllers
     {
         public ActionResult Index()
         {
+            dynamic email = new Email("Example");
+            email.To = "abhishek.khaitan@waiward.com";
+            email.FunnyLink = "google.com";
+            //email.Send();
             return View();
         }
 

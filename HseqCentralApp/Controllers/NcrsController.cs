@@ -64,7 +64,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name");
-            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FirstName");
+            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FullName");
 
             return View();
         }
@@ -102,7 +102,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name");
-            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FirstName");
+            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FullName");
 
             return View("Create", ncr);
         }
@@ -150,7 +150,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
-            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FirstName");
+            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FullName");
 
             return View(ncr);
         }
@@ -200,7 +200,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
-            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FirstName");
+            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FullName");
             
             return View(ncr);
         }
@@ -223,7 +223,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
-            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FirstName", ncr.DispositionApproverID);
+            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FullName", ncr.DispositionApproverID);
 
             return View(ncr);
         }
@@ -247,7 +247,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
 
             Console.Write(ncr.DispositionApproverID);
-            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FirstName", ncr.DispositionApproverID);
+            ViewBag.DispositionApproverID = new SelectList(db.Users, "Id", "FullName", ncr.DispositionApproverID);
 
             return View(ncr);
         }

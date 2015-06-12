@@ -17,17 +17,13 @@ namespace HseqCentralApp.Models
     public class ApplicationUserRole : IdentityUserRole<string> { }
 
     // Must be expressed in terms of our custom Role and other types:
-    public class ApplicationUser
-        : IdentityUser<string, ApplicationUserLogin,
-        ApplicationUserRole, ApplicationUserClaim>
+    public class ApplicationUser : IdentityUser<string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>
     {
         public ApplicationUser()
         {
             this.Id = Guid.NewGuid().ToString();
 
             // Add any custom User properties/code here
-
-            
         }
 
         [Display(Name = "First Name")]
@@ -38,8 +34,15 @@ namespace HseqCentralApp.Models
 
         [Display(Name = "Department")]
         public String Department { get; set; }
+    
+        public string FullName
+        {
+            get {
+                return this.FirstName + " " + this.LastName;
+            }
 
-
+        }
+    
         public async Task<ClaimsIdentity>
             GenerateUserIdentityAsync(ApplicationUserManager manager)
         {
