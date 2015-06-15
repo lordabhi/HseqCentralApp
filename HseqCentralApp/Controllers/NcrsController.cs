@@ -181,6 +181,7 @@ namespace HseqCentralApp.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 int caseNo = _RecordService.GetNextCaseNumber(db);
 
                 HseqCaseFile hseqCaseFile = new HseqCaseFile();

@@ -18,7 +18,7 @@
             <div class="col-md-10">
                 @*@Html.EditorFor(model => model.RecordType, new { htmlAttributes = new { @class = "form-control" } })*@
                 @*@Html.TextBoxFor(model => model.RecordType, new { @Value = ViewBag.RecordType, @readonly = "readonly" })*@
-                @Html.EnumDropDownListFor(model => model.RecordType, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                @Html.EnumDropDownListFor(model => model.RecordType, htmlAttributes: new { @class = "form-control"})
                 @Html.ValidationMessageFor(model => model.RecordType, "", new { @class = "text-danger" })
             </div>
         </div>

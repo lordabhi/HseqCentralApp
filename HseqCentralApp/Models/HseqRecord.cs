@@ -43,6 +43,8 @@ namespace HseqCentralApp.Models
         public String Description { get; set; }
 
         [Display(Name = "Record Type")]
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Select a record type")]
         public RecordType RecordType { get; set; }
 
         [Display(Name = "Entered By")]

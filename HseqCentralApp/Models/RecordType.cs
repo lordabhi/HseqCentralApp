@@ -7,9 +7,9 @@ namespace HseqCentralApp.Models
 {
     public enum RecordType
     {
-        NCR,
-        FIS,
-        CAPA,
-        HSE
+        NCR = 1,
+        FIS = 2,
+        CAR = 3,
+        PAR = 4
     }
 }

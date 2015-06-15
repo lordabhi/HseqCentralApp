@@ -14,7 +14,13 @@ namespace HseqCentralApp.Controllers
             dynamic email = new Email("Example");
             email.To = "abhishek.khaitan@waiward.com";
             email.FunnyLink = "google.com";
-            //email.Send();
+            
+            try {
+                //email.Send();
+            }catch(Exception e){
+                Elmah.ErrorSignal.FromCurrentContext().Raise(e);
+            }
+            Elmah.ErrorSignal.FromCurrentContext().Raise(new Exception("test"));
             return View();
         }
 
