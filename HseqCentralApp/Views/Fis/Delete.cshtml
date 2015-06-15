@@ -75,14 +75,19 @@
             @Html.DisplayFor(model => model.QualityCoordinator)
         </dd>
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Category)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Category)
+        </dd>*@
+        <dt>
+            @Html.DisplayNameFor(model => model.BusinessArea.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BusinessArea.Name)
         </dd>
-
     </dl>
 
     @using (Html.BeginForm())

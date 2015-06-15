@@ -153,9 +153,9 @@ namespace HseqCentralApp
             var user = userManager.FindByName(name);
             if (user == null)
             {
-                user = new ApplicationUser { UserName = name, Email = name, EmailConfirmed = true };
-                user.FirstName = "Admin";
-                user.LastName = "Admin";
+                user = new ApplicationUser { UserName = name, Email = name, EmailConfirmed = true};
+                user.FirstName = "FAdmin";
+                user.LastName = "LAdmin";
                 user.Department = "Information Technology";
 
                 var result = userManager.Create(user, password);

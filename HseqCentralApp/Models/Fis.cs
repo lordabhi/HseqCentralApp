@@ -11,20 +11,21 @@ namespace HseqCentralApp.Models
 
         public Fis() { }
 
-        public Fis(HseqRecord hseqRecord): base(hseqRecord){}
+        public Fis(HseqRecord hseqRecord) : base(hseqRecord) { }
 
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Select a source")]
         [Display(Name = "Source")]
         public NcrSource NcrSource { get; set; }
 
-        public String Category { get; set; }
+        //public String Category { get; set; }
 
         [Display(Name = "Category")]
-        [Required(ErrorMessage="Code is required")]
+        [Required(ErrorMessage = "Code is required")]
         public int? FisCodeID { get; set; }
 
         [Display(Name = "Code")]
         public virtual FisCode FisCode { get; set; }
+
     }
 }

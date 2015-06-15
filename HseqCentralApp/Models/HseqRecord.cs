@@ -67,5 +67,11 @@ namespace HseqCentralApp.Models
 
         [Display(Name = "Drawing Number")]
         public String DrawingNumber { get; set; }
+
+        [Required(ErrorMessage = "Select a business area")]
+        [Display(Name = "Business Area")]
+        public int BusinessAreaID { get; set; }
+
+        public virtual BusinessArea BusinessArea { get; set; }
     }
 }

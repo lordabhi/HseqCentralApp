@@ -55,14 +55,7 @@ namespace HseqCentralApp.Controllers
 
             PopulateDefaults(defaults);
 
-            //ViewBag.RecordType = RecordType.FIS;
-            //ViewBag.EnteredBy = "Test User";
-            //ViewBag.ReportedBy = "Test User, Sales";
-            //ViewBag.QualityCoordinator = "Mr. Paul Smith";
-            //ViewBag.Status = "Pending";
-            //ViewBag.CodeCategoryList = new SelectList(getCodeCategoryList(), "Id", "Column1");
-
-            //ViewBag.CodeCategoryList = new SelectList(getCodeCategoryList(), "DistrictID", "Column1");
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
             ViewBag.CodeCategoryList = new SelectList(getCodeCategoryList(), "Id", "Column1");
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
 
@@ -123,6 +116,7 @@ namespace HseqCentralApp.Controllers
 
             linkedRecord.LinkedRecords.Add(fis);
 
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
             return View("Create", fis);
@@ -166,6 +160,7 @@ namespace HseqCentralApp.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", fis.BusinessAreaID);
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", fis.HseqCaseFileID);
             //ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", fis.DiscrepancyTypeID);
             return View(fis);
@@ -177,7 +172,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID")] Fis fis)
+        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID,BusinessAreaID")] Fis fis)
         {
             if (ModelState.IsValid)
             {
@@ -211,7 +206,7 @@ namespace HseqCentralApp.Controllers
 
                 return RedirectToAction("Index");
             }
-            //ViewBag.CodeCategoryList = new SelectList(getCodeCategoryList(), "DistrictID", "Column1", fis.DistrictID);
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", fis.BusinessAreaID);
             ViewBag.CodeCategoryList = new SelectList(getCodeCategoryList(), "Id", "Column1", fis.FisCodeID);
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", fis.HseqCaseFileID);
             return View(fis);
@@ -230,6 +225,7 @@ namespace HseqCentralApp.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", fis.BusinessAreaID);
             ViewBag.CodeCategoryList = new SelectList(getCodeCategoryList(), "Id", "Column1");
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", fis.HseqCaseFileID);
             return View(fis);
@@ -240,7 +236,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID")] Fis fis)
+        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID,BusinessAreaID")] Fis fis)
         {
             if (ModelState.IsValid)
             {
@@ -248,6 +244,7 @@ namespace HseqCentralApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", fis.BusinessAreaID);
             ViewBag.CodeCategoryList = new SelectList(getCodeCategoryList(), "Id", "Column1", fis.FisCodeID);
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", fis.HseqCaseFileID);
             return View(fis);

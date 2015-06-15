@@ -16,8 +16,11 @@
             @Html.DisplayNameFor(model => model.RecordType)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Category)
+            @Html.DisplayNameFor(model => model.FisCode)
         </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>*@
 
 
         <th></th>
@@ -33,8 +36,11 @@
                 @Html.DisplayFor(modelItem => item.RecordType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category)
+                @Html.DisplayFor(modelItem => item.FisCode.CodeName)
             </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>*@
 
 
             <td>

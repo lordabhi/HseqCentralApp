@@ -32,11 +32,11 @@ namespace HseqCentralApp.Models
         public virtual DiscrepancyType DiscrepancyType { get; set; }
 
 
-        [Required(ErrorMessage = "Select a business area")]
-        [Display(Name="Business Area")]
-        public int BusinessAreaID { get; set; }
+        //[Required(ErrorMessage = "Select a business area")]
+        //[Display(Name="Business Area")]
+        //public int BusinessAreaID { get; set; }
 
-        public virtual BusinessArea BusinessArea { get; set; }
+        //public virtual BusinessArea BusinessArea { get; set; }
 
         [Display(Name = "Disposition Type")]
         public int? DispositionTypeID { get; set; }

@@ -10,7 +10,7 @@
     <h4>Fis</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.HseqCaseFile.HseqCaseFileID)
         </dt>
 
@@ -24,8 +24,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.AlfrescoNoderef)
+        </dd>*@
+        <dt>
+            @Html.DisplayNameFor(model => model.HseqCaseFile.CaseNo)
+        </dt>
+        <dd>
+            @*@Html.DisplayFor(model => model.HseqCaseFile.CaseNo)*@
+            @Html.ActionLink(Model.HseqCaseFile.CaseNo + "", "Details", "HseqCaseFiles", new { id = Model.HseqCaseFile.HseqCaseFileID }, null)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Title)
         </dt>
@@ -74,14 +80,19 @@
             @Html.DisplayFor(model => model.QualityCoordinator)
         </dd>
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Category)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Category)
+        </dd>*@
+        <dt>
+            @Html.DisplayNameFor(model => model.BusinessArea.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BusinessArea.Name)
         </dd>
-
     </dl>
 
     <hr />
