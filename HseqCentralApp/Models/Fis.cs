@@ -19,5 +19,12 @@ namespace HseqCentralApp.Models
         public NcrSource NcrSource { get; set; }
 
         public String Category { get; set; }
+
+        [Display(Name = "Category")]
+        [Required(ErrorMessage="Code is required")]
+        public int? FisCodeID { get; set; }
+
+        [Display(Name = "Code")]
+        public virtual FisCode FisCode { get; set; }
     }
 }

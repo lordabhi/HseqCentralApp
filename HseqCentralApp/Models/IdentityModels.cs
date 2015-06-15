@@ -172,6 +172,10 @@ namespace HseqCentralApp.Models
 
         }
 
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.FisCategory> FisCategories { get; set; }
+
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.FisCode> FisCodes { get; set; }
+
     }
 
 

@@ -238,6 +238,43 @@ namespace HseqCentralApp
                 db.DispositionTypes.Add(temp);
             }
 
+            //FIS Categories and Codes
+            var fisCategories = new List<FisCategory>
+            {
+            };
+
+            var category1 = new FisCategory { Name = "Category 1" };
+            fisCategories.Add(category1);
+
+            var category2 = new FisCategory { Name = "Category 2" };
+            fisCategories.Add(category2);
+
+            var category3 = new FisCategory { Name = "Category 3" };
+            fisCategories.Add(category3);
+
+            foreach (var temp in fisCategories)
+            {
+                db.FisCategories.Add(temp);
+            }
+
+            var fisCategoryCodes = new List<FisCode>{
+            
+                    new FisCode{FisCategory = category1, CodeName = "Code1"},
+                    new FisCode{FisCategory = category1, CodeName = "Code2"},
+                    new FisCode{FisCategory = category1, CodeName = "Code3"},
+                    new FisCode{FisCategory = category2, CodeName = "Code4"},
+                    new FisCode{FisCategory = category2, CodeName = "Code5"},
+                    new FisCode{FisCategory = category2, CodeName = "Code6"},
+                    new FisCode{FisCategory = category2, CodeName = "Code7"},
+                    new FisCode{FisCategory = category3, CodeName = "Code8"},
+                    new FisCode{FisCategory = category3, CodeName = "Code9"}
+            };
+
+            foreach (var temp in fisCategoryCodes)
+            {
+                db.FisCodes.Add(temp);
+            }
+
             db.SaveChanges();
 
         }

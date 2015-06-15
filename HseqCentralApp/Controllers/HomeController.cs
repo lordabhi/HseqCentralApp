@@ -21,6 +21,9 @@ namespace HseqCentralApp.Controllers
                 Elmah.ErrorSignal.FromCurrentContext().Raise(e);
             }
             Elmah.ErrorSignal.FromCurrentContext().Raise(new Exception("test"));
+
+            //ViewBag.MIList = db.MenuItems.ToList();
+
             return View();
         }
 

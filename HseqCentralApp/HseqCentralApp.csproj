@@ -192,6 +192,8 @@
     <Compile Include="Controllers\ApproverDispositionsController.cs" />
     <Compile Include="Controllers\BusinessAreasController.cs" />
     <Compile Include="Controllers\DispositionTypesController.cs" />
+    <Compile Include="Controllers\FisCategoriesController.cs" />
+    <Compile Include="Controllers\FisCodesController.cs" />
     <Compile Include="Controllers\GroupsAdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -203,6 +205,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApproverDisposition.cs" />
+    <Compile Include="Models\FisCode.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\ApplicationGroupManager.cs" />
@@ -225,9 +228,11 @@
     <Compile Include="Models\NcrSource.cs" />
     <Compile Include="Models\NcrState.cs" />
     <Compile Include="Models\RecordType.cs" />
+    <Compile Include="Models\FisCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\RecordService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\StateDistrictViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -341,10 +346,19 @@
     <Content Include="Views\ApproverDispositions\Edit.cshtml" />
     <Content Include="Views\ApproverDispositions\Index.cshtml" />
     <Content Include="Views\Ncrs\PendingApprovals.cshtml" />
+    <Content Include="Views\FisCategories\Create.cshtml" />
+    <Content Include="Views\FisCategories\Delete.cshtml" />
+    <Content Include="Views\FisCategories\Details.cshtml" />
+    <Content Include="Views\FisCategories\Edit.cshtml" />
+    <Content Include="Views\FisCategories\Index.cshtml" />
+    <Content Include="Views\FisCodes\Create.cshtml" />
+    <Content Include="Views\FisCodes\Delete.cshtml" />
+    <Content Include="Views\FisCodes\Details.cshtml" />
+    <Content Include="Views\FisCodes\Edit.cshtml" />
+    <Content Include="Views\FisCodes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
