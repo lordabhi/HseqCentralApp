@@ -27,7 +27,7 @@ namespace HseqCentralApp.Models
             this.ReportedBy = record.ReportedBy;
             this.QualityCoordinator = record.QualityCoordinator;
 
-            this.RecordType = record.RecordType;
+            this.BusinessAreaID = record.BusinessAreaID;
         }
 
 

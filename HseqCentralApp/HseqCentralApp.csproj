@@ -191,12 +191,14 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApproverDispositionsController.cs" />
     <Compile Include="Controllers\BusinessAreasController.cs" />
+    <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\DispositionTypesController.cs" />
     <Compile Include="Controllers\FisCategoriesController.cs" />
     <Compile Include="Controllers\FisCodesController.cs" />
     <Compile Include="Controllers\GroupsAdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ParsController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -205,6 +207,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApproverDisposition.cs" />
+    <Compile Include="Models\Car.cs" />
     <Compile Include="Models\FisCode.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
@@ -227,6 +230,7 @@
     <Compile Include="Controllers\NcrsController.cs" />
     <Compile Include="Models\NcrSource.cs" />
     <Compile Include="Models\NcrState.cs" />
+    <Compile Include="Models\Par.cs" />
     <Compile Include="Models\RecordType.cs" />
     <Compile Include="Models\FisCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -355,6 +359,16 @@
     <Content Include="Views\FisCodes\Details.cshtml" />
     <Content Include="Views\FisCodes\Edit.cshtml" />
     <Content Include="Views\FisCodes\Index.cshtml" />
+    <Content Include="Views\Cars\Create.cshtml" />
+    <Content Include="Views\Cars\Delete.cshtml" />
+    <Content Include="Views\Cars\Details.cshtml" />
+    <Content Include="Views\Cars\Edit.cshtml" />
+    <Content Include="Views\Cars\Index.cshtml" />
+    <Content Include="Views\Pars\Create.cshtml" />
+    <Content Include="Views\Pars\Delete.cshtml" />
+    <Content Include="Views\Pars\Details.cshtml" />
+    <Content Include="Views\Pars\Edit.cshtml" />
+    <Content Include="Views\Pars\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

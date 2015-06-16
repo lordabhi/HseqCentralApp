@@ -1,4 +1,4 @@
-﻿@model HseqCentralApp.Models.Ncr
+﻿@model HseqCentralApp.Models.Car
 
 @{
     ViewBag.Title = "Delete";
@@ -8,9 +8,17 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Ncr</h4>
+    <h4>Car</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BusinessArea.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BusinessArea.Name)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.HseqCaseFile.HseqCaseFileID)
         </dt>
@@ -76,30 +84,6 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.NcrSource)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NcrSource)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NcrState)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NcrState)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DiscrepancyType.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DiscrepancyType.Name)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.JobNumber)
         </dt>
 
@@ -114,28 +98,18 @@
         <dd>
             @Html.DisplayFor(model => model.DrawingNumber)
         </dd>
+
         <dt>
-            @Html.DisplayNameFor(model => model.DispositionType.Name)
+            @Html.DisplayNameFor(model => model.status)
         </dt>
+
         <dd>
-            @Html.DisplayFor(model => model.DispositionType.Name)
+            @Html.DisplayFor(model => model.status)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DispositionApprover.FullName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DispositionApprover.FullName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DispositionNote)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DispositionNote)
-        </dd>
+
     </dl>
 
-    @using (Html.BeginForm())
-    {
+    @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">

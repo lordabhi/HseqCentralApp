@@ -39,12 +39,32 @@ namespace HseqCentralApp.Services
             {
                 ViewBag.RecordType = RecordType.NCR;
                 ViewBag.NcrState = NcrState.New;
-                //ViewBag.Status = NcrState.New;
 
-            }else{
+            }
+            else if (recordType.Equals(RecordType.FIS))
+            {
                 ViewBag.RecordType = RecordType.FIS;
                 ViewBag.NcrState = NcrState.New;
-                //ViewBag.Status = NcrState.New;
+            }
+
+            return ViewBag;
+        }
+
+        public dynamic PopulateRecordTypeLinked(HseqRecord record, RecordType recordType)
+        {
+            ViewBag.EnteredBy = record.EnteredBy;
+            ViewBag.ReportedBy = record.ReportedBy;
+            ViewBag.QualityCoordinator = record.QualityCoordinator;
+
+            if (recordType.Equals(RecordType.NCR))
+            {
+                ViewBag.RecordType = RecordType.NCR;
+                ViewBag.NcrState = NcrState.New;
+            }
+            else if (recordType.Equals(RecordType.FIS))
+            {
+                ViewBag.RecordType = RecordType.FIS;
+                ViewBag.NcrState = NcrState.New;
             }
 
             return ViewBag;
@@ -89,5 +109,67 @@ namespace HseqCentralApp.Services
             return caseNo;
         }
 
+        public HseqRecord CreateCaseFile(HseqRecord record, out int caseNo, out HseqCaseFile hseqCaseFile, ApplicationDbContext db)
+        {
+            caseNo = GetNextCaseNumber(db);
+
+            hseqCaseFile = new HseqCaseFile();
+
+            hseqCaseFile.CaseNo = caseNo;
+
+            db.HseqCaseFiles.Add(hseqCaseFile);
+
+            record.HseqCaseFile = hseqCaseFile;
+            record.HseqCaseFileID = hseqCaseFile.HseqCaseFileID;
+
+            hseqCaseFile.HseqRecords.Add(record);
+
+            return record;
+        }
+
+        public HseqRecord PopulateLinkedRecordDefaults(String recordSource, HseqRecord linkedRecord, HseqRecord ncr, TempDataDictionary TempData)
+        {
+            ncr.HseqRecordID = linkedRecord.HseqRecordID;
+
+            ncr.EnteredBy = linkedRecord.EnteredBy;
+            ncr.ReportedBy = linkedRecord.ReportedBy;
+            ncr.QualityCoordinator = linkedRecord.QualityCoordinator;
+
+            TempData["recordId"] = linkedRecord.HseqRecordID;
+            TempData["recordSource"] = recordSource;
+
+            linkedRecord.LinkedRecords.Add(ncr);
+
+            return ncr;
+        }
+
+        public HseqRecord CreateLinkingForRecords(Ncr ncr, TempDataDictionary TempData, ApplicationDbContext db)
+        {
+            if (TempData["recordId"] != null)
+            {
+                var recordId = (int)TempData["recordId"];
+                var recordSource = (string)TempData["recordSource"];
+
+                HseqRecord linkedRecord = GetSourceRecord(recordId, recordSource, db);
+
+                if (linkedRecord != null)
+                {
+                    ncr.AlfrescoNoderef = linkedRecord.AlfrescoNoderef;
+                    ncr.HseqCaseFileID = linkedRecord.HseqCaseFileID;
+                    ncr.HseqCaseFile = linkedRecord.HseqCaseFile;
+
+                }
+
+                ncr.LinkedRecords.Add(linkedRecord);
+                linkedRecord.LinkedRecords.Add(ncr);
+
+                TempData["recordId"] = null;
+                TempData["recordSource"] = null;
+            }
+
+            db.SaveChanges();
+
+            return ncr;
+        }
     }
 }

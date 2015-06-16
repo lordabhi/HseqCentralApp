@@ -1,0 +1,99 @@
+﻿@model IEnumerable<HseqCentralApp.Models.Par>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BusinessArea.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HseqCaseFile.HseqCaseFileID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AlfrescoNoderef)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RecordType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnteredBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReportedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.QualityCoordinator)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.JobNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DrawingNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BusinessArea.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HseqCaseFile.HseqCaseFileID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AlfrescoNoderef)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RecordType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnteredBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.QualityCoordinator)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.JobNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DrawingNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.status)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.HseqRecordID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.HseqRecordID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.HseqRecordID })
+        </td>
+    </tr>
+}
+
+</table>

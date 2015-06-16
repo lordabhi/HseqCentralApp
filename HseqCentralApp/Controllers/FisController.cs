@@ -62,63 +62,63 @@ namespace HseqCentralApp.Controllers
             return View();
         }
 
-        private System.Collections.IEnumerable getCodeCategoryList()
-        {
-            //SELECT ' -> ' + Districts.DistrictName, Districts.Id, Districts.StateId FROM Districts UNION SELECT States.StateName, -1 , States.Id FROM States ORDER BY Districts.StateId,Districts.Id
 
-            return (
-                        from FisCodes in db.FisCodes
-                        select new
-                        {
-                            Column1 = (" -> " + FisCodes.CodeName),
-                            Id = FisCodes.Id,
-                            FisCategoryId = FisCodes.FisCategoryId
-                        }
-                    ).Union
-                    (
-                        from FisCategories in db.FisCategories
-                        select new
-                        {
-                            Column1 = FisCategories.Name,
-                            Id = (-1),
-                            FisCategoryId = FisCategories.Id
-                        }
-                    ).OrderBy(p => p.FisCategoryId).ThenBy(p => p.Id).ToList();
-        }
-
-        private void PopulateDefaults(dynamic defaults)
+        // POST: Fis/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID,BusinessAreaID")] Fis fis)
         {
-            ViewBag.RecordType = defaults.RecordType;
-            ViewBag.EnteredBy = defaults.EnteredBy;
-            ViewBag.ReportedBy = defaults.ReportedBy;
-            ViewBag.QualityCoordinator = defaults.QualityCoordinator;
-            //ViewBag.Status = defaults.Status;
-            ViewBag.NcrState = defaults.NcrState;
+            if (ModelState.IsValid)
+            {
+                int caseNo;
+                HseqCaseFile hseqCaseFile;
+
+                fis = (Fis)_RecordService.CreateCaseFile(fis, out caseNo, out hseqCaseFile, db);
+
+                db.FisRecords.Add(fis);
+                db.SaveChanges();
+
+                //create the folder in Alfresco and return the alfresconoderef
+                //Dummy for now
+
+                int alfresconoderef = caseNo;
+                hseqCaseFile.AlfrescoNoderef = caseNo;
+
+                fis.AlfrescoNoderef = caseNo;
+
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", fis.BusinessAreaID);
+            ViewBag.CodeCategoryList = new SelectList(getCodeCategoryList(), "Id", "Column1", fis.FisCodeID);
+            ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", fis.HseqCaseFileID);
+            return View(fis);
         }
 
         public ActionResult CreateLinked(int recordId, String recordSource)
         {
             HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
 
-            //HseqRecord linkedRecord = db.NcrRecords.Find(recordId);
-            
+            var defaults = _RecordService.PopulateRecordTypeLinked(linkedRecord, RecordType.FIS);
+            PopulateDefaults(defaults);
+
             Fis fis = new Fis(linkedRecord);
             fis.RecordType = RecordType.FIS;
             fis.HseqRecordID = linkedRecord.HseqRecordID;
-
-            ViewBag.EnteredBy = linkedRecord.EnteredBy;
-            ViewBag.ReportedBy = linkedRecord.ReportedBy;
-            ViewBag.QualityCoordinator = linkedRecord.QualityCoordinator;
-            //ViewBag.Status = "Pending";
 
             TempData["recordId"] = linkedRecord.HseqRecordID;
             TempData["recordSource"] = recordSource;
 
             linkedRecord.LinkedRecords.Add(fis);
 
-            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
-            ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
-            ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", fis.BusinessAreaID);
+            ViewBag.CodeCategoryList = new SelectList(getCodeCategoryList(), "Id", "Column1");
+            ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", fis.HseqCaseFileID);
+
             return View("Create", fis);
         }
 
@@ -161,56 +161,12 @@ namespace HseqCentralApp.Controllers
             }
 
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", fis.BusinessAreaID);
-            ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", fis.HseqCaseFileID);
-            //ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", fis.DiscrepancyTypeID);
-            return View(fis);
-        }
-
-
-        // POST: Fis/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID,BusinessAreaID")] Fis fis)
-        {
-            if (ModelState.IsValid)
-            {
-
-                int caseNo = _RecordService.GetNextCaseNumber(db);
-
-                HseqCaseFile hseqCaseFile = new HseqCaseFile();
-
-                hseqCaseFile.CaseNo = caseNo;
-
-                db.HseqCaseFiles.Add(hseqCaseFile);
-
-                fis.HseqCaseFile = hseqCaseFile;
-                fis.HseqCaseFileID = hseqCaseFile.HseqCaseFileID;
-
-                /////
-                hseqCaseFile.HseqRecords.Add(fis);
-
-                db.FisRecords.Add(fis);
-                db.SaveChanges();
-
-                //create the folder in Alfresco and return the alfresconoderef
-                //Dummy for now
-
-                int alfresconoderef = caseNo;
-                hseqCaseFile.AlfrescoNoderef = caseNo;
-
-                fis.AlfrescoNoderef = caseNo;
-
-                db.SaveChanges();
-
-                return RedirectToAction("Index");
-            }
-            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", fis.BusinessAreaID);
             ViewBag.CodeCategoryList = new SelectList(getCodeCategoryList(), "Id", "Column1", fis.FisCodeID);
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", fis.HseqCaseFileID);
+
             return View(fis);
         }
+
 
         // GET: Fis/Edit/5
         public ActionResult Edit(int? id)
@@ -315,6 +271,39 @@ namespace HseqCentralApp.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void PopulateDefaults(dynamic defaults)
+        {
+            ViewBag.RecordType = defaults.RecordType;
+            ViewBag.EnteredBy = defaults.EnteredBy;
+            ViewBag.ReportedBy = defaults.ReportedBy;
+            ViewBag.QualityCoordinator = defaults.QualityCoordinator;
+            ViewBag.NcrState = defaults.NcrState;
+        }
+
+        private System.Collections.IEnumerable getCodeCategoryList()
+        {
+            //SELECT ' -> ' + Districts.DistrictName, Districts.Id, Districts.StateId FROM Districts UNION SELECT States.StateName, -1 , States.Id FROM States ORDER BY Districts.StateId,Districts.Id
+
+            return (
+                        from FisCodes in db.FisCodes
+                        select new
+                        {
+                            Column1 = (" -> " + FisCodes.CodeName),
+                            Id = FisCodes.Id,
+                            FisCategoryId = FisCodes.FisCategoryId
+                        }
+                    ).Union
+                    (
+                        from FisCategories in db.FisCategories
+                        select new
+                        {
+                            Column1 = FisCategories.Name,
+                            Id = (-1),
+                            FisCategoryId = FisCategories.Id
+                        }
+                    ).OrderBy(p => p.FisCategoryId).ThenBy(p => p.Id).ToList();
         }
     }
 }

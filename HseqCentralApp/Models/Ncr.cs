@@ -10,10 +10,7 @@ namespace HseqCentralApp.Models
     {
         public Ncr(){}
 
-        public Ncr(HseqRecord hseqRecord): base(hseqRecord) 
-        {
-
-        }
+        public Ncr(HseqRecord hseqRecord): base(hseqRecord) {}
 
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Select a source")]

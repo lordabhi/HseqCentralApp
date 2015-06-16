@@ -79,13 +79,9 @@ namespace HseqCentralApp.Controllers
         // GET: Ncrs/Create
         public ActionResult Create()
         {
-            
-
           var defaults = _RecordService.PopulateRecordTypeDefaults(RecordType.NCR);
 
            PopulateDefaults(defaults);
-
-           //var test = ViewBag.Foo;
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
@@ -97,36 +93,82 @@ namespace HseqCentralApp.Controllers
         }
 
 
+        // POST: Ncrs/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,NcrSource,NcrState,DiscrepancyTypeID,BusinessAreaID,DispositionTypeID,DispositionApproverID,DispositionNote")] Ncr ncr)
+        {
+            if (ModelState.IsValid)
+            {
+
+                int caseNo;
+                HseqCaseFile hseqCaseFile;
+
+                ncr = (Ncr)_RecordService.CreateCaseFile(ncr, out caseNo, out hseqCaseFile, db);
+
+                db.NcrRecords.Add(ncr);
+                db.SaveChanges();
+
+
+                //create the folder in Alfresco and return the alfresconoderef
+                //Dummy for now
+
+                int alfresconoderef = caseNo;
+                hseqCaseFile.AlfrescoNoderef = caseNo;
+
+                ncr.AlfrescoNoderef = caseNo;
+
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", ncr.HseqCaseFileID);
+            ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+            ViewBag.DispositionApproverID = new SelectList(db.ApproverDispositions, "ApproverDispositionID", "FullName");
+
+            return View(ncr);
+        }
+
         public ActionResult CreateLinked(int recordId, String recordSource)
         {
             HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
 
+            var defaults =_RecordService.PopulateRecordTypeLinked(linkedRecord, RecordType.NCR);
+            PopulateDefaults(defaults);
+
             Ncr ncr = new Ncr(linkedRecord);
             ncr.RecordType = RecordType.NCR;
             ncr.HseqRecordID = linkedRecord.HseqRecordID;
-
-            ViewBag.EnteredBy = linkedRecord.EnteredBy;
-            ViewBag.ReportedBy = linkedRecord.ReportedBy;
-            ViewBag.QualityCoordinator = linkedRecord.QualityCoordinator;
-            //ViewBag.Status = "Pending";
 
             TempData["recordId"] = linkedRecord.HseqRecordID;
             TempData["recordSource"] = recordSource;
 
             linkedRecord.LinkedRecords.Add(ncr);
 
-            ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
-            ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
-            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
-            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name");
+            ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", ncr.HseqCaseFileID);
+            ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
+            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
             ViewBag.DispositionApproverID = new SelectList(db.ApproverDispositions, "ApproverDispositionID", "FullName");
+
+
+            //ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", ncr.HseqCaseFileID);
+            //ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
+            //ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
+            //ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+            //ViewBag.DispositionApproverID = new SelectList(db.ApproverDispositions, "ApproverDispositionID", "FullName");
 
             return View("Create", ncr);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateLinked(Ncr ncr)
+        public ActionResult CreateLinked([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,NcrSource,NcrState,DiscrepancyTypeID,BusinessAreaID,DispositionTypeID,DispositionApproverID,DispositionNote")]Ncr ncr)
         {
             if (ModelState.IsValid)
             {
@@ -140,8 +182,6 @@ namespace HseqCentralApp.Controllers
                     var recordSource = (string)TempData["recordSource"];
 
                     HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
-
-                    //HseqRecord linkedRecord = db.FisRecords.Find(recordId);
 
                     if (linkedRecord != null)
                     {
@@ -171,59 +211,6 @@ namespace HseqCentralApp.Controllers
 
             return View(ncr);
         }
-
-        // POST: Ncrs/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,NcrSource,NcrState,DiscrepancyTypeID,BusinessAreaID,DispositionTypeID,DispositionApproverID,DispositionNote")] Ncr ncr)
-        {
-            if (ModelState.IsValid)
-            {
-
-                int caseNo = _RecordService.GetNextCaseNumber(db);
-
-                HseqCaseFile hseqCaseFile = new HseqCaseFile();
-
-                hseqCaseFile.CaseNo = caseNo;
-
-                db.HseqCaseFiles.Add(hseqCaseFile);
-
-                ncr.HseqCaseFile = hseqCaseFile;
-                ncr.HseqCaseFileID = hseqCaseFile.HseqCaseFileID;
-
-                /////
-                hseqCaseFile.HseqRecords.Add(ncr);
-
-
-                db.NcrRecords.Add(ncr);
-                db.SaveChanges();
-
-
-                //create the folder in Alfresco and return the alfresconoderef
-                //Dummy for now
-
-                int alfresconoderef = caseNo;
-                hseqCaseFile.AlfrescoNoderef = caseNo;
-
-                ncr.AlfrescoNoderef = caseNo;
-
-                db.SaveChanges();
-
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", ncr.HseqCaseFileID);
-            ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
-            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
-            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
-            ViewBag.DispositionApproverID = new SelectList(db.ApproverDispositions, "ApproverDispositionID", "FullName");
-            
-            return View(ncr);
-        }
-
-
 
         // GET: Ncrs/Edit/5
         public ActionResult Edit(int? id)

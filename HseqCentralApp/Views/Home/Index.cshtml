@@ -9,21 +9,35 @@
                 <br />
                 <h3> Records Area</h3>
                 <br />
-                <h4> NCR </h4>
+                <h4> Non-Confermance Record (NCR)</h4>
                 @Html.ActionLink("Report a non-conformance", "Create", "Ncrs")
                 <br />
                 <br />
                 @Html.ActionLink("View Existing non-conformance Records", "Index", "Ncrs")
                 <br />
                 <br />
-                <h4> FIS </h4>
+                <h4> Feedback/Improvement Suggestion (FIS)</h4>
                 @Html.ActionLink("Report a Feedback / Improvement Suggestion", "Create", "Fis")
                 <br />
                 <br />
                 @Html.ActionLink("View Existing Feedback / Improvement Suggestions", "Index", "Fis")
                 <br />
                 <br />
-
+                <h4> Corrective Action Record (CAR)</h4>
+                @Html.ActionLink("Report a Corrective Action", "Create", "Cars")
+                <br />
+                <br />
+                @Html.ActionLink("View Existing Corrective Action Records", "Index", "Cars")
+                <br />
+                <br />
+                <h4> Preventive Action Record (PAR)</h4>
+                @Html.ActionLink("Report a Preventive Action", "Create", "Pars")
+                <br />
+                <br />
+                @Html.ActionLink("View Existing Preventive Action Records", "Index", "Pars")
+                <br />
+                <br />
+                
                 @*<h4> Pending Approvals </h4>
 
                 @Html.ActionLink("Pending Approvals", "PendingApproval", "Ncrs")*@
