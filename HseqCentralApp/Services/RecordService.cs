@@ -171,5 +171,19 @@ namespace HseqCentralApp.Services
 
             return ncr;
         }
+
+        public void RemoveLinkedRecords(HseqRecord record)
+        {
+            if (record.LinkedRecords != null)
+            {
+
+                foreach (HseqRecord linkedRecord in record.LinkedRecords)
+                {
+                    linkedRecord.LinkedRecords.Remove(record);
+                }
+
+                record.LinkedRecords = null;
+            }
+        }
     }
 }

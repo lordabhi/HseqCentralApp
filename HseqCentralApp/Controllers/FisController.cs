@@ -226,23 +226,21 @@ namespace HseqCentralApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            //Fis fis = db.FisRecords.Find(id);
-            //db.FisRecords.Remove(fis);
-            //db.SaveChanges();
-            //return RedirectToAction("Index");
 
             Fis fis = db.FisRecords.Find(id);
 
-            if (fis.LinkedRecords != null)
-            {
+            _RecordService.RemoveLinkedRecords(fis);
 
-                foreach (HseqRecord linkedRecord in fis.LinkedRecords)
-                {
-                    linkedRecord.LinkedRecords.Remove(fis);
-                }
+            //if (fis.LinkedRecords != null)
+            //{
 
-                fis.LinkedRecords = null;
-            }
+            //    foreach (HseqRecord linkedRecord in fis.LinkedRecords)
+            //    {
+            //        linkedRecord.LinkedRecords.Remove(fis);
+            //    }
+
+            //    fis.LinkedRecords = null;
+            //}
 
             int? caseFileId = fis.HseqCaseFileID;
 

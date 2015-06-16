@@ -4,10 +4,10 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+@*<h2>Details</h2>*@
 
 <div>
-    <h4>HseqCaseFile</h4>
+    <h4>Case File Details</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -26,7 +26,62 @@
             @Html.DisplayFor(model => model.AlfrescoNoderef)
         </dd>
 
+        <br/><br />
+
+        <h4>Associated Records </h4>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Record Type")
+                </th>
+                <th>
+                    @Html.DisplayName("Title")
+                </th>
+                <th>
+                    @Html.DisplayName("Description")
+                </th>
+
+                <th></th>
+            </tr>
+
+            @foreach (var item in ViewBag.LinkedRecords)
+            {
+                <tr>
+                    <td>
+                        @item.RecordType
+                    </td>
+                    <td>
+                        @item.Title
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+
+                    <td>
+                        @if (item.RecordType.ToString() == "NCR") { 
+                            @Html.ActionLink("Details", "Details", "Ncrs", new { id = item.HseqRecordID }, null)
+                        }
+                        else if (item.RecordType.ToString() == "FIS")
+                        {
+                            @Html.ActionLink("Details", "Details","Fis", new { id = item.HseqRecordID }, null)
+                        }
+                        else if (item.RecordType.ToString() == "CAR")
+                        {
+                            @Html.ActionLink("Details", "Details", "Cars", new { id = item.HseqRecordID }, null)
+                        }
+                        else if (item.RecordType.ToString() == "PAR")
+                        {
+                            @Html.ActionLink("Details", "Details", "Pars", new { id = item.HseqRecordID }, null)
+                        }
+                        
+                    </td>
+                </tr>
+            }
+
+        </table>
+
     </dl>
+
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.HseqCaseFileID }) |

@@ -168,7 +168,7 @@ namespace HseqCentralApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateLinked([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,NcrSource,NcrState,DiscrepancyTypeID,BusinessAreaID,DispositionTypeID,DispositionApproverID,DispositionNote")]Ncr ncr)
+        public ActionResult CreateLinked(Ncr ncr)
         {
             if (ModelState.IsValid)
             {
@@ -245,13 +245,15 @@ namespace HseqCentralApp.Controllers
                 db.Entry(ncr).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
+            }else {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                Console.WriteLine(errors);
             }
+
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", ncr.HseqCaseFileID);
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.BusinessAreaID);
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
-
-            Console.Write(ncr.DispositionApproverID);
             ViewBag.DispositionApproverID = new SelectList(db.ApproverDispositions, "ApproverDispositionID", "FullName", ncr.DispositionApproverID);
 
             return View(ncr);
@@ -279,16 +281,18 @@ namespace HseqCentralApp.Controllers
         {
             Ncr ncr = db.NcrRecords.Find(id);
 
-            if (ncr.LinkedRecords != null)
-            {
+            _RecordService.RemoveLinkedRecords(ncr);
+            
+            //if (ncr.LinkedRecords != null)
+            //{
 
-                foreach (HseqRecord linkedRecord in ncr.LinkedRecords)
-                {
-                    linkedRecord.LinkedRecords.Remove(ncr);
-                }
+            //    foreach (HseqRecord linkedRecord in ncr.LinkedRecords)
+            //    {
+            //        linkedRecord.LinkedRecords.Remove(ncr);
+            //    }
 
-                ncr.LinkedRecords = null;
-            }
+            //    ncr.LinkedRecords = null;
+            //}
 
             int? caseFileId = ncr.HseqCaseFileID;
 

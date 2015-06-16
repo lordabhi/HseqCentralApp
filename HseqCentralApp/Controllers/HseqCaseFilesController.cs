@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HseqCentralApp.Models;
+using HseqCentralApp.Services;
+using System.Diagnostics;
 
 namespace HseqCentralApp.Controllers
 {
@@ -14,6 +16,15 @@ namespace HseqCentralApp.Controllers
     {
         //private HseqCentralAppContext db = new HseqCentralAppContext();
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        RecordService _RecordService;
+
+        public HseqCaseFilesController() : this(new RecordService()){}
+
+        public HseqCaseFilesController(RecordService service) 
+        {
+            _RecordService = service;
+        }
 
         // GET: HseqCaseFiles
         public ActionResult Index()
@@ -33,6 +44,13 @@ namespace HseqCentralApp.Controllers
             {
                 return HttpNotFound();
             }
+
+            var records = from d in db.HseqRecords
+                          where d.HseqCaseFileID == id
+                           select d;
+
+            ViewBag.LinkedRecords = records;
+
             return View(hseqCaseFile);
         }
 
@@ -121,19 +139,63 @@ namespace HseqCentralApp.Controllers
             {
 
                 //Ncr ncr = db.HseqRecords.Find(hsr.HseqRecordID);
-                HseqRecord hr = db.NcrRecords.Find(hsr.HseqRecordID);
+                HseqRecord hr = db.HseqRecords.Find(hsr.HseqRecordID);
 
                 if (hr is Ncr)
                 {
+
+                    Ncr ncr = (Ncr)hr;
+
+                    _RecordService.RemoveLinkedRecords(ncr);
+
                     db.NcrRecords.Remove((Ncr)hr);
+
                 }
 
+                else if (hr is Fis)
+                {
+                    Fis ncr = (Fis)hr;
+
+                    _RecordService.RemoveLinkedRecords(ncr);
+
+                    db.FisRecords.Remove((Fis)hr);
+                }
+                else if (hr is Car)
+                {
+                    Car ncr = (Car)hr;
+
+                    _RecordService.RemoveLinkedRecords(ncr);
+
+                    db.CarRecords.Remove((Car)hr);
+                }
+                else if (hr is Par)
+                {
+                    Par ncr = (Par)hr;
+
+                    _RecordService.RemoveLinkedRecords(ncr);
+
+                    db.ParRecords.Remove((Par)hr);
+                }
             }
 
             db.HseqCaseFiles.Remove(hseqCaseFile);
 
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        private static void RemoveLinkedRecords(HseqRecord ncr)
+        {
+            if (ncr.LinkedRecords != null)
+            {
+
+                foreach (HseqRecord linkedRecord in ncr.LinkedRecords)
+                {
+                    linkedRecord.LinkedRecords.Remove(ncr);
+                }
+
+                ncr.LinkedRecords = null;
+            }
         }
 
         protected override void Dispose(bool disposing)

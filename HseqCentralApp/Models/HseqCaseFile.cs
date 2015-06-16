@@ -17,8 +17,10 @@ namespace HseqCentralApp.Models
         [Key]
         public int HseqCaseFileID { get; set; }
 
+        [Display(Name="Case No")]
         public int CaseNo { get; set; }
 
+        [Display(Name = "Alfresco Node Reference")]
         public int AlfrescoNoderef { get; set; }
 
         public virtual ICollection<HseqRecord> HseqRecords { get; set; }

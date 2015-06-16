@@ -13,7 +13,7 @@
             @Html.DisplayNameFor(model => model.HseqCaseFile.CaseNo)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RecordType)
+            @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.NcrState)
@@ -22,7 +22,7 @@
             @Html.DisplayNameFor(model => model.NcrSource)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DiscrepancyType.Name)
+            @Html.DisplayNameFor(model => model.DispositionType.Name)
         </th>
 
 
@@ -37,7 +37,7 @@
 
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RecordType)
+                @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NcrState)
@@ -47,7 +47,7 @@
             </td>
 
             <td>
-                @Html.DisplayFor(modelItem => item.DiscrepancyType.Name)
+                @Html.DisplayFor(modelItem => item.DispositionType.Name)
             </td>
 
 
