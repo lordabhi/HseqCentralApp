@@ -36,10 +36,10 @@
                 @Html.ActionLink(item.HseqCaseFile.CaseNo + "", "Details", "HseqCaseFiles", new { id = item.HseqCaseFile.HseqCaseFileID }, null)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RecordType)
+                @Html.DisplayFor(modelItem => item.DateCreatedForDisplay)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateCreatedForDisplay)
+                @Html.DisplayFor(modelItem => item.RecordType)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FisCode.CodeName)

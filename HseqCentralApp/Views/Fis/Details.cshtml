@@ -165,11 +165,16 @@
                 <td>
                     @if (String.Equals(item.RecordType.ToString(), "NCR"))
                     {
-
                         @Html.ActionLink("View Record", "Details", "Ncrs", new { id = item.HseqRecordID }, null)
-
                     }
-
+                    else if (String.Equals(item.RecordType.ToString(), "CAR"))
+                    {
+                        @Html.ActionLink("View Record", "Details", "Cars", new { id = item.HseqRecordID }, null)
+                    }
+                    else if (String.Equals(item.RecordType.ToString(), "PAR"))
+                    {
+                        @Html.ActionLink("View Record", "Details", "Pars", new { id = item.HseqRecordID }, null)
+                    }
                 </td>
 
             </tr>

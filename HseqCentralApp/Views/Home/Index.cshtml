@@ -6,13 +6,13 @@
     <table cellpadding="50">
         <tr>
             <td>
-                Case Files
-                <br />
-                @Html.ActionLink("View case Files", "Index", "HseqCaseFiles")
-
-                <br />
                 <h3> Records Area</h3>
                 <br />
+                <h4>Case Files</h4>
+                @Html.ActionLink("View case Files", "Index", "HseqCaseFiles")
+                <br />
+                <br />
+
                 <h4> Non-Confermance Record (NCR)</h4>
                 @Html.ActionLink("Report a non-conformance", "Create", "Ncrs")
                 <br />

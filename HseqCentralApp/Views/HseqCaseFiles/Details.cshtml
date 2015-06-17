@@ -35,6 +35,9 @@
                     @Html.DisplayName("Record Type")
                 </th>
                 <th>
+                    @Html.DisplayName("Date Created")
+                </th>
+                <th>
                     @Html.DisplayName("Title")
                 </th>
                 <th>
@@ -49,6 +52,9 @@
                 <tr>
                     <td>
                         @item.RecordType
+                    </td>
+                    <td>
+                        @item.DateCreatedForDisplay
                     </td>
                     <td>
                         @item.Title

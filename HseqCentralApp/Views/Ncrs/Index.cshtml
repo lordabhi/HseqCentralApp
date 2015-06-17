@@ -67,6 +67,20 @@
                         recordId = item.HseqRecordID,
                         recordSource = "NCR"
                     },
+                    null) |
+                @Html.ActionLink("Create CAR", "CreateLinked", "Cars",
+                    new
+                    {
+                        recordId = item.HseqRecordID,
+                        recordSource = "NCR"
+                    },
+                    null) |
+                @Html.ActionLink("Create PAR", "CreateLinked", "Pars",
+                    new
+                    {
+                        recordId = item.HseqRecordID,
+                        recordSource = "NCR"
+                    },
                     null)
             </td>
         </tr>

@@ -68,7 +68,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID,BusinessAreaID,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Fis fis)
+        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,FisSource,FisCodeID,BusinessAreaID,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Fis fis)
         {
             if (ModelState.IsValid)
             {
@@ -124,7 +124,7 @@ namespace HseqCentralApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateLinked([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID,BusinessAreaID,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Fis fis)
+        public ActionResult CreateLinked([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,FisSource,FisCodeID,BusinessAreaID,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Fis fis)
         {
             if (ModelState.IsValid)
             {
@@ -192,7 +192,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID,BusinessAreaID,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Fis fis)
+        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,FisSource,FisCodeID,BusinessAreaID,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Fis fis)
         {
             if (ModelState.IsValid)
             {

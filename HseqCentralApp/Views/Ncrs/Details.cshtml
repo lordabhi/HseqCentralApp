@@ -183,11 +183,16 @@
                 <td>
                     @if (String.Equals(item.RecordType.ToString(), "FIS"))
                     {
-
                         @Html.ActionLink("View Record", "Details", "Fis", new { id = item.HseqRecordID }, null)
-
                     }
-
+                    else if (String.Equals(item.RecordType.ToString(), "CAR"))
+                    {
+                        @Html.ActionLink("View Record", "Details", "Cars", new { id = item.HseqRecordID }, null)
+                    }
+                    else if (String.Equals(item.RecordType.ToString(), "PAR"))
+                    {
+                    @Html.ActionLink("View Record", "Details", "Pars", new { id = item.HseqRecordID }, null)
+                    }
                 </td>
 
             </tr>
@@ -207,5 +212,19 @@
             recordId = Model.HseqRecordID,
             recordSource = "NCR"
         },
-        null)
+        null) |
+    @Html.ActionLink("Create CAR", "CreateLinked", "Cars",
+                    new
+                    {
+                        recordId = Model.HseqRecordID,
+                        recordSource = "NCR"
+                    },
+                    null) |
+    @Html.ActionLink("Create PAR", "CreateLinked", "Pars",
+                    new
+                    {
+                        recordId = Model.HseqRecordID,
+                        recordSource = "NCR"
+                    },
+                    null)
 </p>

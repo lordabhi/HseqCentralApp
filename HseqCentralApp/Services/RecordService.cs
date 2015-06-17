@@ -46,7 +46,16 @@ namespace HseqCentralApp.Services
                 ViewBag.RecordType = RecordType.FIS;
                 ViewBag.NcrState = NcrState.New;
             }
-
+            else if (recordType.Equals(RecordType.CAR))
+            {
+                ViewBag.RecordType = RecordType.CAR;
+                ViewBag.NcrState = NcrState.New;
+            }
+            else if (recordType.Equals(RecordType.PAR))
+            {
+                ViewBag.RecordType = RecordType.PAR;
+                ViewBag.NcrState = NcrState.New;
+            }
             return ViewBag;
         }
 
@@ -66,7 +75,16 @@ namespace HseqCentralApp.Services
                 ViewBag.RecordType = RecordType.FIS;
                 ViewBag.NcrState = NcrState.New;
             }
-
+            else if (recordType.Equals(RecordType.CAR))
+            {
+                ViewBag.RecordType = RecordType.CAR;
+                ViewBag.NcrState = NcrState.New;
+            }
+            else if (recordType.Equals(RecordType.PAR))
+            {
+                ViewBag.RecordType = RecordType.PAR;
+                ViewBag.NcrState = NcrState.New;
+            }
             return ViewBag;
         }
 
@@ -82,15 +100,22 @@ namespace HseqCentralApp.Services
 
             HseqRecord linkedRecord = null;
 
-            if (recordSource.Equals(RecordType.FIS.ToString()))
-            {
-                linkedRecord = db.FisRecords.Find(recordId);
-            }
-            else if (recordSource.Equals(RecordType.NCR.ToString()))
+            if (recordSource.Equals(RecordType.NCR.ToString()))
             {
                 linkedRecord = db.NcrRecords.Find(recordId);
             }
-
+            else if (recordSource.Equals(RecordType.FIS.ToString()))
+            {
+                linkedRecord = db.FisRecords.Find(recordId);
+            }
+            else if (recordSource.Equals(RecordType.CAR.ToString()))
+            {
+                linkedRecord = db.CarRecords.Find(recordId);
+            }
+            else if (recordSource.Equals(RecordType.PAR.ToString()))
+            {
+                linkedRecord = db.ParRecords.Find(recordId);
+            }
             return linkedRecord;
         }
 

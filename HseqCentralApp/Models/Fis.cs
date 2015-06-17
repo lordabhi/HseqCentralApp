@@ -16,7 +16,7 @@ namespace HseqCentralApp.Models
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Select a source")]
         [Display(Name = "Source")]
-        public NcrSource NcrSource { get; set; }
+        public NcrSource FisSource { get; set; }
 
         //public String Category { get; set; }
 
