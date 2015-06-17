@@ -68,13 +68,13 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID,BusinessAreaID")] Fis fis)
+        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID,BusinessAreaID,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Fis fis)
         {
             if (ModelState.IsValid)
             {
                 int caseNo;
                 HseqCaseFile hseqCaseFile;
-
+                fis.CreatedBy = _RecordService.GetCurrentUser().FullName;
                 fis = (Fis)_RecordService.CreateCaseFile(fis, out caseNo, out hseqCaseFile, db);
 
                 db.FisRecords.Add(fis);
@@ -124,11 +124,11 @@ namespace HseqCentralApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateLinked(Fis fis)
+        public ActionResult CreateLinked([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID,BusinessAreaID,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Fis fis)
         {
             if (ModelState.IsValid)
             {
-
+                fis.CreatedBy = _RecordService.GetCurrentUser().FullName;
                 db.FisRecords.Add(fis);
                 db.SaveChanges();
 
@@ -192,10 +192,11 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID,BusinessAreaID")] Fis fis)
+        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,MainRecordId,HseqCaseFileID,Category,NcrSource,FisCodeID,BusinessAreaID,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Fis fis)
         {
             if (ModelState.IsValid)
             {
+                fis.CreatedBy = _RecordService.GetCurrentUser().FullName;
                 db.Entry(fis).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

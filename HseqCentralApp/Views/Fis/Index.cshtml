@@ -13,6 +13,9 @@
             @Html.DisplayNameFor(model => model.HseqCaseFile.CaseNo)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.RecordType)
         </th>
         <th>
@@ -34,6 +37,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RecordType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreatedForDisplay)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FisCode.CodeName)

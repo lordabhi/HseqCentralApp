@@ -13,6 +13,9 @@
             @Html.DisplayNameFor(model => model.HseqCaseFile.CaseNo)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
@@ -35,6 +38,9 @@
                 @*@Html.DisplayFor(modelItem => item.HseqCaseFile.CaseNo)*@
                 @Html.ActionLink(item.HseqCaseFile.CaseNo + "", "Details", "HseqCaseFiles", new { id = item.HseqCaseFile.HseqCaseFileID }, null)
 
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreatedForDisplay)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)

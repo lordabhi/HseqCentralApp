@@ -73,5 +73,28 @@ namespace HseqCentralApp.Models
         public int BusinessAreaID { get; set; }
 
         public virtual BusinessArea BusinessArea { get; set; }
+
+        [Display(Name = "Date Created")]
+        public DateTime DateCreated { get; set; }
+
+        [Display(Name = "Last Updated")]
+        public DateTime? DateLastUpdated { get; set; }
+
+        [Display(Name = "Created By")]
+        public String  CreatedBy { get; set; }
+
+        [Display(Name = "Last Updated By")]
+        public String LastUpdatedBy { get; set; }
+
+        /////////////////////////////////////////////////////
+
+        public string DateCreatedForDisplay
+        {
+            get
+            {
+                return this.DateCreated.ToString("dd/MM/yyyy");
+            }
+
+        }
     }
 }
