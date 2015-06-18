@@ -1,0 +1,40 @@
+﻿@model HseqCentralApp.Models.HseqRecord
+
+        <td>
+            @if (String.Equals(Model.RecordType.ToString(), "NCR"))
+            {
+                @Html.ActionLink("NCR", "Details", "Ncrs", new { id = Model.HseqRecordID }, null)
+            }
+            else if (String.Equals(Model.RecordType.ToString(), "FIS"))
+            {
+                @Html.ActionLink("FIS", "Details", "Fis", new { id = Model.HseqRecordID }, null)
+            }
+            else if (String.Equals(Model.RecordType.ToString(), "CAR"))
+            {
+                @Html.ActionLink("CAR", "Details", "Cars", new { id = Model.HseqRecordID }, null)
+            }
+            else if (String.Equals(Model.RecordType.ToString(), "PAR"))
+            {
+                @Html.ActionLink("PAR", "Details", "Pars", new { id = Model.HseqRecordID }, null)
+            }
+
+        </td>
+        
+        <td>
+            @Html.DisplayFor(model => model.RecordNo)
+        </td>
+
+        <td>
+            @Html.DisplayFor(model => model.CaseNo)
+        </td>
+
+
+        <td>
+            @Html.DisplayFor(model => model.Title)
+
+        </td>
+
+        <td>
+            @Html.DisplayFor(model => model.DateCreatedForDisplay)
+
+        </td>

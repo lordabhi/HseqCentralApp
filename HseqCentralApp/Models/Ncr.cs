@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 namespace HseqCentralApp.Models
 {
+    [TrackChanges]
     public class Ncr: HseqRecord
     {
         public Ncr(){}
@@ -28,13 +30,6 @@ namespace HseqCentralApp.Models
 
         public virtual DiscrepancyType DiscrepancyType { get; set; }
 
-
-        //[Required(ErrorMessage = "Select a business area")]
-        //[Display(Name="Business Area")]
-        //public int BusinessAreaID { get; set; }
-
-        //public virtual BusinessArea BusinessArea { get; set; }
-
         [Display(Name = "Disposition Type")]
         public int? DispositionTypeID { get; set; }
 
@@ -48,6 +43,19 @@ namespace HseqCentralApp.Models
         [Display(Name = "Disposition Notes")]
         public String DispositionNote { get; set; }
 
+        [ForeignKey("DetectedInArea")]
+        [Required(ErrorMessage = "Select Area Detected In")]
+        [Display(Name = "Area Detected In")]
+        public int DetectedInAreaID { get; set; }
+
+        public virtual BusinessArea DetectedInArea { get; set; }
+
+        [ForeignKey("ResponsibleArea")]
+        [Required(ErrorMessage = "Select Responsible Area")]
+        [Display(Name = "Responsible Area")]
+        public int ResponsibleAreaID { get; set; }
+
+        public virtual BusinessArea ResponsibleArea { get; set; }
 
     }
 }

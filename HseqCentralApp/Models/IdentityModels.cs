@@ -174,11 +174,22 @@ namespace HseqCentralApp.Models
             //                        .HasForeignKey(s => s.HseqCaseFileID);
             /////////////////////////////////////////////////////////////////////
 
+
+            modelBuilder.Entity<Ncr>()
+                .HasRequired(c => c.DetectedInArea)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Ncr>()
+                .HasRequired(s => s.ResponsibleArea)
+                .WithMany()
+                .WillCascadeOnDelete(false);
         }
 
         public System.Data.Entity.DbSet<HseqCentralApp.Models.FisCategory> FisCategories { get; set; }
 
         public System.Data.Entity.DbSet<HseqCentralApp.Models.FisCode> FisCodes { get; set; }
+
 
     }
 

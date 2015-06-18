@@ -27,7 +27,6 @@ namespace HseqCentralApp.Models
             this.ReportedBy = record.ReportedBy;
             this.QualityCoordinator = record.QualityCoordinator;
 
-            this.BusinessAreaID = record.BusinessAreaID;
         }
 
 
@@ -35,6 +34,12 @@ namespace HseqCentralApp.Models
         public int HseqRecordID { get; set; }
 
         public int? AlfrescoNoderef { get; set; }
+
+        [Display(Name = "Case No")]
+        public int CaseNo { get; set; }
+
+        [Display(Name = "Record No")]
+        public int RecordNo { get; set; }
 
         [Required]
         public String Title { get; set; }
@@ -68,11 +73,11 @@ namespace HseqCentralApp.Models
         [Display(Name = "Drawing Number")]
         public String DrawingNumber { get; set; }
 
-        [Required(ErrorMessage = "Select a business area")]
-        [Display(Name = "Business Area")]
-        public int BusinessAreaID { get; set; }
+        //[Required(ErrorMessage = "Select a business area")]
+        //[Display(Name = "Business Area")]
+        //public int BusinessAreaID { get; set; }
 
-        public virtual BusinessArea BusinessArea { get; set; }
+        //public virtual BusinessArea BusinessArea { get; set; }
 
         [Display(Name = "Date Created")]
         public DateTime DateCreated { get; set; }

@@ -27,7 +27,7 @@ namespace HseqCentralApp.Controllers
         // GET: Cars
         public ActionResult Index()
         {
-            var hseqRecords = db.CarRecords.Include(c => c.BusinessArea).Include(c => c.HseqCaseFile);
+            var hseqRecords = db.CarRecords.Include(f => f.HseqCaseFile);
             return View(hseqRecords.ToList());
 
         }
@@ -53,7 +53,6 @@ namespace HseqCentralApp.Controllers
             var defaults = _RecordService.PopulateRecordTypeDefaults(RecordType.CAR);
             PopulateDefaults(defaults);
 
-            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
             return View();
         }
@@ -63,7 +62,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,BusinessAreaID,status,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Car car)
+        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,status,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Car car)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +87,6 @@ namespace HseqCentralApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", car.BusinessAreaID);
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", car.HseqCaseFileID);
             return View(car);
         }
@@ -110,21 +108,20 @@ namespace HseqCentralApp.Controllers
             linkedRecord.LinkedRecords.Add(car);
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", car.HseqCaseFileID);
-            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", car.BusinessAreaID);
 
             return View("Create", car);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateLinked([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,BusinessAreaID,status,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Car car)
+        public ActionResult CreateLinked([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,status,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Car car)
         {
             if (ModelState.IsValid)
             {
                 car.CreatedBy = _RecordService.GetCurrentUser().FullName;
 
                 db.CarRecords.Add(car);
-                db.SaveChanges();
+                //db.SaveChanges();
 
                 if (TempData["recordId"] != null)
                 {
@@ -140,6 +137,8 @@ namespace HseqCentralApp.Controllers
                         car.HseqCaseFile = linkedRecord.HseqCaseFile;
 
                     }
+                    car.CaseNo = linkedRecord.CaseNo;
+                    car.RecordNo = linkedRecord.RecordNo;
 
                     car.LinkedRecords.Add(linkedRecord);
                     linkedRecord.LinkedRecords.Add(car);
@@ -154,7 +153,6 @@ namespace HseqCentralApp.Controllers
             }
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", car.HseqCaseFileID);
-            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", car.BusinessAreaID);
 
             return View(car);
         }
@@ -171,7 +169,6 @@ namespace HseqCentralApp.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", car.BusinessAreaID);
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", car.HseqCaseFileID);
             return View(car);
         }
@@ -181,7 +178,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,BusinessAreaID,status,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Car car)
+        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,status,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Car car)
         {
             if (ModelState.IsValid)
             {
@@ -191,7 +188,6 @@ namespace HseqCentralApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", car.BusinessAreaID);
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", car.HseqCaseFileID);
             return View(car);
         }

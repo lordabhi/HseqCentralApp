@@ -70,10 +70,16 @@
             @Html.DisplayFor(model => model.DiscrepancyType.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.BusinessArea.Name)
+            @Html.DisplayNameFor(model => model.DetectedInArea.Name)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.BusinessArea.Name)
+            @Html.DisplayFor(model => model.DetectedInArea.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResponsibleArea.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResponsibleArea.Name)
         </dd>
 
         <dt>
@@ -140,55 +146,12 @@
 
     <hr />
 
-    <h4>Linked Items</h4>
-
     <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RecordType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-
-            <th></th>
-        </tr>
-
+        @Html.Partial("_LinkedRecordHeader", Model)
         @foreach (var item in Model.LinkedRecords)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RecordType)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-
-                </td>
-
-                <td>
-                    @if (String.Equals(item.RecordType.ToString(), "FIS"))
-                    {
-                        @Html.ActionLink("View Record", "Details", "Fis", new { id = item.HseqRecordID }, null)
-                    }
-                    else if (String.Equals(item.RecordType.ToString(), "CAR"))
-                    {
-                        @Html.ActionLink("View Record", "Details", "Cars", new { id = item.HseqRecordID }, null)
-                    }
-                    else if (String.Equals(item.RecordType.ToString(), "PAR"))
-                    {
-                    @Html.ActionLink("View Record", "Details", "Pars", new { id = item.HseqRecordID }, null)
-                    }
-                </td>
-
+                @Html.Partial("_LinkedRecordDetails", item)
             </tr>
         }
     </table>

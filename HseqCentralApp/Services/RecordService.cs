@@ -138,6 +138,9 @@ namespace HseqCentralApp.Services
         {
             caseNo = GetNextCaseNumber(db);
 
+            record.CaseNo = caseNo;
+            record.RecordNo = caseNo;
+
             hseqCaseFile = new HseqCaseFile();
 
             hseqCaseFile.CaseNo = caseNo;

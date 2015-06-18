@@ -17,30 +17,6 @@
             @*@Html.DisplayFor(model => model.HseqCaseFile.CaseNo)*@
             @Html.ActionLink(Model.HseqCaseFile.CaseNo + "", "Details", "HseqCaseFiles", new { id = Model.HseqCaseFile.HseqCaseFileID }, null)
         </dd>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.BusinessArea.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BusinessArea.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.HseqCaseFile.HseqCaseFileID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.HseqCaseFile.HseqCaseFileID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AlfrescoNoderef)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AlfrescoNoderef)
-        </dd>*@
-
         <dt>
             @Html.DisplayNameFor(model => model.Title)
         </dt>
@@ -147,56 +123,12 @@
     </dl>
     <hr />
 
-    <h4>Linked Items</h4>
-
     <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RecordType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-
-            <th></th>
-        </tr>
-
+        @Html.Partial("_LinkedRecordHeader", Model)
         @foreach (var item in Model.LinkedRecords)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RecordType)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-
-                </td>
-
-                <td>
-                    @if (String.Equals(item.RecordType.ToString(), "NCR"))
-                    {
-                        @Html.ActionLink("View Record", "Details", "Ncrs", new { id = item.HseqRecordID }, null)
-                    }
-                    else if (String.Equals(item.RecordType.ToString(), "FIS"))
-                    {
-                        @Html.ActionLink("View Record", "Details", "Fis", new { id = item.HseqRecordID }, null)
-                    }
-                    else if (String.Equals(item.RecordType.ToString(), "CAR"))
-                    {
-                        @Html.ActionLink("View Record", "Details", "Cars", new { id = item.HseqRecordID }, null)
-                    }
-
-                </td>
-
+                @Html.Partial("_LinkedRecordDetails", item)
             </tr>
         }
     </table>
@@ -205,5 +137,26 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.HseqRecordID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index") |
+    @Html.ActionLink("Create NCR", "CreateLinked", "Ncrs",
+        new
+        {
+            recordId = Model.HseqRecordID,
+            recordSource = "PAR"
+        },
+        null)
+    @Html.ActionLink("Create FIS", "CreateLinked", "Fis",
+                    new
+                    {
+                        recordId = Model.HseqRecordID,
+                        recordSource = "PAR"
+                    },
+                    null) |
+    @Html.ActionLink("Create CAR", "CreateLinked", "Cars",
+                    new
+                    {
+                        recordId = Model.HseqRecordID,
+                        recordSource = "PAR"
+                    },
+                    null)
 </p>
