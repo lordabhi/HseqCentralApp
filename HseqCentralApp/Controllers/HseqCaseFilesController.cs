@@ -18,12 +18,21 @@ namespace HseqCentralApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         RecordService _RecordService;
+        LinkRecordService _LinkRecordService;
 
-        public HseqCaseFilesController() : this(new RecordService()){}
+        public HseqCaseFilesController(){
+            _RecordService = new RecordService();
+            _LinkRecordService = new LinkRecordService();
+        }
 
         public HseqCaseFilesController(RecordService service) 
         {
             _RecordService = service;
+        }
+
+        public HseqCaseFilesController(LinkRecordService service)
+        {
+            _LinkRecordService = service;
         }
 
         // GET: HseqCaseFiles
@@ -146,7 +155,7 @@ namespace HseqCentralApp.Controllers
 
                     Ncr ncr = (Ncr)hr;
 
-                    _RecordService.RemoveLinkedRecords(ncr);
+                    _LinkRecordService.RemoveLinkedRecords(ncr);
 
                     db.NcrRecords.Remove((Ncr)hr);
 
@@ -156,7 +165,7 @@ namespace HseqCentralApp.Controllers
                 {
                     Fis ncr = (Fis)hr;
 
-                    _RecordService.RemoveLinkedRecords(ncr);
+                    _LinkRecordService.RemoveLinkedRecords(ncr);
 
                     db.FisRecords.Remove((Fis)hr);
                 }
@@ -164,7 +173,7 @@ namespace HseqCentralApp.Controllers
                 {
                     Car ncr = (Car)hr;
 
-                    _RecordService.RemoveLinkedRecords(ncr);
+                    _LinkRecordService.RemoveLinkedRecords(ncr);
 
                     db.CarRecords.Remove((Car)hr);
                 }
@@ -172,7 +181,7 @@ namespace HseqCentralApp.Controllers
                 {
                     Par ncr = (Par)hr;
 
-                    _RecordService.RemoveLinkedRecords(ncr);
+                    _LinkRecordService.RemoveLinkedRecords(ncr);
 
                     db.ParRecords.Remove((Par)hr);
                 }

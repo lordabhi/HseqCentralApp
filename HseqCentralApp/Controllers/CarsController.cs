@@ -16,14 +16,23 @@ namespace HseqCentralApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         RecordService _RecordService;
+        LinkRecordService _LinkRecordService;
 
-        public CarsController() : this(new RecordService()){}
+        public CarsController() 
+        {
+            _RecordService = new RecordService();
+            _LinkRecordService =    new LinkRecordService();
+        }
 
         public CarsController(RecordService service) 
         {
             _RecordService = service;
         }
-
+        
+        public CarsController(LinkRecordService service)
+        {
+            _LinkRecordService = service;
+        }
         // GET: Cars
         public ActionResult Index()
         {
@@ -93,19 +102,11 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult CreateLinked(int recordId, String recordSource)
         {
-            HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
+            Car car = (Car)_LinkRecordService.LinkRecord(recordId, recordSource, RecordType.CAR, db);
+            PopulateDefaults(car);
 
-            var defaults = _RecordService.PopulateRecordTypeLinked(linkedRecord, RecordType.CAR);
-            PopulateDefaults(defaults);
-
-            Car car = new Car(linkedRecord);
-            car.RecordType = RecordType.CAR;
-            car.HseqRecordID = linkedRecord.HseqRecordID;
-
-            TempData["recordId"] = linkedRecord.HseqRecordID;
+            TempData["recordId"] = car.HseqRecordID;
             TempData["recordSource"] = recordSource;
-
-            linkedRecord.LinkedRecords.Add(car);
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", car.HseqCaseFileID);
 
@@ -118,36 +119,17 @@ namespace HseqCentralApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                car.CreatedBy = _RecordService.GetCurrentUser().FullName;
-
-                db.CarRecords.Add(car);
-                //db.SaveChanges();
 
                 if (TempData["recordId"] != null)
                 {
                     var recordId = (int)TempData["recordId"];
                     var recordSource = (string)TempData["recordSource"];
 
-                    HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
-
-                    if (linkedRecord != null)
-                    {
-                        car.AlfrescoNoderef = linkedRecord.AlfrescoNoderef;
-                        car.HseqCaseFileID = linkedRecord.HseqCaseFileID;
-                        car.HseqCaseFile = linkedRecord.HseqCaseFile;
-
-                    }
-                    car.CaseNo = linkedRecord.CaseNo;
-                    car.RecordNo = linkedRecord.RecordNo;
-
-                    car.LinkedRecords.Add(linkedRecord);
-                    linkedRecord.LinkedRecords.Add(car);
+                    car = (Car)_LinkRecordService.CreateLinkRecord(car, recordId, recordSource, RecordType.CAR, db);
 
                     TempData["recordId"] = null;
                     TempData["recordSource"] = null;
                 }
-
-                db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
@@ -214,7 +196,7 @@ namespace HseqCentralApp.Controllers
         {
             Car car = db.CarRecords.Find(id);
 
-            _RecordService.RemoveLinkedRecords(car);
+            _LinkRecordService.RemoveLinkedRecords(car);
 
             int? caseFileId = car.HseqCaseFileID;
 
@@ -250,7 +232,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.EnteredBy = defaults.EnteredBy;
             ViewBag.ReportedBy = defaults.ReportedBy;
             ViewBag.QualityCoordinator = defaults.QualityCoordinator;
-            ViewBag.NcrState = defaults.NcrState;
+            //ViewBag.NcrState = defaults.NcrState;
         }
 
     }

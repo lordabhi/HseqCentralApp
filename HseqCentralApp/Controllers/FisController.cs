@@ -17,8 +17,20 @@ namespace HseqCentralApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         RecordService _RecordService;
+        LinkRecordService _LinkRecordService;
 
-        public FisController() : this(new RecordService()){}
+        //public FisController() : this(new RecordService()){}
+
+        public FisController() 
+        {
+            _RecordService = new RecordService();
+            _LinkRecordService =    new LinkRecordService();
+        }
+
+        public FisController(LinkRecordService service)
+        {
+            _LinkRecordService = service;
+        }
 
         public FisController(RecordService service) 
         {
@@ -101,19 +113,12 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult CreateLinked(int recordId, String recordSource)
         {
-            HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
+            Fis fis = (Fis)_LinkRecordService.LinkRecord(recordId, recordSource, RecordType.FIS, db);
+            PopulateDefaults(fis);
 
-            var defaults = _RecordService.PopulateRecordTypeLinked(linkedRecord, RecordType.FIS);
-            PopulateDefaults(defaults);
 
-            Fis fis = new Fis(linkedRecord);
-            fis.RecordType = RecordType.FIS;
-            fis.HseqRecordID = linkedRecord.HseqRecordID;
-
-            TempData["recordId"] = linkedRecord.HseqRecordID;
+            TempData["recordId"] = fis.HseqRecordID;
             TempData["recordSource"] = recordSource;
-
-            linkedRecord.LinkedRecords.Add(fis);
 
             //ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", fis.BusinessAreaID);
             ViewBag.CodeCategoryList = new SelectList(getCodeCategoryList(), "Id", "Column1");
@@ -128,37 +133,16 @@ namespace HseqCentralApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                fis.CreatedBy = _RecordService.GetCurrentUser().FullName;
-                db.FisRecords.Add(fis);
-                //db.SaveChanges();
-
                 if (TempData["recordId"] != null)
                 {
                     var recordId = (int)TempData["recordId"];
                     var recordSource = (string)TempData["recordSource"];
 
-                    //HseqRecord linkedRecord = db.NcrRecords.Find(recordId);
-                    HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
-
-                    if (linkedRecord != null)
-                    {
-                        fis.AlfrescoNoderef = linkedRecord.AlfrescoNoderef;
-                        fis.HseqCaseFileID = linkedRecord.HseqCaseFileID;
-                        fis.HseqCaseFile = linkedRecord.HseqCaseFile;
-
-                    }
-
-                    fis.CaseNo = linkedRecord.CaseNo;
-                    fis.RecordNo = linkedRecord.RecordNo;
-
-                    fis.LinkedRecords.Add(linkedRecord);
-                    linkedRecord.LinkedRecords.Add(fis);
+                    fis = (Fis)_LinkRecordService.CreateLinkRecord(fis, recordId, recordSource, RecordType.FIS, db);
 
                     TempData["recordId"] = null;
                     TempData["recordSource"] = null;
                 }
-
-                db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
@@ -233,7 +217,7 @@ namespace HseqCentralApp.Controllers
 
             Fis fis = db.FisRecords.Find(id);
 
-            _RecordService.RemoveLinkedRecords(fis);
+            _LinkRecordService.RemoveLinkedRecords(fis);
 
             //if (fis.LinkedRecords != null)
             //{
@@ -281,7 +265,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.EnteredBy = defaults.EnteredBy;
             ViewBag.ReportedBy = defaults.ReportedBy;
             ViewBag.QualityCoordinator = defaults.QualityCoordinator;
-            ViewBag.NcrState = defaults.NcrState;
+            //ViewBag.NcrState = defaults.NcrState;
         }
 
         private System.Collections.IEnumerable getCodeCategoryList()

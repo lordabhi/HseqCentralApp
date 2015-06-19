@@ -16,14 +16,24 @@ namespace HseqCentralApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         RecordService _RecordService;
+        LinkRecordService _LinkRecordService;
 
-        public ParsController() : this(new RecordService()){}
+        public ParsController() 
+        {
+            _RecordService = new RecordService();
+            _LinkRecordService =    new LinkRecordService();
+        }
 
         public ParsController(RecordService service) 
         {
             _RecordService = service;
         }
 
+        
+        public ParsController(LinkRecordService service)
+        {
+            _LinkRecordService = service;
+        }
         // GET: Pars
         public ActionResult Index()
         {
@@ -93,19 +103,13 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult CreateLinked(int recordId, String recordSource)
         {
-            HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
+            HseqRecord linkedRecord = _LinkRecordService.GetSourceRecord(recordId, recordSource, db);
 
-            var defaults = _RecordService.PopulateRecordTypeLinked(linkedRecord, RecordType.PAR);
-            PopulateDefaults(defaults);
+            Par par = (Par)_LinkRecordService.LinkRecord(recordId, recordSource, RecordType.PAR, db);
+            PopulateDefaults(par);
 
-            Par par = new Par(linkedRecord);
-            par.RecordType = RecordType.PAR;
-            par.HseqRecordID = linkedRecord.HseqRecordID;
-
-            TempData["recordId"] = linkedRecord.HseqRecordID;
+            TempData["recordId"] = par.HseqRecordID;
             TempData["recordSource"] = recordSource;
-
-            linkedRecord.LinkedRecords.Add(par);
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", par.HseqCaseFileID);
 
@@ -118,37 +122,16 @@ namespace HseqCentralApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                par.CreatedBy = _RecordService.GetCurrentUser().FullName;
-
-                db.ParRecords.Add(par);
-                //db.SaveChanges();
-
                 if (TempData["recordId"] != null)
                 {
                     var recordId = (int)TempData["recordId"];
                     var recordSource = (string)TempData["recordSource"];
 
-                    HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
-
-                    if (linkedRecord != null)
-                    {
-                        par.AlfrescoNoderef = linkedRecord.AlfrescoNoderef;
-                        par.HseqCaseFileID = linkedRecord.HseqCaseFileID;
-                        par.HseqCaseFile = linkedRecord.HseqCaseFile;
-
-                    }
-
-                    par.CaseNo = linkedRecord.CaseNo;
-                    par.RecordNo = linkedRecord.RecordNo;
-
-                    par.LinkedRecords.Add(linkedRecord);
-                    linkedRecord.LinkedRecords.Add(par);
+                    par = (Par)_LinkRecordService.CreateLinkRecord(par, recordId, recordSource, RecordType.PAR, db);
 
                     TempData["recordId"] = null;
                     TempData["recordSource"] = null;
                 }
-
-                db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
@@ -215,7 +198,7 @@ namespace HseqCentralApp.Controllers
         {
             Par par = db.ParRecords.Find(id);
 
-            _RecordService.RemoveLinkedRecords(par);
+            _LinkRecordService.RemoveLinkedRecords(par);
 
             int? caseFileId = par.HseqCaseFileID;
 
@@ -251,7 +234,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.EnteredBy = defaults.EnteredBy;
             ViewBag.ReportedBy = defaults.ReportedBy;
             ViewBag.QualityCoordinator = defaults.QualityCoordinator;
-            ViewBag.NcrState = defaults.NcrState;
+            //ViewBag.NcrState = defaults.NcrState;
         }
     }
 }

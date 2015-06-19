@@ -59,34 +59,7 @@ namespace HseqCentralApp.Services
             return ViewBag;
         }
 
-        public dynamic PopulateRecordTypeLinked(HseqRecord record, RecordType recordType)
-        {
-            ViewBag.EnteredBy = record.EnteredBy;
-            ViewBag.ReportedBy = record.ReportedBy;
-            ViewBag.QualityCoordinator = record.QualityCoordinator;
 
-            if (recordType.Equals(RecordType.NCR))
-            {
-                ViewBag.RecordType = RecordType.NCR;
-                ViewBag.NcrState = NcrState.New;
-            }
-            else if (recordType.Equals(RecordType.FIS))
-            {
-                ViewBag.RecordType = RecordType.FIS;
-                ViewBag.NcrState = NcrState.New;
-            }
-            else if (recordType.Equals(RecordType.CAR))
-            {
-                ViewBag.RecordType = RecordType.CAR;
-                ViewBag.NcrState = NcrState.New;
-            }
-            else if (recordType.Equals(RecordType.PAR))
-            {
-                ViewBag.RecordType = RecordType.PAR;
-                ViewBag.NcrState = NcrState.New;
-            }
-            return ViewBag;
-        }
 
         public ApplicationUser GetCurrentUser() {
 
@@ -95,29 +68,7 @@ namespace HseqCentralApp.Services
         
         }
 
-        internal HseqRecord GetSourceRecord(int recordId, string recordSource, ApplicationDbContext db)
-        {
 
-            HseqRecord linkedRecord = null;
-
-            if (recordSource.Equals(RecordType.NCR.ToString()))
-            {
-                linkedRecord = db.NcrRecords.Find(recordId);
-            }
-            else if (recordSource.Equals(RecordType.FIS.ToString()))
-            {
-                linkedRecord = db.FisRecords.Find(recordId);
-            }
-            else if (recordSource.Equals(RecordType.CAR.ToString()))
-            {
-                linkedRecord = db.CarRecords.Find(recordId);
-            }
-            else if (recordSource.Equals(RecordType.PAR.ToString()))
-            {
-                linkedRecord = db.ParRecords.Find(recordId);
-            }
-            return linkedRecord;
-        }
 
         internal int GetNextCaseNumber(ApplicationDbContext db)
         {
@@ -171,47 +122,35 @@ namespace HseqCentralApp.Services
             return ncr;
         }
 
-        public HseqRecord CreateLinkingForRecords(Ncr ncr, TempDataDictionary TempData, ApplicationDbContext db)
-        {
-            if (TempData["recordId"] != null)
-            {
-                var recordId = (int)TempData["recordId"];
-                var recordSource = (string)TempData["recordSource"];
+        //public HseqRecord CreateLinkingForRecords(Ncr ncr, TempDataDictionary TempData, ApplicationDbContext db)
+        //{
+        //    if (TempData["recordId"] != null)
+        //    {
+        //        var recordId = (int)TempData["recordId"];
+        //        var recordSource = (string)TempData["recordSource"];
 
-                HseqRecord linkedRecord = GetSourceRecord(recordId, recordSource, db);
+        //        //HseqRecord linkedRecord = GetSourceRecord(recordId, recordSource, db);
+        //        HseqRecord linkedRecord = null;
+        //        if (linkedRecord != null)
+        //        {
+        //            ncr.AlfrescoNoderef = linkedRecord.AlfrescoNoderef;
+        //            ncr.HseqCaseFileID = linkedRecord.HseqCaseFileID;
+        //            ncr.HseqCaseFile = linkedRecord.HseqCaseFile;
 
-                if (linkedRecord != null)
-                {
-                    ncr.AlfrescoNoderef = linkedRecord.AlfrescoNoderef;
-                    ncr.HseqCaseFileID = linkedRecord.HseqCaseFileID;
-                    ncr.HseqCaseFile = linkedRecord.HseqCaseFile;
+        //        }
 
-                }
+        //        ncr.LinkedRecords.Add(linkedRecord);
+        //        linkedRecord.LinkedRecords.Add(ncr);
 
-                ncr.LinkedRecords.Add(linkedRecord);
-                linkedRecord.LinkedRecords.Add(ncr);
+        //        TempData["recordId"] = null;
+        //        TempData["recordSource"] = null;
+        //    }
 
-                TempData["recordId"] = null;
-                TempData["recordSource"] = null;
-            }
+        //    db.SaveChanges();
 
-            db.SaveChanges();
+        //    return ncr;
+        //}
 
-            return ncr;
-        }
 
-        public void RemoveLinkedRecords(HseqRecord record)
-        {
-            if (record.LinkedRecords != null)
-            {
-
-                foreach (HseqRecord linkedRecord in record.LinkedRecords)
-                {
-                    linkedRecord.LinkedRecords.Remove(record);
-                }
-
-                record.LinkedRecords = null;
-            }
-        }
     }
 }

@@ -35,6 +35,9 @@
                     @Html.DisplayName("Record Type")
                 </th>
                 <th>
+                    @Html.DisplayName("Record No")
+                </th>
+                <th>
                     @Html.DisplayName("Date Created")
                 </th>
                 <th>
@@ -51,8 +54,28 @@
             {
                 <tr>
                     <td>
-                        @item.RecordType
+                        @if (String.Equals(item.RecordType.ToString(), "NCR"))
+                        {
+                            @Html.ActionLink("NCR", "Details", "Ncrs", new { id = item.HseqRecordID }, null)
+                        }
+                        else if (String.Equals(item.RecordType.ToString(), "FIS"))
+                        {
+                            @Html.ActionLink("FIS", "Details", "Fis", new { id = item.HseqRecordID }, null)
+                        }
+                        else if (String.Equals(item.RecordType.ToString(), "CAR"))
+                        {
+                            @Html.ActionLink("CAR", "Details", "Cars", new { id = item.HseqRecordID }, null)
+                        }
+                        else if (String.Equals(item.RecordType.ToString(), "PAR"))
+                        {
+                            @Html.ActionLink("PAR", "Details", "Pars", new { id = item.HseqRecordID }, null)
+                        }
+
                     </td>
+                    <td>
+                        @item.RecordNo
+                    </td>
+
                     <td>
                         @item.DateCreatedForDisplay
                     </td>
@@ -63,24 +86,6 @@
                         @item.Description
                     </td>
 
-                    <td>
-                        @if (item.RecordType.ToString() == "NCR") { 
-                            @Html.ActionLink("Details", "Details", "Ncrs", new { id = item.HseqRecordID }, null)
-                        }
-                        else if (item.RecordType.ToString() == "FIS")
-                        {
-                            @Html.ActionLink("Details", "Details","Fis", new { id = item.HseqRecordID }, null)
-                        }
-                        else if (item.RecordType.ToString() == "CAR")
-                        {
-                            @Html.ActionLink("Details", "Details", "Cars", new { id = item.HseqRecordID }, null)
-                        }
-                        else if (item.RecordType.ToString() == "PAR")
-                        {
-                            @Html.ActionLink("Details", "Details", "Pars", new { id = item.HseqRecordID }, null)
-                        }
-                        
-                    </td>
                 </tr>
             }
 

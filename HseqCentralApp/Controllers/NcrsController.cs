@@ -19,13 +19,26 @@ namespace HseqCentralApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         RecordService _RecordService;
+        LinkRecordService _LinkRecordService; 
 
-        public NcrsController() : this(new RecordService()){}
+        public NcrsController() 
+        {
+            _RecordService = new RecordService();
+            _LinkRecordService =    new LinkRecordService();
+        }
+        
 
         public NcrsController(RecordService service) 
         {
             _RecordService = service;
         }
+
+        
+        public NcrsController(LinkRecordService service)
+        {
+            _LinkRecordService = service;
+        }
+
 
         // GET: Ncrs
         public ActionResult Index()
@@ -146,19 +159,13 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult CreateLinked(int recordId, String recordSource)
         {
-            HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
+            
+            Ncr ncr = (Ncr)_LinkRecordService.LinkRecord(recordId, recordSource, RecordType.NCR, db);
+            PopulateDefaults(ncr);
 
-            var defaults =_RecordService.PopulateRecordTypeLinked(linkedRecord, RecordType.NCR);
-            PopulateDefaults(defaults);
-
-            Ncr ncr = new Ncr(linkedRecord);
-            ncr.RecordType = RecordType.NCR;
-            ncr.HseqRecordID = linkedRecord.HseqRecordID;
-
-            TempData["recordId"] = linkedRecord.HseqRecordID;
+            TempData["recordId"] = ncr.HseqRecordID;
             TempData["recordSource"] = recordSource;
 
-            linkedRecord.LinkedRecords.Add(ncr);
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", ncr.HseqCaseFileID);
             ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
@@ -176,37 +183,16 @@ namespace HseqCentralApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                ncr.CreatedBy = _RecordService.GetCurrentUser().FullName;
-
-                db.NcrRecords.Add(ncr);
-                //db.SaveChanges();
-
                 if (TempData["recordId"] != null)
                 {
                     var recordId = (int)TempData["recordId"];
                     var recordSource = (string)TempData["recordSource"];
 
-                    HseqRecord linkedRecord = _RecordService.GetSourceRecord(recordId, recordSource, db);
-
-                    if (linkedRecord != null)
-                    {
-                        ncr.AlfrescoNoderef = linkedRecord.AlfrescoNoderef;
-                        ncr.HseqCaseFileID = linkedRecord.HseqCaseFileID;
-                        ncr.HseqCaseFile = linkedRecord.HseqCaseFile;
-
-                    }
-
-                    ncr.CaseNo = linkedRecord.CaseNo;
-                    ncr.RecordNo = linkedRecord.RecordNo;
-
-                    ncr.LinkedRecords.Add(linkedRecord);
-                    linkedRecord.LinkedRecords.Add(ncr);
+                    ncr = (Ncr)_LinkRecordService.CreateLinkRecord(ncr, recordId, recordSource, RecordType.NCR, db);
 
                     TempData["recordId"] = null;
                     TempData["recordSource"] = null;
                 }
-
-                db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
@@ -220,6 +206,8 @@ namespace HseqCentralApp.Controllers
 
             return View(ncr);
         }
+
+       
 
         // GET: Ncrs/Edit/5
         public ActionResult Edit(int? id)
@@ -294,7 +282,7 @@ namespace HseqCentralApp.Controllers
         {
             Ncr ncr = db.NcrRecords.Find(id);
 
-            _RecordService.RemoveLinkedRecords(ncr);
+            _LinkRecordService.RemoveLinkedRecords(ncr);
             
             //if (ncr.LinkedRecords != null)
             //{

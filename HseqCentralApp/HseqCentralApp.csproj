@@ -241,6 +241,7 @@
     <Compile Include="Models\RecordType.cs" />
     <Compile Include="Models\FisCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\LinkRecordService.cs" />
     <Compile Include="Services\RecordService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -381,6 +382,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Interfaces\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
