@@ -240,6 +240,7 @@
     <Compile Include="Models\Par.cs" />
     <Compile Include="Models\RecordType.cs" />
     <Compile Include="Models\FisCategory.cs" />
+    <Compile Include="Models\Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\LinkRecordService.cs" />
     <Compile Include="Services\RecordService.cs" />
@@ -379,6 +380,7 @@
     <Content Include="Views\Pars\Index.cshtml" />
     <Content Include="Views\Shared\_LinkedRecordDetails.cshtml" />
     <Content Include="Views\Shared\_LinkedRecordHeader.cshtml" />
+    <Content Include="Views\Ncrs\LinkExistingRecord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

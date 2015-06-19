@@ -81,7 +81,8 @@
                         recordId = item.HseqRecordID,
                         recordSource = "NCR"
                     },
-                    null)
+                    null) |
+                @Html.ActionLink("Link Existing Record", "LinkExistingRecord", new {id = item.HseqRecordID})
             </td>
         </tr>
     }

@@ -61,6 +61,7 @@ namespace HseqCentralApp.Models
         [Display(Name = "Quality Coordinator")]
         public String QualityCoordinator { get; set; }
 
+        public int? LinkedRecordsID { get; set; }
         public virtual ICollection<HseqRecord> LinkedRecords { get; set; }
 
         public int? HseqCaseFileID { get; set; }
@@ -101,5 +102,15 @@ namespace HseqCentralApp.Models
             }
 
         }
+
+        public string LinkRecordForDisplay
+        {
+            get
+            {
+                return this.RecordType + ":"+this.RecordNo +" - "+ this.Title;
+            }
+
+        }
+
     }
 }
