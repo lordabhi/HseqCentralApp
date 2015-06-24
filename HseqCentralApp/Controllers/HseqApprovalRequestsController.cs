@@ -23,6 +23,14 @@ namespace HseqCentralApp.Controllers
             return View(delegatables.ToList());
         }
 
+
+        public ActionResult HseqUserIndex()
+        {
+            var delegatables = db.HseqApprovalRequests.Include(h => h.Assignee).Include(h => h.HseqRecord).Include(h => h.Owner);
+            var delegatables2 = db.HseqApprovalRequests.Where(h=>h.AssigneeID == 3 || h.OwnerID == 3);
+            return View(delegatables2.ToList());
+        }
+
         // GET: HseqApprovalRequests1/Details/5
         public ActionResult Details(int? id)
         {

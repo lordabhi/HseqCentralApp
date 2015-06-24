@@ -403,6 +403,7 @@
     <Content Include="Views\Ncrs\AddApproval.cshtml" />
     <Content Include="Views\Shared\_ApprovalHeader.cshtml" />
     <Content Include="Views\Shared\_ApprovalDetails.cshtml" />
+    <Content Include="Views\HseqApprovalRequests\HseqUserIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
