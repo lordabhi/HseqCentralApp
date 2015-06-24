@@ -151,6 +151,8 @@ namespace HseqCentralApp
             }
 
             var user = userManager.FindByName(name);
+            var user3 = userManager.FindByName(name);
+ 
             if (user == null)
             {
                 user = new ApplicationUser { UserName = name, Email = name, EmailConfirmed = true};
@@ -161,6 +163,26 @@ namespace HseqCentralApp
                 var result = userManager.Create(user, password);
                 result = userManager.SetLockoutEnabled(user.Id, false);
 
+                //Create other users
+                string name2 = "robert.swift@waiward.com";
+                string password2 = "Test!23";
+                var user2 = new ApplicationUser { UserName = name2, Email = name2, EmailConfirmed = true };
+                user2.FirstName = "Robert";
+                user2.LastName = "Swift";
+                user2.Department = "Information Technology";
+                result = userManager.Create(user2, password2);
+                result = userManager.SetLockoutEnabled(user2.Id, false);
+
+
+                string name3 = "abhishek.khaitan@waiward.com";
+                string password3 = "Test!23";
+                user3 = new ApplicationUser { UserName = name3, Email = name3, EmailConfirmed = true };
+                user3.FirstName = "Abhi";
+                user3.LastName = "Khaitan";
+                user3.Department = "Information Technology";
+
+                result = userManager.Create(user3, password3);
+                result = userManager.SetLockoutEnabled(user3.Id, false);
             }
 
             var groupManager = new ApplicationGroupManager();
@@ -169,6 +191,24 @@ namespace HseqCentralApp
             groupManager.CreateGroup(newGroup);
             groupManager.SetUserGroups(user.Id, new string[] { newGroup.Id });
             groupManager.SetGroupRoles(newGroup.Id, new string[] { role.Name });
+
+            groupManager.SetUserGroups(user3.Id, new string[] { newGroup.Id });
+            groupManager.SetGroupRoles(newGroup.Id, new string[] { role.Name });
+
+            foreach (var u in db.Users)
+            {
+                HseqUser hseqUser = new HseqUser();
+                hseqUser.UserID = u.Id;
+                hseqUser.Coordinator = true;
+                hseqUser.Approver = true;
+                hseqUser.Assignee = true;
+                hseqUser.Owner = true;
+
+                db.HseqUsers.Add(hseqUser);
+            }
+
+            db.SaveChanges();
+
         }
 
         public static void InitializeApplicationData(ApplicationDbContext db)

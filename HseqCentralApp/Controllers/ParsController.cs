@@ -64,6 +64,8 @@ namespace HseqCentralApp.Controllers
 
             ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
+            ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
+
             return View();
         }
 
@@ -72,7 +74,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,status,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Par par)
+        public ActionResult Create([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,HseqCaseFileID,JobNumber,DrawingNumber,status,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy,CoordinatorID")] Par par)
         {
             if (ModelState.IsValid)
             {
@@ -98,6 +100,8 @@ namespace HseqCentralApp.Controllers
             }
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", par.HseqCaseFileID);
+            ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
+
             return View(par);
         }
 
@@ -112,13 +116,14 @@ namespace HseqCentralApp.Controllers
             TempData["recordSource"] = recordSource;
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", par.HseqCaseFileID);
+            ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
 
             return View("Create", par);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateLinked([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,status,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Par par)
+        public ActionResult CreateLinked([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,HseqCaseFileID,JobNumber,DrawingNumber,status,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy,CoordinatorID")] Par par)
         {
             if (ModelState.IsValid)
             {
@@ -137,6 +142,7 @@ namespace HseqCentralApp.Controllers
             }
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", par.HseqCaseFileID);
+            ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
 
             return View(par);
         }
@@ -154,6 +160,8 @@ namespace HseqCentralApp.Controllers
                 return HttpNotFound();
             }
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", par.HseqCaseFileID);
+            ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", par.CoordinatorID);
+
             return View(par);
         }
 
@@ -162,7 +170,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,QualityCoordinator,HseqCaseFileID,JobNumber,DrawingNumber,status,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy")] Par par)
+        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,HseqCaseFileID,JobNumber,DrawingNumber,status,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy,CoordinatorID")] Par par)
         {
             if (ModelState.IsValid)
             {
@@ -173,6 +181,8 @@ namespace HseqCentralApp.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", par.HseqCaseFileID);
+            ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", par.CoordinatorID);
+
             return View(par);
         }
 
@@ -233,7 +243,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.RecordType = defaults.RecordType;
             ViewBag.EnteredBy = defaults.EnteredBy;
             ViewBag.ReportedBy = defaults.ReportedBy;
-            ViewBag.QualityCoordinator = defaults.QualityCoordinator;
+            //ViewBag.QualityCoordinator = defaults.QualityCoordinator;
             //ViewBag.NcrState = defaults.NcrState;
         }
     }

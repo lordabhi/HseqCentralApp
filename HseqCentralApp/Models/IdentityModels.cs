@@ -98,26 +98,14 @@ namespace HseqCentralApp.Models
         public System.Data.Entity.DbSet<HseqCentralApp.Models.Car> CarRecords { get; set; }
 
         public System.Data.Entity.DbSet<HseqCentralApp.Models.Par> ParRecords { get; set; }
-        
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<HseqRecord>().HasMany(m => m.LinkedRecords).WithMany();
 
-        //    //one-to-many 
-        //    modelBuilder.Entity<HseqRecord>()
-        //                .HasOptional<HseqCaseFile>(h => h.HseqCaseFile)
-        //                .WithMany(h => h.HseqRecords)
-        //                .HasForeignKey(h => h.HseqCaseFileID);
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.FisCategory> FisCategories { get; set; }
 
-        //    //modelBuilder.Entity<HseqCaseFile>()
-        //    //                        .HasMany<HseqRecord>(s => s.HseqRecords)
-        //    //                        .WithRequired(s => s.HseqCaseFile)
-        //    //                        .HasForeignKey(s => s.HseqCaseFileID);
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.FisCode> FisCodes { get; set; }
 
-        //}
-        //Abhi end///
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.HseqApprovalRequest> HseqApprovalRequests { get; set; }
 
-
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.HseqUser> HseqUsers { get; set; }
 
 
         static ApplicationDbContext()
@@ -184,11 +172,31 @@ namespace HseqCentralApp.Models
                 .HasRequired(s => s.ResponsibleArea)
                 .WithMany()
                 .WillCascadeOnDelete(false);
+
+            ///////////////////////////////////////////////////////////////
+
+            modelBuilder.Entity<Delegatable>()
+                .HasRequired(o => o.Owner)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Delegatable>()
+                .HasRequired(d => d.Assignee)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<HseqRecord>()
+                .HasRequired(d => d.Coordinator)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<HseqRecord>()
+                .HasOptional(d => d.Coordinator)
+                .WithMany();
         }
 
-        public System.Data.Entity.DbSet<HseqCentralApp.Models.FisCategory> FisCategories { get; set; }
 
-        public System.Data.Entity.DbSet<HseqCentralApp.Models.FisCode> FisCodes { get; set; }
+        //public System.Data.Entity.DbSet<HseqCentralApp.Models.User> Users { get; set; }
 
 
     }

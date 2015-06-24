@@ -204,6 +204,8 @@
     <Compile Include="Controllers\FisCodesController.cs" />
     <Compile Include="Controllers\GroupsAdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HseqApprovalRequestsController.cs" />
+    <Compile Include="Controllers\HseqUsersController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ParsController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
@@ -213,9 +215,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ApprovalResult.cs" />
+    <Compile Include="Models\ApprovalStatus.cs" />
     <Compile Include="Models\ApproverDisposition.cs" />
     <Compile Include="Models\Car.cs" />
+    <Compile Include="Models\Delegatable.cs" />
     <Compile Include="Models\FisCode.cs" />
+    <Compile Include="Models\HseqApprovalRequest.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\ApplicationGroupManager.cs" />
@@ -241,7 +247,9 @@
     <Compile Include="Models\RecordType.cs" />
     <Compile Include="Models\FisCategory.cs" />
     <Compile Include="Models\Test.cs" />
+    <Compile Include="Models\HseqUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ApprovalService.cs" />
     <Compile Include="Services\LinkRecordService.cs" />
     <Compile Include="Services\RecordService.cs" />
     <Compile Include="Startup.cs" />
@@ -381,6 +389,17 @@
     <Content Include="Views\Shared\_LinkedRecordDetails.cshtml" />
     <Content Include="Views\Shared\_LinkedRecordHeader.cshtml" />
     <Content Include="Views\Ncrs\LinkExistingRecord.cshtml" />
+    <Content Include="Views\HseqUsers\Create.cshtml" />
+    <Content Include="Views\HseqUsers\Delete.cshtml" />
+    <Content Include="Views\HseqUsers\Details.cshtml" />
+    <Content Include="Views\HseqUsers\Edit.cshtml" />
+    <Content Include="Views\HseqUsers\Index.cshtml" />
+    <Content Include="Views\HseqApprovalRequests\Create.cshtml" />
+    <Content Include="Views\HseqApprovalRequests\Delete.cshtml" />
+    <Content Include="Views\HseqApprovalRequests\Details.cshtml" />
+    <Content Include="Views\HseqApprovalRequests\Edit.cshtml" />
+    <Content Include="Views\HseqApprovalRequests\Index.cshtml" />
+    <Content Include="Views\Home\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

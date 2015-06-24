@@ -33,7 +33,7 @@ namespace HseqCentralApp.Services
             ViewBag.ReportedBy = currentUser.FirstName + " " + currentUser.LastName + " , " + currentUser.Department;
 
             //Retrieve the Quality Coordinator from the custom file
-            ViewBag.QualityCoordinator = ConfigurationManager.AppSettings.Get("QualityCoordinator");
+            //ViewBag.QualityCoordinator = ConfigurationManager.AppSettings.Get("QualityCoordinator");
             
             if (recordType.Equals(RecordType.NCR))
             {
@@ -112,7 +112,7 @@ namespace HseqCentralApp.Services
 
             ncr.EnteredBy = linkedRecord.EnteredBy;
             ncr.ReportedBy = linkedRecord.ReportedBy;
-            ncr.QualityCoordinator = linkedRecord.QualityCoordinator;
+            //ncr.QualityCoordinator = linkedRecord.QualityCoordinator;
 
             TempData["recordId"] = linkedRecord.HseqRecordID;
             TempData["recordSource"] = recordSource;

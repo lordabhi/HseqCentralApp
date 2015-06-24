@@ -1,0 +1,106 @@
+﻿@model HseqCentralApp.Models.HseqApprovalRequest
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>HseqApprovalRequest</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Assignee.UserID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Assignee.UserID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HseqRecord.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HseqRecord.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Owner.UserID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Owner.UserID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateAssigned)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateAssigned)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DueDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DueDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Response)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Response)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResponseDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResponseDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResponseComment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResponseComment)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DelegatableID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

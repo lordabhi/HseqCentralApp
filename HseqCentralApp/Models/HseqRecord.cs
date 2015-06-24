@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -12,6 +13,7 @@ namespace HseqCentralApp.Models
         {
 
             this.LinkedRecords = new HashSet<HseqRecord>();
+            this.Approvals = new HashSet<Delegatable>();
         }
 
         public HseqRecord(HseqRecord record)
@@ -25,7 +27,7 @@ namespace HseqCentralApp.Models
 
             this.EnteredBy = record.EnteredBy;
             this.ReportedBy = record.ReportedBy;
-            this.QualityCoordinator = record.QualityCoordinator;
+            //this.QualityCoordinator = record.QualityCoordinator;
 
         }
 
@@ -58,8 +60,8 @@ namespace HseqCentralApp.Models
         [Display(Name = "Reported By")]
         public String ReportedBy { get; set; }
 
-        [Display(Name = "Quality Coordinator")]
-        public String QualityCoordinator { get; set; }
+        //[Display(Name = "Quality Coordinator")]
+        //public String QualityCoordinator { get; set; }
 
         public int? LinkedRecordsID { get; set; }
         public virtual ICollection<HseqRecord> LinkedRecords { get; set; }
@@ -74,12 +76,6 @@ namespace HseqCentralApp.Models
         [Display(Name = "Drawing Number")]
         public String DrawingNumber { get; set; }
 
-        //[Required(ErrorMessage = "Select a business area")]
-        //[Display(Name = "Business Area")]
-        //public int BusinessAreaID { get; set; }
-
-        //public virtual BusinessArea BusinessArea { get; set; }
-
         [Display(Name = "Date Created")]
         public DateTime DateCreated { get; set; }
 
@@ -91,6 +87,17 @@ namespace HseqCentralApp.Models
 
         [Display(Name = "Last Updated By")]
         public String LastUpdatedBy { get; set; }
+
+        //Approvals
+        [Display(Name = "Disposition Approver")]
+        public int? ApproverID { get; set; }
+        public virtual HseqUser Approver { get; set; }
+
+        public virtual ICollection<Delegatable> Approvals { get; set; }
+
+        [Display(Name = "Coordinator")]
+        public int CoordinatorID { get; set; }
+        public virtual HseqUser Coordinator { get; set; }
 
         /////////////////////////////////////////////////////
 

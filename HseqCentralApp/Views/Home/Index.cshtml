@@ -13,7 +13,7 @@
                 <br />
                 <br />
 
-                <h4> Non-Confermance Record (NCR)</h4>
+                <h4> Non-Conformance Record (NCR)</h4>
                 @Html.ActionLink("Report a non-conformance", "Create", "Ncrs")
                 <br />
                 <br />
@@ -41,11 +41,21 @@
                 @Html.ActionLink("View Existing Preventive Action Records", "Index", "Pars")
                 <br />
                 <br />
-                
+
                 @*<h4> Pending Approvals </h4>
 
                 @Html.ActionLink("Pending Approvals", "PendingApproval", "Ncrs")*@
             </td>
+
+            <td>
+                <h3> Approvals </h3>
+                <br />
+                @Html.ActionLink("All Approval Requests", "Index", "HseqApprovalRequests")
+                <br />
+                <br />
+                @Html.ActionLink("My Approval Requests", "Index", "HseqApprovalRequests")
+            </td>
+
             <td>
                 <h3> Configurations </h3>
                 <br />
@@ -62,7 +72,12 @@
                 <br />
                 <br />
                 @Html.ActionLink("FIS Codes", "Index", "FisCodes")
-                </td>
+                <br />
+                <br />
+               
+
+
+            </td>
 
             <td>
                 @if (User.Identity.IsAuthenticated)
@@ -80,11 +95,13 @@
                         <br />
                         <br />
                         @Html.ActionLink("Manage Users", "Index", "UsersAdmin")
-
                         <br />
                         <br />
-
                         @Html.ActionLink("Manage Disposition Approvers", "Index", "ApproverDispositions")
+                        <br />
+                        <br />
+                        @Html.ActionLink("Manage Application Users", "Index", "HseqUsers")
+
 
                     }
                 }
