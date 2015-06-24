@@ -1,0 +1,98 @@
+﻿@model HseqCentralApp.Models.Ncr
+
+@{
+    ViewBag.Title = "Add Approval Requests";
+}
+
+<h2>HSEQ Approval Requests</h2>
+
+@*@using (Html.BeginForm("CreateLinkExistingRecord", "Ncrs", FormMethod.Get, new { LinkedRecordsID = Model.LinkedRecordsID }))*@
+
+@using (Html.BeginForm("AddApproval", "Ncrs", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Ncr</h4>
+        <hr />
+        @Html.HiddenFor(model => model.CaseNo)
+        @Html.HiddenFor(model => model.RecordNo)
+        @Html.HiddenFor(model => model.HseqRecordID)
+        @Html.HiddenFor(model => model.HseqCaseFileID)
+        @Html.HiddenFor(model => model.AlfrescoNoderef)
+        @Html.HiddenFor(model => model.DateCreated)
+        @Html.HiddenFor(model => model.CreatedBy)
+        @Html.HiddenFor(model => model.DateLastUpdated, new { @Value = System.DateTime.Now })
+        @Html.HiddenFor(model => model.LastUpdatedBy)
+        @Html.HiddenFor(model => model.RecordType)
+        @Html.HiddenFor(model => model.DiscrepancyTypeID)
+        @Html.HiddenFor(model => model.DetectedInAreaID)
+        @Html.HiddenFor(model => model.ResponsibleAreaID)
+        @Html.HiddenFor(model => model.DispositionTypeID)
+        @Html.HiddenFor(model => model.RecordType)
+        @Html.HiddenFor(model => model.EnteredBy)
+        @Html.HiddenFor(model => model.ReportedBy)
+        @Html.HiddenFor(model => model.CoordinatorID)
+        @Html.HiddenFor(model => model.Title)
+        @Html.HiddenFor(model => model.Description)
+        @Html.HiddenFor(model => model.NcrSource)
+        @Html.HiddenFor(model => model.NcrState)
+        @Html.HiddenFor(model => model.JobNumber)
+        @Html.HiddenFor(model => model.DrawingNumber)
+        @Html.HiddenFor(model => model.DispositionNote)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CaseNo, "Case Number", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.CaseNo)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RecordNo, "Record Number", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.RecordNo)
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApproverID, "Disposition Approver", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ApproverID", null, "", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ApproverID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="New Approval Request" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<br />
+<br />
+
+<table class="table">
+    @Html.Partial("_ApprovalHeader", Model)
+    @foreach (var item in Model.Approvals)
+    {
+        <tr>
+            @Html.Partial("_ApprovalDetails", item)
+        </tr>
+    }
+</table>
+
+<br/>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

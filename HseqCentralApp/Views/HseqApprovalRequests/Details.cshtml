@@ -11,38 +11,6 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Assignee.UserID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Assignee.UserID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.HseqRecord.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.HseqRecord.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Owner.UserID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Owner.UserID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DateAssigned)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateAssigned)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.Title)
         </dt>
 
@@ -57,6 +25,39 @@
         <dd>
             @Html.DisplayFor(model => model.Description)
         </dd>
+
+        <dt>
+            @Html.DisplayName("Assignee")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Assignee.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Owner")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Owner.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Record Title")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HseqRecord.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateAssigned)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateAssigned)
+        </dd>
+
 
         <dt>
             @Html.DisplayNameFor(model => model.DueDate)

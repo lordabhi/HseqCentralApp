@@ -400,6 +400,9 @@
     <Content Include="Views\HseqApprovalRequests\Edit.cshtml" />
     <Content Include="Views\HseqApprovalRequests\Index.cshtml" />
     <Content Include="Views\Home\Index2.cshtml" />
+    <Content Include="Views\Ncrs\AddApproval.cshtml" />
+    <Content Include="Views\Shared\_ApprovalHeader.cshtml" />
+    <Content Include="Views\Shared\_ApprovalDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -135,7 +135,7 @@ namespace HseqCentralApp.Controllers
                 ncr.AlfrescoNoderef = caseNo;
 
                 //Abhi Create Approvals
-                _ApprovalService.AddHseqApprovalRequest(ncr, db);
+                _ApprovalService.AddHseqApprovalRequest(ncr, ncr.ApproverID, db);
                 
                 db.SaveChanges();
 
@@ -197,6 +197,9 @@ namespace HseqCentralApp.Controllers
                     var recordSource = (string)TempData["recordSource"];
 
                     ncr = (Ncr)_LinkRecordService.CreateLinkRecord(ncr, recordId, recordSource, RecordType.NCR, db);
+
+                    //Create Approvals
+                    _ApprovalService.AddHseqApprovalRequest(ncr, ncr.ApproverID, db);
 
                     TempData["recordId"] = null;
                     TempData["recordSource"] = null;
@@ -375,6 +378,7 @@ namespace HseqCentralApp.Controllers
             return View(ncr);
         }
 
+
         [HttpPost]
         public ActionResult LinkExistingRecord(Ncr ncr, int? LinkedRecordsID)
         {
@@ -385,13 +389,11 @@ namespace HseqCentralApp.Controllers
 
                 if (ncrOrig != null && LinkedRecord != null)
                 {
-
                     ncrOrig.LinkedRecords.Add(LinkedRecord);
                     LinkedRecord.LinkedRecords.Add(ncrOrig);
 
                     db.SaveChanges();
                 }
-
                 var availableRecords = from h in db.HseqRecords
                                        where h.RecordType != RecordType.NCR
                                        select h;
@@ -399,7 +401,44 @@ namespace HseqCentralApp.Controllers
                 ViewBag.LinkedRecordsID = new SelectList(availableRecords, "HseqRecordID", "LinkRecordForDisplay");
             }
 
+            return RedirectToAction("LinkExistingRecord", "Ncrs", ncr.RecordNo);
+            //return View(ncr);
+        }
+
+        //Abhi
+        public ActionResult AddApproval(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Ncr ncr = db.NcrRecords.Find(id);
+            if (ncr == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
+
             return View(ncr);
+        }
+
+        [HttpPost]
+        public ActionResult AddApproval(Ncr ncr, int? ApproverID)
+        {
+            if (ApproverID != null)
+            {
+                Ncr ncrOrig = db.NcrRecords.Find(ncr.HseqRecordID);
+
+                //Abhi Create Approvals
+                _ApprovalService.AddHseqApprovalRequest(ncrOrig, ApproverID, db);
+                db.SaveChanges();
+
+                ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
+            }
+
+            return RedirectToAction("AddApproval", "Ncrs", ncr.RecordNo);
+            //return View(ncr);
         }
 
     }

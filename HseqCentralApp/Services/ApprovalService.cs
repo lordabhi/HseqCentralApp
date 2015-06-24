@@ -19,7 +19,7 @@ namespace HseqCentralApp.Services
             currentUser = GetCurrentUser();
         }
 
-        public void AddHseqApprovalRequest(HseqRecord record, ApplicationDbContext db)
+        public void AddHseqApprovalRequest(HseqRecord record, int? ApproverID, ApplicationDbContext db)
         {
             if (record is Ncr)
             {
@@ -32,7 +32,7 @@ namespace HseqCentralApp.Services
                     //approvalRequest.Owner = db.HseqUsers.Find(_RecordService.GetCurrentUser().Id);
 
                     approvalRequest.Owner = db.HseqUsers.Find(ncr.ApproverID);
-                    approvalRequest.Assignee = db.HseqUsers.Find(ncr.ApproverID);
+                    approvalRequest.Assignee = db.HseqUsers.Find(ApproverID);
                     approvalRequest.DateAssigned = DateTime.Now;
                     approvalRequest.Title = ncr.Title;
                     approvalRequest.Description = ncr.Description;
