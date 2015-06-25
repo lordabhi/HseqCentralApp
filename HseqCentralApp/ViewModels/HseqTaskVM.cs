@@ -9,7 +9,7 @@ namespace HseqCentralApp.ViewModels
     public class HseqTaskVM
     {
         public HseqTaskVM() {
-            HseqTasks = (ICollection<HseqTask>)Ncr.Delegatables.OfType<HseqTask>().ToList();
+            //HseqTasks = (List<HseqTask>)Ncr.Delegatables.OfType<HseqTask>().ToList();
         }
 
         public HseqTaskVM(Ncr ncr)
@@ -26,5 +26,8 @@ namespace HseqCentralApp.ViewModels
         public HseqTask HseqTask { get; set; }
 
         public ICollection<HseqTask> HseqTasks { get; set; }
+
+        public ICollection<HseqTask> OwnedTasks { get; set; }
+        public ICollection<HseqTask> AssignedTasks { get; set; }
     }
 }

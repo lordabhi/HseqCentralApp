@@ -1,0 +1,33 @@
+﻿@model HseqCentralApp.ViewModels.HseqTaskVM
+
+    @{
+        ViewBag.Title = "Index";
+    }
+
+    <h2>HSEQ Tasks</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <h4>Owned By Me</h4>
+
+<table class="table">
+    @Html.Partial("_TaskHeader")
+    @foreach (var item in Model.OwnedTasks)
+    {
+        <tr>
+            @Html.Partial("_TaskDetails", item)
+        </tr>
+    }
+</table>
+<hr/>
+<h4>Assigned To Me</h4>
+<table class="table">
+    @Html.Partial("_TaskHeader")
+    @foreach (var item in Model.AssignedTasks)
+    {
+        <tr>
+            @Html.Partial("_TaskDetails", item)
+        </tr>
+    }
+</table>

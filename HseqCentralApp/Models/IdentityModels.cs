@@ -105,6 +105,8 @@ namespace HseqCentralApp.Models
 
         public System.Data.Entity.DbSet<HseqCentralApp.Models.HseqApprovalRequest> HseqApprovalRequests { get; set; }
 
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.HseqTask> HseqTasks { get; set; }
+
         public System.Data.Entity.DbSet<HseqCentralApp.Models.HseqUser> HseqUsers { get; set; }
 
 

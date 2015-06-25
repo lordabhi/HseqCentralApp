@@ -204,6 +204,7 @@
     <Compile Include="Controllers\FisCodesController.cs" />
     <Compile Include="Controllers\GroupsAdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HseqTasksController.cs" />
     <Compile Include="Controllers\HseqApprovalRequestsController.cs" />
     <Compile Include="Controllers\HseqUsersController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -414,6 +415,12 @@
     <Content Include="Views\Shared\_TaskDetails.cshtml" />
     <Content Include="Views\Shared\_TaskHeader.cshtml" />
     <Content Include="Views\Ncrs\Create - Copy.cshtml" />
+    <Content Include="Views\HseqTasks\Create.cshtml" />
+    <Content Include="Views\HseqTasks\Delete.cshtml" />
+    <Content Include="Views\HseqTasks\Details.cshtml" />
+    <Content Include="Views\HseqTasks\Edit.cshtml" />
+    <Content Include="Views\HseqTasks\HseqTaskRequest.cshtml" />
+    <Content Include="Views\HseqTasks\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
