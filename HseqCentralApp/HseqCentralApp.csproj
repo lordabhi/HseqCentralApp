@@ -221,6 +221,7 @@
     <Compile Include="Models\ApproverDisposition.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\Delegatable.cs" />
+    <Compile Include="Models\HseqTask.cs" />
     <Compile Include="Models\Records\FisCode.cs" />
     <Compile Include="Models\HseqApprovalRequest.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Services\LinkRecordService.cs" />
     <Compile Include="Services\RecordService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\NcrTaskVM.cs" />
     <Compile Include="ViewModels\HseqApprovalRequestVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -407,6 +409,9 @@
     <Content Include="Views\Shared\_ApprovalDetails.cshtml" />
     <Content Include="Views\HseqApprovalRequests\HseqUserApprovalRequest.cshtml" />
     <Content Include="Views\Home\Index - Copy.cshtml" />
+    <Content Include="Views\Ncrs\AddTask.cshtml" />
+    <Content Include="Views\Shared\_TaskDetails.cshtml" />
+    <Content Include="Views\Shared\_TaskHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

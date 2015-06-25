@@ -80,7 +80,7 @@
 <table class="table">
     <h4>HSEQ Approval Requests</h4>
     @Html.Partial("_ApprovalHeader")
-    @foreach (var item in Model.Approvals)
+    @foreach (var item in Model.Delegatables)
     {
         <tr>
             @Html.Partial("_ApprovalDetails", item)

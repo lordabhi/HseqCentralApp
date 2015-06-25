@@ -13,7 +13,7 @@ namespace HseqCentralApp.Models
         {
 
             this.LinkedRecords = new HashSet<HseqRecord>();
-            this.Approvals = new HashSet<Delegatable>();
+            this.Delegatables = new HashSet<Delegatable>();
         }
 
         public HseqRecord(HseqRecord record)
@@ -60,8 +60,9 @@ namespace HseqCentralApp.Models
         [Display(Name = "Reported By")]
         public String ReportedBy { get; set; }
 
-        //[Display(Name = "Quality Coordinator")]
-        //public String QualityCoordinator { get; set; }
+        [Display(Name = "Coordinator")]
+        public int CoordinatorID { get; set; }
+        public virtual HseqUser Coordinator { get; set; }
 
         public int? LinkedRecordsID { get; set; }
         public virtual ICollection<HseqRecord> LinkedRecords { get; set; }
@@ -93,11 +94,8 @@ namespace HseqCentralApp.Models
         public int? ApproverID { get; set; }
         public virtual HseqUser Approver { get; set; }
 
-        public virtual ICollection<Delegatable> Approvals { get; set; }
+        public virtual ICollection<Delegatable> Delegatables { get; set; }
 
-        [Display(Name = "Coordinator")]
-        public int CoordinatorID { get; set; }
-        public virtual HseqUser Coordinator { get; set; }
 
         /////////////////////////////////////////////////////
 

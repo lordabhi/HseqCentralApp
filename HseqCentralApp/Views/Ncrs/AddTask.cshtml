@@ -1,0 +1,89 @@
+﻿@model HseqCentralApp.ViewModels.NcrTaskVM
+
+@{
+    ViewBag.Title = "Add HSEQ Task";
+}
+
+<h2>HSEQ Tasks</h2>
+
+@using (Html.BeginForm("AddTask", "Ncrs", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Ncr</h4>
+        <hr />
+        @*@Html.HiddenFor(model => model.NcrRecord)*@
+        @Html.HiddenFor(model => model.Ncr.HseqRecordID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ncr.CaseNo, "Case Number", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Ncr.CaseNo)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ncr.RecordNo, "Record Number", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Ncr.RecordNo)
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HseqTask.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.HseqTask.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.HseqTask.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.HseqTask.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.HseqTask.Description, new { htmlAttributes = new { @class = "form-control" }, style = "width:1150px; height: 50px" })
+                @Html.ValidationMessageFor(model => model.HseqTask.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApproverID, "Disposition Approver", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ApproverID", null, "", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ApproverID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="New Approval Request" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<br />
+<br />
+
+<table class="table">
+    <h4>HSEQ Approval Requests</h4>
+    @Html.Partial("_TaskHeader")
+    @foreach (var item in Model.HseqTasks)
+    {
+        <tr>
+            @Html.Partial("_TaskDetails", item)
+        </tr>
+    }
+</table>
+
+<br/>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

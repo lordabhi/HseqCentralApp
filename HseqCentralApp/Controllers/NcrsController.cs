@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using HseqCentralApp.Models;
 using HseqCentralApp.Services;
+using HseqCentralApp.ViewModels;
 
 namespace HseqCentralApp.Controllers
 {
@@ -440,6 +441,44 @@ namespace HseqCentralApp.Controllers
             return RedirectToAction("AddApproval", "Ncrs", ncr.RecordNo);
             //return View(ncr);
         }
+
+        public ActionResult AddTask(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Ncr ncr = db.NcrRecords.Find(id);
+            if (ncr == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
+
+            NcrTaskVM TaskVM = new NcrTaskVM(ncr);
+
+            return View(TaskVM);
+        }
+
+        [HttpPost]
+        public ActionResult AddTask([Bind(Include = "Ncr, HseqTask, ApproverID")]NcrTaskVM ncrTaskVM)
+        {
+            Ncr ncrOrig = null;
+            if (ncrTaskVM.ApproverID != null && ncrTaskVM.Ncr.HseqRecordID != null)
+            {
+                ncrOrig = db.NcrRecords.Find(ncrTaskVM.Ncr.HseqRecordID);
+
+                _ApprovalService.AddHseqTaskRequest(ncrOrig, ncrTaskVM.ApproverID, ncrTaskVM.HseqTask,  db);
+                db.SaveChanges();
+
+                ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
+            }
+
+            return RedirectToAction("AddTask", "Ncrs", ncrOrig.RecordNo);
+            //return View(ncr);
+        }
+
 
     }
 }
