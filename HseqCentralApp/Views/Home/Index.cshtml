@@ -2,85 +2,85 @@
     ViewBag.Title = "Waiward";
 }
 <h2>Welcome to HSEQ Central</h2>
+<style>
+    #apnd div {
+        height: 700px;
+        width: 100px;
+        /*border: 1px solid red;*/
+        margin-left: 5px;
+        float: left; /*Here you can also use display: inline-block instead of float:left*/
+        background: white;
+    }
+</style>
 <div class="row">
-    <table cellpadding="50">
-        <tr>
-            <td>
-                <h3> Records Area</h3>
-                <br />
-                <h4>Case Files</h4>
-                @Html.ActionLink("View case Files", "Index", "HseqCaseFiles")
-                <br />
-                <br />
+    <div id="apnd">
+        <div style="width:40%;padding-left:10px">
+            <h3> Records Area</h3>
+            <br />
+            <h4>Case Files</h4>
+            @Html.ActionLink("View case Files", "Index", "HseqCaseFiles")
+            <br />
+            <br />
 
-                <h4> Non-Conformance Record (NCR)</h4>
-                @Html.ActionLink("Report a non-conformance", "Create", "Ncrs")
-                <br />
-                <br />
-                @Html.ActionLink("View Existing non-conformance Records", "Index", "Ncrs")
-                <br />
-                <br />
-                <h4> Feedback/Improvement Suggestion (FIS)</h4>
-                @Html.ActionLink("Report a Feedback / Improvement Suggestion", "Create", "Fis")
-                <br />
-                <br />
-                @Html.ActionLink("View Existing Feedback / Improvement Suggestions", "Index", "Fis")
-                <br />
-                <br />
-                <h4> Corrective Action Record (CAR)</h4>
-                @Html.ActionLink("Report a Corrective Action", "Create", "Cars")
-                <br />
-                <br />
-                @Html.ActionLink("View Existing Corrective Action Records", "Index", "Cars")
-                <br />
-                <br />
-                <h4> Preventive Action Record (PAR)</h4>
-                @Html.ActionLink("Report a Preventive Action", "Create", "Pars")
-                <br />
-                <br />
-                @Html.ActionLink("View Existing Preventive Action Records", "Index", "Pars")
-                <br />
-                <br />
+            <h4> Non-Conformance Record (NCR)</h4>
+            @Html.ActionLink("Report a non-conformance", "Create", "Ncrs")
+            <br />
+            <br />
+            @Html.ActionLink("View Existing non-conformance Records", "Index", "Ncrs")
+            <br />
+            <br />
+            <h4> Feedback/Improvement Suggestion (FIS)</h4>
+            @Html.ActionLink("Report a Feedback / Improvement Suggestion", "Create", "Fis")
+            <br />
+            <br />
+            @Html.ActionLink("View Existing Feedback / Improvement Suggestions", "Index", "Fis")
+            <br />
+            <br />
+            <h4> Corrective Action Record (CAR)</h4>
+            @Html.ActionLink("Report a Corrective Action", "Create", "Cars")
+            <br />
+            <br />
+            @Html.ActionLink("View Existing Corrective Action Records", "Index", "Cars")
+            <br />
+            <br />
+            <h4> Preventive Action Record (PAR)</h4>
+            @Html.ActionLink("Report a Preventive Action", "Create", "Pars")
+            <br />
+            <br />
+            @Html.ActionLink("View Existing Preventive Action Records", "Index", "Pars")
+            <br />
+        </div>
 
-                @*<h4> Pending Approvals </h4>
+        <div style="width:25%;padding-left:10px">
+            <h3> Approvals </h3>
+            <br />
+            @Html.ActionLink("All Approval Requests", "Index", "HseqApprovalRequests")
+            <br />
+            <br />
+            @Html.ActionLink("My Approval Requests", "HseqUserApprovalRequest", "HseqApprovalRequests")
+            <br />
+            <br />
 
-                @Html.ActionLink("Pending Approvals", "PendingApproval", "Ncrs")*@
-            </td>
+            <h3> Configurations </h3>
+            <br />
+            @Html.ActionLink("Discrepancy Type", "Index", "DiscrepancyTypes")
+            <br />
+            <br />
+            @Html.ActionLink("Business Area", "Index", "BusinessAreas")
+            <br />
+            <br />
+            @Html.ActionLink("Disposition Type", "Index", "DispositionTypes")
+            <br />
+            <br />
+            @Html.ActionLink("FIS Category", "Index", "FisCategories")
+            <br />
+            <br />
+            @Html.ActionLink("FIS Codes", "Index", "FisCodes")
+            <br />
+        </div>
 
-            <td>
-                <h3> Approvals </h3>
-                <br />
-                @Html.ActionLink("All Approval Requests", "Index", "HseqApprovalRequests")
-                <br />
-                <br />
-                @Html.ActionLink("My Approval Requests", "HseqUserIndex", "HseqApprovalRequests")
-            </td>
-
-            <td>
-                <h3> Configurations </h3>
-                <br />
-                @Html.ActionLink("Discrepancy Type", "Index", "DiscrepancyTypes")
-                <br />
-                <br />
-                @Html.ActionLink("Business Area", "Index", "BusinessAreas")
-                <br />
-                <br />
-                @Html.ActionLink("Disposition Type", "Index", "DispositionTypes")
-                <br />
-                <br />
-                @Html.ActionLink("FIS Category", "Index", "FisCategories")
-                <br />
-                <br />
-                @Html.ActionLink("FIS Codes", "Index", "FisCodes")
-                <br />
-                <br />
-               
-
-
-            </td>
-
-            <td>
-                @if (User.Identity.IsAuthenticated)
+            <div style="width:30%">
+            @if (User.Identity.IsAuthenticated)
                 {
                     if (User.IsInRole("Admin"))
                     {
@@ -101,11 +101,8 @@
                         <br />
                         <br />
                         @Html.ActionLink("Manage Application Users", "Index", "HseqUsers")
-
-
-                    }
-                }
-            </td>
-        </tr>
-    </table>
+            }
+          }
+        </div>
+    </div>
 </div>

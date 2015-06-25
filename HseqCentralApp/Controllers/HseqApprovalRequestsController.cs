@@ -9,12 +9,26 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HseqCentralApp.Models;
+using HseqCentralApp.Services;
+using HseqCentralApp.ViewModels;
 
 namespace HseqCentralApp.Controllers
 {
     public class HseqApprovalRequestsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        RecordService _RecordService;
+
+        public HseqApprovalRequestsController()
+        {
+            _RecordService = new RecordService();
+        }
+
+        public HseqApprovalRequestsController(RecordService service)
+        {
+            _RecordService = service;
+        }
 
         // GET: HseqApprovalRequests1
         public ActionResult Index()
@@ -24,11 +38,17 @@ namespace HseqCentralApp.Controllers
         }
 
 
-        public ActionResult HseqUserIndex()
+        public ActionResult HseqUserApprovalRequest()
         {
-            var delegatables = db.HseqApprovalRequests.Include(h => h.Assignee).Include(h => h.HseqRecord).Include(h => h.Owner);
-            var delegatables2 = db.HseqApprovalRequests.Where(h=>h.AssigneeID == 3 || h.OwnerID == 3);
-            return View(delegatables2.ToList());
+            HseqUser user = _RecordService.GetCurrentApplicationUser();
+            //var delegatables = db.HseqApprovalRequests.Include(h => h.Assignee).Include(h => h.HseqRecord).Include(h => h.Owner);
+            var ownedRequests = db.HseqApprovalRequests.Where(h => h.OwnerID == user.HseqUserID);
+            var assignedRequests = db.HseqApprovalRequests.Where(h => h.AssigneeID == user.HseqUserID);
+
+            HseqApprovalRequestVM approvalRequests = new HseqApprovalRequestVM();
+            approvalRequests.OwnedRequests = ownedRequests.ToList();
+            approvalRequests.AssignedRequests = assignedRequests.ToList();
+            return View(approvalRequests);
         }
 
         // GET: HseqApprovalRequests1/Details/5

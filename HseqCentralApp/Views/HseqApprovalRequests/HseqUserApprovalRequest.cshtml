@@ -1,0 +1,34 @@
+﻿@*@model IEnumerable<HseqCentralApp.ViewModels.HseqApprovalRequestVM>*@
+@model HseqCentralApp.ViewModels.HseqApprovalRequestVM
+
+    @{
+        ViewBag.Title = "Index";
+    }
+
+    <h2>HSEQ Approval Resquests</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <h4>Owned By Me</h4>
+
+<table class="table">
+    @Html.Partial("_ApprovalHeader")
+    @foreach (var item in Model.OwnedRequests)
+    {
+        <tr>
+            @Html.Partial("_ApprovalDetails", item)
+        </tr>
+    }
+</table>
+<hr/>
+<h4>Assigned To Me</h4>
+<table class="table">
+    @Html.Partial("_ApprovalHeader")
+    @foreach (var item in Model.AssignedRequests)
+    {
+        <tr>
+            @Html.Partial("_ApprovalDetails", item)
+        </tr>
+    }
+</table>

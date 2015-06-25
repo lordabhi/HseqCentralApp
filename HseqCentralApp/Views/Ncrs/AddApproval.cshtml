@@ -78,7 +78,8 @@
 <br />
 
 <table class="table">
-    @Html.Partial("_ApprovalHeader", Model)
+    <h4>HSEQ Approval Requests</h4>
+    @Html.Partial("_ApprovalHeader")
     @foreach (var item in Model.Approvals)
     {
         <tr>

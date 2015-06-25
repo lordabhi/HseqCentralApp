@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using HseqCentralApp.Controllers;
 
 namespace HseqCentralApp
 {
@@ -19,6 +20,9 @@ namespace HseqCentralApp
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //Register your View Engine Here.
+            //ViewEngines.Engines.Add(new MyViewEngine());
         }
     }
 }

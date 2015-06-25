@@ -207,6 +207,7 @@
     <Compile Include="Controllers\HseqApprovalRequestsController.cs" />
     <Compile Include="Controllers\HseqUsersController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MyViewEngine.cs" />
     <Compile Include="Controllers\ParsController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
@@ -220,7 +221,7 @@
     <Compile Include="Models\ApproverDisposition.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\Delegatable.cs" />
-    <Compile Include="Models\FisCode.cs" />
+    <Compile Include="Models\Records\FisCode.cs" />
     <Compile Include="Models\HseqApprovalRequest.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
@@ -245,7 +246,7 @@
     <Compile Include="Models\NcrState.cs" />
     <Compile Include="Models\Par.cs" />
     <Compile Include="Models\RecordType.cs" />
-    <Compile Include="Models\FisCategory.cs" />
+    <Compile Include="Models\Records\FisCategory.cs" />
     <Compile Include="Models\Test.cs" />
     <Compile Include="Models\HseqUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Services\LinkRecordService.cs" />
     <Compile Include="Services\RecordService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\HseqApprovalRequestVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -403,12 +405,13 @@
     <Content Include="Views\Ncrs\AddApproval.cshtml" />
     <Content Include="Views\Shared\_ApprovalHeader.cshtml" />
     <Content Include="Views\Shared\_ApprovalDetails.cshtml" />
-    <Content Include="Views\HseqApprovalRequests\HseqUserIndex.cshtml" />
+    <Content Include="Views\HseqApprovalRequests\HseqUserApprovalRequest.cshtml" />
+    <Content Include="Views\Home\Index - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="ViewModels\" />
+    <Folder Include="Views\Records\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

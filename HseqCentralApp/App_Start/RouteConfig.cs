@@ -18,6 +18,12 @@ namespace HseqCentralApp
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            //routes.MapRoute(
+            //            name: "Default",
+            //            url: "{controller}/{category}/{action}/{id}",
+            //            defaults: new { controller = "Home", action = "Index", category = "DefaultCategoryName", id = UrlParameter.Optional }
+            //        );
         }
     }
 }

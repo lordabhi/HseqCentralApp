@@ -68,6 +68,13 @@ namespace HseqCentralApp.Services
         
         }
 
+        public HseqUser GetCurrentApplicationUser()
+        {
+
+            ApplicationUser currentUser = GetCurrentUser();
+            HseqUser hseqUser = db.HseqUsers.Where(a => a.UserID == currentUser.Id).First();
+            return hseqUser;
+        }
 
 
         internal int GetNextCaseNumber(ApplicationDbContext db)
