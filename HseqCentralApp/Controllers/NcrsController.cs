@@ -136,7 +136,7 @@ namespace HseqCentralApp.Controllers
                 ncr.AlfrescoNoderef = caseNo;
 
                 //Abhi Create Approvals
-                _ApprovalService.AddHseqApprovalRequest(ncr, ncr.ApproverID, db);
+                //_ApprovalService.AddHseqApprovalRequest(ncr, ncr.ApproverID, db);
                 
                 db.SaveChanges();
 
@@ -200,7 +200,7 @@ namespace HseqCentralApp.Controllers
                     ncr = (Ncr)_LinkRecordService.CreateLinkRecord(ncr, recordId, recordSource, RecordType.NCR, db);
 
                     //Create Approvals
-                    _ApprovalService.AddHseqApprovalRequest(ncr, ncr.ApproverID, db);
+                   // _ApprovalService.AddHseqApprovalRequest(ncr, ncr.ApproverID, db);
 
                     TempData["recordId"] = null;
                     TempData["recordSource"] = null;
@@ -420,25 +420,27 @@ namespace HseqCentralApp.Controllers
             }
 
             ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
+            HseqApprovalRequestVM approvalRequestVM = new HseqApprovalRequestVM(ncr);
 
-            return View(ncr);
+            return View(approvalRequestVM);
         }
 
         [HttpPost]
-        public ActionResult AddApproval(Ncr ncr, int? ApproverID)
+        public ActionResult AddApproval([Bind(Include = "Ncr, HseqApprovalRequest, ApproverID")]HseqApprovalRequestVM hseqApprovalRequestVM)
         {
-            if (ApproverID != null)
+            Ncr ncrOrig = null;
+            if (hseqApprovalRequestVM.ApproverID != null && hseqApprovalRequestVM.Ncr.HseqRecordID != null)
             {
-                Ncr ncrOrig = db.NcrRecords.Find(ncr.HseqRecordID);
+                ncrOrig = db.NcrRecords.Find(hseqApprovalRequestVM.Ncr.HseqRecordID);
 
                 //Abhi Create Approvals
-                _ApprovalService.AddHseqApprovalRequest(ncrOrig, ApproverID, db);
+                _ApprovalService.AddHseqApprovalRequest(ncrOrig, hseqApprovalRequestVM.ApproverID, hseqApprovalRequestVM.HseqApprovalRequest, db);
                 db.SaveChanges();
 
                 ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
             }
 
-            return RedirectToAction("AddApproval", "Ncrs", ncr.RecordNo);
+            return RedirectToAction("AddApproval", "Ncrs", ncrOrig.RecordNo);
             //return View(ncr);
         }
 
@@ -456,13 +458,13 @@ namespace HseqCentralApp.Controllers
 
             ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
 
-            NcrTaskVM TaskVM = new NcrTaskVM(ncr);
+            HseqTaskVM TaskVM = new HseqTaskVM(ncr);
 
             return View(TaskVM);
         }
 
         [HttpPost]
-        public ActionResult AddTask([Bind(Include = "Ncr, HseqTask, ApproverID")]NcrTaskVM ncrTaskVM)
+        public ActionResult AddTask([Bind(Include = "Ncr, HseqTask, ApproverID")]HseqTaskVM ncrTaskVM)
         {
             Ncr ncrOrig = null;
             if (ncrTaskVM.ApproverID != null && ncrTaskVM.Ncr.HseqRecordID != null)

@@ -6,13 +6,13 @@ using HseqCentralApp.Models;
 
 namespace HseqCentralApp.ViewModels
 {
-    public class NcrTaskVM
+    public class HseqTaskVM
     {
-        public NcrTaskVM() {
-            HseqTasks = (ICollection<HseqTask>)Ncr.Delegatables.ToList().OfType<HseqTask>();
+        public HseqTaskVM() {
+            HseqTasks = (ICollection<HseqTask>)Ncr.Delegatables.OfType<HseqTask>().ToList();
         }
 
-        public NcrTaskVM(Ncr ncr)
+        public HseqTaskVM(Ncr ncr)
         {
             this.Ncr = ncr;
             HseqTasks = (List<HseqTask>)this.Ncr.Delegatables.OfType<HseqTask>().ToList();

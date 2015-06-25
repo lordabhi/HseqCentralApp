@@ -19,20 +19,20 @@ namespace HseqCentralApp.Services
             currentUser = GetCurrentUser();
         }
 
-        public void AddHseqApprovalRequest(HseqRecord record, int? ApproverID, ApplicationDbContext db)
+        public void AddHseqApprovalRequest(HseqRecord record, int? ApproverID, HseqApprovalRequest hseqApprovalRequest, ApplicationDbContext db)
         {
             if (record is Ncr)
             {
                 Ncr ncr = (Ncr)record;
 
-                if (ncr.ApproverID != null && ncr.ApproverID > 0)
+                if (ApproverID != null && ApproverID > 0)
                 {
 
                     HseqApprovalRequest approvalRequest = new HseqApprovalRequest();
                     //approvalRequest.Owner = db.HseqUsers.Find(_RecordService.GetCurrentUser().Id);
 
-                    approvalRequest.Owner = db.HseqUsers.Find(ncr.ApproverID);
-                    approvalRequest.Assignee = db.HseqUsers.Find(ApproverID);
+                    approvalRequest.Owner = db.HseqUsers.Find(ApproverID);
+                    approvalRequest.Assignee = db.HseqUsers.Find(GetCurrentApplicationUser().HseqUserID);
                     approvalRequest.DateAssigned = DateTime.Now;
                     approvalRequest.Title = ncr.Title;
                     approvalRequest.Description = ncr.Description;

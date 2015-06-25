@@ -1,4 +1,4 @@
-﻿@model HseqCentralApp.Models.Ncr
+﻿@model HseqCentralApp.ViewModels.HseqApprovalRequestVM
 
 @{
     ViewBag.Title = "Add Approval Requests";
@@ -15,43 +15,19 @@
     <div class="form-horizontal">
         <h4>Ncr</h4>
         <hr />
-        @Html.HiddenFor(model => model.CaseNo)
-        @Html.HiddenFor(model => model.RecordNo)
-        @Html.HiddenFor(model => model.HseqRecordID)
-        @Html.HiddenFor(model => model.HseqCaseFileID)
-        @Html.HiddenFor(model => model.AlfrescoNoderef)
-        @Html.HiddenFor(model => model.DateCreated)
-        @Html.HiddenFor(model => model.CreatedBy)
-        @Html.HiddenFor(model => model.DateLastUpdated, new { @Value = System.DateTime.Now })
-        @Html.HiddenFor(model => model.LastUpdatedBy)
-        @Html.HiddenFor(model => model.RecordType)
-        @Html.HiddenFor(model => model.DiscrepancyTypeID)
-        @Html.HiddenFor(model => model.DetectedInAreaID)
-        @Html.HiddenFor(model => model.ResponsibleAreaID)
-        @Html.HiddenFor(model => model.DispositionTypeID)
-        @Html.HiddenFor(model => model.RecordType)
-        @Html.HiddenFor(model => model.EnteredBy)
-        @Html.HiddenFor(model => model.ReportedBy)
-        @Html.HiddenFor(model => model.CoordinatorID)
-        @Html.HiddenFor(model => model.Title)
-        @Html.HiddenFor(model => model.Description)
-        @Html.HiddenFor(model => model.NcrSource)
-        @Html.HiddenFor(model => model.NcrState)
-        @Html.HiddenFor(model => model.JobNumber)
-        @Html.HiddenFor(model => model.DrawingNumber)
-        @Html.HiddenFor(model => model.DispositionNote)
+        @Html.HiddenFor(model => model.Ncr.HseqRecordID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CaseNo, "Case Number", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Ncr.CaseNo, "Case Number", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DisplayFor(model => model.CaseNo)
+                @Html.DisplayFor(model => model.Ncr.CaseNo)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.RecordNo, "Record Number", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Ncr.RecordNo, "Record Number", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DisplayFor(model => model.RecordNo)
+                @Html.DisplayFor(model => model.Ncr.RecordNo)
             </div>
         </div>
 
@@ -80,7 +56,7 @@
 <table class="table">
     <h4>HSEQ Approval Requests</h4>
     @Html.Partial("_ApprovalHeader")
-    @foreach (var item in Model.Delegatables)
+    @foreach (var item in Model.HseqApprovalRequests)
     {
         <tr>
             @Html.Partial("_ApprovalDetails", item)

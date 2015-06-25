@@ -255,8 +255,9 @@
     <Compile Include="Services\LinkRecordService.cs" />
     <Compile Include="Services\RecordService.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\NcrTaskVM.cs" />
+    <Compile Include="ViewModels\HseqTaskVM.cs" />
     <Compile Include="ViewModels\HseqApprovalRequestVM.cs" />
+    <Compile Include="ViewModels\NcrVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -412,6 +413,7 @@
     <Content Include="Views\Ncrs\AddTask.cshtml" />
     <Content Include="Views\Shared\_TaskDetails.cshtml" />
     <Content Include="Views\Shared\_TaskHeader.cshtml" />
+    <Content Include="Views\Ncrs\Create - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
