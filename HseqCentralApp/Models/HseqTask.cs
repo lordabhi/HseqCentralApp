@@ -22,6 +22,7 @@ namespace HseqCentralApp.Models
     public enum TaskStatus
     {
         [Description("Not Started")]
+        [Display(Name = "Not Started")]
         NotStarted = 1,
         Active = 2,
         Completed = 3,

@@ -1,6 +1,9 @@
 ﻿@model HseqCentralApp.Models.HseqTask
 
         <td>
+            @Html.ActionLink(@Html.DisplayFor(model => model.Title).ToString(), "Details", "HseqTasks", new { id = Model.DelegatableID }, null)
+        </td>
+        <td>
             @Html.DisplayFor(model => model.DateAssignedForDisplay)
         </td>        
         <td>
@@ -16,6 +19,6 @@
         <td>
             @Html.DisplayFor(model => model.Status)
         </td>
-        <td>
+        @*<td>
             @Html.ActionLink("View", "Details", "HseqTasks", new { id = Model.DelegatableID }, null)
-        </td>
+        </td>*@

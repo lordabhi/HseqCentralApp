@@ -6,14 +6,14 @@ using HseqCentralApp.Models;
 
 namespace HseqCentralApp.Services
 {
-    public class ApprovalService
+    public class DelegatableService
     {
 
         private ApplicationDbContext db = new ApplicationDbContext();
 
         private ApplicationUser currentUser;
 
-        public ApprovalService()
+        public DelegatableService()
         {
 
             currentUser = GetCurrentUser();
@@ -34,9 +34,16 @@ namespace HseqCentralApp.Services
                     approvalRequest.Owner = db.HseqUsers.Find(ApproverID);
                     approvalRequest.Assignee = db.HseqUsers.Find(GetCurrentApplicationUser().HseqUserID);
                     approvalRequest.DateAssigned = DateTime.Now;
-                    approvalRequest.Title = ncr.Title;
-                    approvalRequest.Description = ncr.Description;
-                    approvalRequest.DueDate = DateTime.Now.AddDays(14);
+                    approvalRequest.Title = hseqApprovalRequest.Title;
+                    approvalRequest.Description = hseqApprovalRequest.Description;
+                    if (hseqApprovalRequest.DueDate == null)
+                    {
+                        approvalRequest.DueDate = DateTime.Now.AddDays(14);
+                    }
+                    else {
+                        approvalRequest.DueDate = hseqApprovalRequest.DueDate;
+                    }
+                    
                     approvalRequest.Status = ApprovalStatus.Active;
                     approvalRequest.Response = ApprovalResult.Waiting;
 
@@ -58,7 +65,14 @@ namespace HseqCentralApp.Services
                     taskRequest.Owner = db.HseqUsers.Find(ApproverID);
                     taskRequest.Assignee = db.HseqUsers.Find(GetCurrentApplicationUser().HseqUserID);
                     taskRequest.DateAssigned = DateTime.Now;
-                    taskRequest.DueDate = DateTime.Now.AddDays(14);
+                    if (taskRequest.DueDate == null)
+                    {
+                        taskRequest.DueDate = DateTime.Now.AddDays(14);
+                    }
+                    else
+                    {
+                        taskRequest.DueDate = taskRequest.DueDate;
+                    }
                     taskRequest.Status = TaskStatus.NotStarted;
                     taskRequest.HseqRecordID = ncr.HseqRecordID;
                     ncr.Delegatables.Add(taskRequest);

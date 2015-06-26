@@ -38,7 +38,7 @@ namespace HseqCentralApp.Controllers
         }
 
 
-        public ActionResult HseqUserApprovalRequest()
+        public ActionResult OpenAction()
         {
             HseqUser user = _RecordService.GetCurrentApplicationUser();
             //var delegatables = db.HseqApprovalRequests.Include(h => h.Assignee).Include(h => h.HseqRecord).Include(h => h.Owner);

@@ -1,12 +1,17 @@
 ﻿@model HseqCentralApp.Models.HseqApprovalRequest
 
+        @*<td>
+            @Html.DisplayFor(model => model.Title)
+        </td>*@  
+        <td>
+            @Html.ActionLink(@Html.DisplayFor(model => model.Title).ToString(), "Details", "HseqApprovalRequests", new { id = Model.DelegatableID }, null)
+        </td>      
         <td>
             @Html.DisplayFor(model => model.DateAssignedForDisplay)
         </td>        
         <td>
             @Html.DisplayFor(model => model.Owner.FullName)
         </td>
-
         <td>
             @Html.DisplayFor(model => model.Assignee.FullName)
         </td>
@@ -19,6 +24,6 @@
         <td>
             @Html.DisplayFor(model => model.ResponseDate)
         </td>
-        <td>
-            @Html.ActionLink("View", "Details", "HseqApprovalRequests", new { id = Model.DelegatableID }, null)
-        </td>
+        @*<td>
+            @Html.ActionLink(@Html.DisplayFor(model => model.Title).ToString(), "Details", "HseqApprovalRequests", new { id = Model.DelegatableID }, null)
+        </td>*@

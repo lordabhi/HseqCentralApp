@@ -38,7 +38,7 @@ namespace HseqCentralApp.Controllers
         }
 
 
-        public ActionResult HseqTaskRequest()
+        public ActionResult OpenAction()
         {
             HseqUser user = _RecordService.GetCurrentApplicationUser();
             var ownedRequests = db.HseqTasks.Where(h => h.OwnerID == user.HseqUserID);

@@ -21,13 +21,13 @@ namespace HseqCentralApp.Controllers
 
         RecordService _RecordService;
         LinkRecordService _LinkRecordService;
-        ApprovalService _ApprovalService;
+        DelegatableService _DelegatableService;
 
         public NcrsController()
         {
             _RecordService = new RecordService();
             _LinkRecordService = new LinkRecordService();
-            _ApprovalService = new ApprovalService();
+            _DelegatableService = new DelegatableService();
         }
 
 
@@ -42,9 +42,9 @@ namespace HseqCentralApp.Controllers
             _LinkRecordService = service;
         }
 
-        public NcrsController(ApprovalService service)
+        public NcrsController(DelegatableService service)
         {
-            _ApprovalService = service;
+            _DelegatableService = service;
         }
 
         // GET: Ncrs
@@ -136,7 +136,7 @@ namespace HseqCentralApp.Controllers
                 ncr.AlfrescoNoderef = caseNo;
 
                 //Abhi Create Approvals
-                //_ApprovalService.AddHseqApprovalRequest(ncr, ncr.ApproverID, db);
+                //_DelegatableService.AddHseqApprovalRequest(ncr, ncr.ApproverID, db);
                 
                 db.SaveChanges();
 
@@ -200,7 +200,7 @@ namespace HseqCentralApp.Controllers
                     ncr = (Ncr)_LinkRecordService.CreateLinkRecord(ncr, recordId, recordSource, RecordType.NCR, db);
 
                     //Create Approvals
-                   // _ApprovalService.AddHseqApprovalRequest(ncr, ncr.ApproverID, db);
+                   // _DelegatableService.AddHseqApprovalRequest(ncr, ncr.ApproverID, db);
 
                     TempData["recordId"] = null;
                     TempData["recordSource"] = null;
@@ -434,7 +434,7 @@ namespace HseqCentralApp.Controllers
                 ncrOrig = db.NcrRecords.Find(hseqApprovalRequestVM.Ncr.HseqRecordID);
 
                 //Abhi Create Approvals
-                _ApprovalService.AddHseqApprovalRequest(ncrOrig, hseqApprovalRequestVM.ApproverID, hseqApprovalRequestVM.HseqApprovalRequest, db);
+                _DelegatableService.AddHseqApprovalRequest(ncrOrig, hseqApprovalRequestVM.ApproverID, hseqApprovalRequestVM.HseqApprovalRequest, db);
                 db.SaveChanges();
 
                 ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
@@ -471,7 +471,7 @@ namespace HseqCentralApp.Controllers
             {
                 ncrOrig = db.NcrRecords.Find(ncrTaskVM.Ncr.HseqRecordID);
 
-                _ApprovalService.AddHseqTaskRequest(ncrOrig, ncrTaskVM.ApproverID, ncrTaskVM.HseqTask,  db);
+                _DelegatableService.AddHseqTaskRequest(ncrOrig, ncrTaskVM.ApproverID, ncrTaskVM.HseqTask,  db);
                 db.SaveChanges();
 
                 ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");

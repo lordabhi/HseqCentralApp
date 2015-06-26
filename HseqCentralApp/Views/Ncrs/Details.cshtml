@@ -1,5 +1,7 @@
 ﻿@model HseqCentralApp.Models.Ncr
 
+@using HseqCentralApp.Models;
+
 @{
     ViewBag.Title = "Details";
 }
@@ -58,11 +60,11 @@
             @Html.DisplayFor(model => model.ReportedBy)
         </dd>
         @*<dt>
-            @Html.DisplayNameFor(model => model.QualityCoordinator)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.QualityCoordinator)
-        </dd>*@
+                @Html.DisplayNameFor(model => model.QualityCoordinator)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.QualityCoordinator)
+            </dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.DiscrepancyType.Name)
         </dt>
@@ -157,6 +159,32 @@
     </table>
 
     <hr />
+
+    <table class="table">
+        <h4>HSEQ Approval Requests</h4>
+        @Html.Partial("_ApprovalHeader")
+        @foreach (var item in Model.Delegatables.OfType<HseqApprovalRequest>())
+        {
+            <tr>
+                @Html.Partial("_ApprovalDetails", item)
+            </tr>
+        }
+    </table>
+
+    <hr />
+
+    <table class="table">
+        <h4>HSEQ Tasks</h4>
+        @Html.Partial("_TaskHeader")
+        @foreach (var item in Model.Delegatables.OfType<HseqTask>())
+        {
+            <tr>
+                @Html.Partial("_TaskDetails", item)
+            </tr>
+        }
+    </table>
+
+    <br />
 
 
 </div>

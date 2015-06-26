@@ -216,6 +216,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApprovalResult.cs" />
     <Compile Include="Models\ApprovalStatus.cs" />
@@ -252,7 +253,7 @@
     <Compile Include="Models\Test.cs" />
     <Compile Include="Models\HseqUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ApprovalService.cs" />
+    <Compile Include="Services\DelegatableService.cs" />
     <Compile Include="Services\LinkRecordService.cs" />
     <Compile Include="Services\RecordService.cs" />
     <Compile Include="Startup.cs" />
@@ -405,12 +406,10 @@
     <Content Include="Views\HseqApprovalRequests\Details.cshtml" />
     <Content Include="Views\HseqApprovalRequests\Edit.cshtml" />
     <Content Include="Views\HseqApprovalRequests\Index.cshtml" />
-    <Content Include="Views\Home\Index2.cshtml" />
     <Content Include="Views\Ncrs\AddApproval.cshtml" />
     <Content Include="Views\Shared\_ApprovalHeader.cshtml" />
     <Content Include="Views\Shared\_ApprovalDetails.cshtml" />
-    <Content Include="Views\HseqApprovalRequests\HseqUserApprovalRequest.cshtml" />
-    <Content Include="Views\Home\Index - Copy.cshtml" />
+    <Content Include="Views\HseqApprovalRequests\OpenAction.cshtml" />
     <Content Include="Views\Ncrs\AddTask.cshtml" />
     <Content Include="Views\Shared\_TaskDetails.cshtml" />
     <Content Include="Views\Shared\_TaskHeader.cshtml" />
@@ -419,7 +418,7 @@
     <Content Include="Views\HseqTasks\Delete.cshtml" />
     <Content Include="Views\HseqTasks\Details.cshtml" />
     <Content Include="Views\HseqTasks\Edit.cshtml" />
-    <Content Include="Views\HseqTasks\HseqTaskRequest.cshtml" />
+    <Content Include="Views\HseqTasks\OpenAction.cshtml" />
     <Content Include="Views\HseqTasks\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
