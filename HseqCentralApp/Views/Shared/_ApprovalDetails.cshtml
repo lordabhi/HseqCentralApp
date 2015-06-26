@@ -27,3 +27,12 @@
         @*<td>
             @Html.ActionLink(@Html.DisplayFor(model => model.Title).ToString(), "Details", "HseqApprovalRequests", new { id = Model.DelegatableID }, null)
         </td>*@
+        <td>
+            @Html.ActionLink("Action", "EditApproval", "Ncrs",
+                new
+                {
+                    recordId = Model.HseqRecordID,
+                    approvalId = Model.DelegatableID
+                },
+                null)
+        </td>

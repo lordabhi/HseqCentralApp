@@ -135,8 +135,8 @@ namespace HseqCentralApp.Controllers
 
                 ncr.AlfrescoNoderef = caseNo;
 
-                //Abhi Create Approvals
-                //_DelegatableService.AddHseqApprovalRequest(ncr, ncr.ApproverID, db);
+                //Create Approvals
+                _DelegatableService.AddHseqApprovalRequest(ncr, ncr.ApproverID, null, db);
                 
                 db.SaveChanges();
 
@@ -200,7 +200,7 @@ namespace HseqCentralApp.Controllers
                     ncr = (Ncr)_LinkRecordService.CreateLinkRecord(ncr, recordId, recordSource, RecordType.NCR, db);
 
                     //Create Approvals
-                   // _DelegatableService.AddHseqApprovalRequest(ncr, ncr.ApproverID, db);
+                    _DelegatableService.AddHseqApprovalRequest(ncr, ncr.ApproverID, null, db);
 
                     TempData["recordId"] = null;
                     TempData["recordSource"] = null;
@@ -479,6 +479,78 @@ namespace HseqCentralApp.Controllers
 
             return RedirectToAction("AddTask", "Ncrs", ncrOrig.RecordNo);
             //return View(ncr);
+        }
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+       // GET: Ncrs/Edit/5
+        public ActionResult EditApproval(int? recordId, int? approvalId)
+        {
+            if (recordId == null || approvalId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Ncr ncr = db.NcrRecords.Find(recordId);
+            HseqApprovalRequest approvalRequest = db.HseqApprovalRequests.Find(approvalId);
+
+            if (ncr == null || approvalRequest== null)
+            {
+                return HttpNotFound();
+            }
+
+            NcrVM ncrVM = new NcrVM();
+            ncrVM.Ncr = ncr;
+            ncrVM.HseqApprovalRequest = approvalRequest;
+
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+            ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncr.ApproverID);
+
+            return View(ncrVM);
+        }
+
+        // POST: Ncrs/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditApproval(NcrVM ncrVM)
+        {
+
+            Ncr ncr = null;
+            if (ModelState.IsValid)
+            {
+                ncr = db.NcrRecords.Find(ncrVM.Ncr.HseqRecordID);
+                ncrVM.Ncr = ncr;
+
+                HseqApprovalRequest hseqApprovalRequest = ncrVM.HseqApprovalRequest;
+
+                //Update Ncr Status
+                if (hseqApprovalRequest.Response == ApprovalResult.Approved) {
+                    ncr.NcrState = NcrState.DispositionApproved;
+                    ncr.DateLastUpdated = DateTime.Now;
+                    //To DoUpdated by
+                    db.Entry(ncr).State = EntityState.Modified;
+                }
+                else if (hseqApprovalRequest.Response == ApprovalResult.Rejected)
+                {
+                    ncr.NcrState = NcrState.DispositionRejected;
+                    ncr.DateLastUpdated = DateTime.Now;
+                    db.Entry(ncr).State = EntityState.Modified;
+                }
+
+                db.Entry(hseqApprovalRequest).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("OpenAction", "HseqApprovalRequests");
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                Console.WriteLine(errors);
+            }
+
+            return View(ncrVM);
+            
         }
 
 

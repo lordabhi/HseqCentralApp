@@ -93,7 +93,7 @@ namespace HseqCentralApp.Models
 
         public System.Data.Entity.DbSet<HseqCentralApp.Models.DispositionType> DispositionTypes { get; set; }
 
-        public System.Data.Entity.DbSet<HseqCentralApp.Models.ApproverDisposition> ApproverDispositions { get; set; }
+        //public System.Data.Entity.DbSet<HseqCentralApp.Models.ApproverDisposition> ApproverDispositions { get; set; }
 
         public System.Data.Entity.DbSet<HseqCentralApp.Models.Car> CarRecords { get; set; }
 
@@ -196,7 +196,6 @@ namespace HseqCentralApp.Models
                 .HasOptional(d => d.Coordinator)
                 .WithMany();
         }
-
 
         //public System.Data.Entity.DbSet<HseqCentralApp.Models.User> Users { get; set; }
 

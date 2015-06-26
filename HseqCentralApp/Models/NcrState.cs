@@ -17,7 +17,10 @@ namespace HseqCentralApp.Models
         [Display(Name = "Disposition Approved")]
         DispositionApproved = 4,
 
-        Closed = 5
+        [Display(Name = "Disposition Rejected")]
+        DispositionRejected = 5,
+
+        Closed = 6
 
     }
 }

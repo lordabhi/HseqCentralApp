@@ -9,11 +9,14 @@ namespace HseqCentralApp.ViewModels
 {
     public class NcrVM
     {
+
         public Ncr Ncr { get; set; }
 
-        //Approvals
-        [Display(Name = "Disposition Approver")]
-        public int? ApproverID { get; set; }
-        public virtual HseqUser Approver { get; set; }
+        public int? HseqApprovalRequestID { get; set; }
+        public virtual HseqApprovalRequest HseqApprovalRequest { get; set; }
+
+        //[Display(Name = "Disposition Approver")]
+        //public int? ApproverID { get; set; }
+        //public virtual HseqUser Approver { get; set; }
     }
 }

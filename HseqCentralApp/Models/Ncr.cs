@@ -38,7 +38,7 @@ namespace HseqCentralApp.Models
         //[Display(Name = "Disposition Approver")]
         //public string DispositionApproverID { get; set; }
 
-        public virtual ApproverDisposition DispositionApprover { get; set; }
+        //public virtual ApproverDisposition DispositionApprover { get; set; }
 
         [Display(Name = "Disposition Notes")]
         public String DispositionNote { get; set; }

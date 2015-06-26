@@ -196,7 +196,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ApproverDispositionsController.cs" />
     <Compile Include="Controllers\BusinessAreasController.cs" />
     <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\DispositionTypesController.cs" />
@@ -220,7 +219,6 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApprovalResult.cs" />
     <Compile Include="Models\ApprovalStatus.cs" />
-    <Compile Include="Models\ApproverDisposition.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\Delegatable.cs" />
     <Compile Include="Models\HseqTask.cs" />
@@ -367,11 +365,6 @@
     <Content Include="Views\Emails\Web.config" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
     <Content Include="Views\Emails\Example.cshtml" />
-    <Content Include="Views\ApproverDispositions\Create.cshtml" />
-    <Content Include="Views\ApproverDispositions\Delete.cshtml" />
-    <Content Include="Views\ApproverDispositions\Details.cshtml" />
-    <Content Include="Views\ApproverDispositions\Edit.cshtml" />
-    <Content Include="Views\ApproverDispositions\Index.cshtml" />
     <Content Include="Views\Ncrs\PendingApprovals.cshtml" />
     <Content Include="Views\FisCategories\Create.cshtml" />
     <Content Include="Views\FisCategories\Delete.cshtml" />
@@ -420,6 +413,7 @@
     <Content Include="Views\HseqTasks\Edit.cshtml" />
     <Content Include="Views\HseqTasks\OpenAction.cshtml" />
     <Content Include="Views\HseqTasks\Index.cshtml" />
+    <Content Include="Views\Ncrs\EditApproval.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

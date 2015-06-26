@@ -25,6 +25,10 @@ namespace HseqCentralApp.Services
             {
                 Ncr ncr = (Ncr)record;
 
+                if (hseqApprovalRequest == null) {
+                    hseqApprovalRequest = new HseqApprovalRequest();
+                }
+
                 if (ApproverID != null && ApproverID > 0)
                 {
 
@@ -34,9 +38,23 @@ namespace HseqCentralApp.Services
                     approvalRequest.Owner = db.HseqUsers.Find(ApproverID);
                     approvalRequest.Assignee = db.HseqUsers.Find(GetCurrentApplicationUser().HseqUserID);
                     approvalRequest.DateAssigned = DateTime.Now;
-                    approvalRequest.Title = hseqApprovalRequest.Title;
-                    approvalRequest.Description = hseqApprovalRequest.Description;
-                    if (hseqApprovalRequest.DueDate == null)
+                    if (hseqApprovalRequest.Title == null)
+                    {
+                        approvalRequest.Title = ncr.Title;
+                    }
+                    else {
+                        approvalRequest.Title = hseqApprovalRequest.Title;
+                    }
+
+                    if (hseqApprovalRequest.Description == null)
+                    {
+                        approvalRequest.Description = ncr.Description;
+                    }
+                    else {
+                        approvalRequest.Description = hseqApprovalRequest.Description;
+                    }
+                    
+                    if (hseqApprovalRequest.DueDate == null || hseqApprovalRequest.DueDate <DateTime.Now.Subtract(TimeSpan.FromDays(1)))
                     {
                         approvalRequest.DueDate = DateTime.Now.AddDays(14);
                     }
@@ -65,7 +83,7 @@ namespace HseqCentralApp.Services
                     taskRequest.Owner = db.HseqUsers.Find(ApproverID);
                     taskRequest.Assignee = db.HseqUsers.Find(GetCurrentApplicationUser().HseqUserID);
                     taskRequest.DateAssigned = DateTime.Now;
-                    if (taskRequest.DueDate == null)
+                    if (taskRequest.DueDate == null || taskRequest.DueDate < DateTime.Now.Subtract(TimeSpan.FromDays(1)))
                     {
                         taskRequest.DueDate = DateTime.Now.AddDays(14);
                     }
