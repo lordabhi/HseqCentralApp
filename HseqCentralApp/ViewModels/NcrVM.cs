@@ -27,6 +27,9 @@ namespace HseqCentralApp.ViewModels
 
         public bool ProposedDisposition { get; set; }
 
+        public int? HseqTaskID { get; set; }
+        public virtual HseqTask HseqTask { get; set; }
+
             //ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name");
 
 

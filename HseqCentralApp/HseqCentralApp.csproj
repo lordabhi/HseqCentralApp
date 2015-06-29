@@ -415,6 +415,7 @@
     <Content Include="Views\HseqTasks\OpenAction.cshtml" />
     <Content Include="Views\HseqTasks\Index.cshtml" />
     <Content Include="Views\Ncrs\EditApproval.cshtml" />
+    <Content Include="Views\Ncrs\EditTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

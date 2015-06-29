@@ -609,9 +609,35 @@ namespace HseqCentralApp.Controllers
             return View(ncrVM);
         }
 
+
+        public ActionResult EditTask(int? recordId, int? taskId)
+        {
+            if (recordId == null || taskId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Ncr ncr = db.NcrRecords.Find(recordId);
+            HseqTask task = db.HseqTasks.Find(taskId);
+
+            if (ncr == null || task == null)
+            {
+                return HttpNotFound();
+            }
+
+            NcrVM ncrVM = new NcrVM();
+            ncrVM.Ncr = ncr;
+            ncrVM.HseqTask = task;
+
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+            // ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncr.ApproverID);
+
+            return View(ncrVM);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditApproval(NcrVM ncrVM)
+        public ActionResult EditTask(NcrVM ncrVM)
         {
 
             Ncr ncr = null;
@@ -620,25 +646,24 @@ namespace HseqCentralApp.Controllers
                 ncr = db.NcrRecords.Find(ncrVM.Ncr.HseqRecordID);
                 ncrVM.Ncr = ncr;
 
-                HseqApprovalRequest hseqApprovalRequest = ncrVM.HseqApprovalRequest;
+                HseqTask hseqTask = ncrVM.HseqTask;
 
                 //Update Ncr Status
-                if (hseqApprovalRequest.Response == ApprovalResult.Approved) {
-                    ncr.NcrState = NcrState.DispositionApproved;
-                    ncr.DateLastUpdated = DateTime.Now;
-                    //To DoUpdated by
-                    db.Entry(ncr).State = EntityState.Modified;
-                }
-                else if (hseqApprovalRequest.Response == ApprovalResult.Rejected)
-                {
-                    ncr.NcrState = NcrState.DispositionRejected;
-                    ncr.DateLastUpdated = DateTime.Now;
-                    db.Entry(ncr).State = EntityState.Modified;
-                }
+                //if (hseqApprovalRequest.Response == ApprovalResult.Approved) {
+                //    ncr.NcrState = NcrState.DispositionApproved;
+                //    ncr.DateLastUpdated = DateTime.Now;
+                //    db.Entry(ncr).State = EntityState.Modified;
+                //}
+                //else if (hseqApprovalRequest.Response == ApprovalResult.Rejected)
+                //{
+                //    ncr.NcrState = NcrState.DispositionRejected;
+                //    ncr.DateLastUpdated = DateTime.Now;
+                //    db.Entry(ncr).State = EntityState.Modified;
+                //}
 
-                db.Entry(hseqApprovalRequest).State = EntityState.Modified;
+                db.Entry(hseqTask).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("OpenAction", "HseqApprovalRequests");
+                return RedirectToAction("OpenAction", "HseqTasks");
             }
             else
             {
