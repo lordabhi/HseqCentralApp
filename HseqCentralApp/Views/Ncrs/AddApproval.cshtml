@@ -16,6 +16,11 @@
         <h4>Ncr</h4>
         <hr />
         @Html.HiddenFor(model => model.Ncr.HseqRecordID)
+        @Html.HiddenFor(model => model.Ncr.NcrSource)
+        @Html.HiddenFor(model => model.Ncr.NcrState)
+        @Html.HiddenFor(model => model.Ncr.Title)
+        @Html.HiddenFor(model => model.Ncr.Description)
+        @Html.HiddenFor(model => model.Ncr.RecordType)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Ncr.CaseNo, "Case Number", htmlAttributes: new { @class = "control-label col-md-2" })

@@ -59,8 +59,34 @@ namespace HseqCentralApp.Services
             return ViewBag;
         }
 
+        public HseqRecord PopulateRecordTypeDefaults(RecordType recordType, HseqRecord hseqRecord)
+        {
+            hseqRecord.EnteredBy = HttpContext.Current.User.Identity.Name;
+            hseqRecord.ReportedBy = currentUser.FirstName + " " + currentUser.LastName + " , " + currentUser.Department;
 
+            //Retrieve the Quality Coordinator from the custom file
+            //ViewBag.QualityCoordinator = ConfigurationManager.AppSettings.Get("QualityCoordinator");
 
+            if (recordType.Equals(RecordType.NCR))
+            {
+                hseqRecord.RecordType = RecordType.NCR;
+            }
+            else if (recordType.Equals(RecordType.FIS))
+            {
+                hseqRecord.RecordType = RecordType.FIS;
+            }
+            else if (recordType.Equals(RecordType.CAR))
+            {
+                hseqRecord.RecordType = RecordType.CAR;
+            }
+            else if (recordType.Equals(RecordType.PAR))
+            {
+                hseqRecord.RecordType = RecordType.PAR;
+            }
+            return hseqRecord;
+        }
+
+        
         public ApplicationUser GetCurrentUser() {
 
             ApplicationUser currentUser = db.Users.Where(m => m.Email == HttpContext.Current.User.Identity.Name).First();

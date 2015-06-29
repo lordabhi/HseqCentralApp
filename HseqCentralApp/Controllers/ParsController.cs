@@ -59,14 +59,15 @@ namespace HseqCentralApp.Controllers
         // GET: Pars/Create
         public ActionResult Create()
         {
-            var defaults = _RecordService.PopulateRecordTypeDefaults(RecordType.PAR);
-            PopulateDefaults(defaults);
+            Par par = new Par();
+            par = (Par)_RecordService.PopulateRecordTypeDefaults(RecordType.PAR, par);
+            //PopulateDefaults(defaults);
 
-            ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
+           // ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
             ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
 
-            return View();
+            return View(par);
         }
 
         // POST: Pars/Create
@@ -110,7 +111,8 @@ namespace HseqCentralApp.Controllers
             HseqRecord linkedRecord = _LinkRecordService.GetSourceRecord(recordId, recordSource, db);
 
             Par par = (Par)_LinkRecordService.LinkRecord(recordId, recordSource, RecordType.PAR, db);
-            PopulateDefaults(par);
+            //PopulateDefaults(par);
+            par = (Par)_RecordService.PopulateRecordTypeDefaults(RecordType.PAR, par);
 
             TempData["recordId"] = par.HseqRecordID;
             TempData["recordSource"] = recordSource;

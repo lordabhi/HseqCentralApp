@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using HseqCentralApp.Helpers;
 using HseqCentralApp.Models;
 
 namespace HseqCentralApp.Services
@@ -19,56 +20,114 @@ namespace HseqCentralApp.Services
             currentUser = GetCurrentUser();
         }
 
-        public void AddHseqApprovalRequest(HseqRecord record, int? ApproverID, HseqApprovalRequest hseqApprovalRequest, ApplicationDbContext db)
+        //public void AddHseqApprovalRequest(HseqRecord record, int? ApproverID, HseqApprovalRequest hseqApprovalRequest, ApplicationDbContext db)
+        //{
+        //    if (record is Ncr)
+        //    {
+        //        Ncr ncr = (Ncr)record;
+
+        //        if (hseqApprovalRequest == null) {
+        //            hseqApprovalRequest = new HseqApprovalRequest();
+        //        }
+
+        //        if (ApproverID != null && ApproverID > 0)
+        //        {
+
+        //            HseqApprovalRequest approvalRequest = new HseqApprovalRequest();
+        //            //approvalRequest.Owner = db.HseqUsers.Find(_RecordService.GetCurrentUser().Id);
+
+        //            approvalRequest.Owner = db.HseqUsers.Find(ApproverID);
+        //            approvalRequest.Assignee = db.HseqUsers.Find(GetCurrentApplicationUser().HseqUserID);
+        //            approvalRequest.DateAssigned = DateTime.Now;
+        //            if (hseqApprovalRequest.Title == null)
+        //            {
+        //                approvalRequest.Title = ncr.Title;
+        //            }
+        //            else {
+        //                approvalRequest.Title = hseqApprovalRequest.Title;
+        //            }
+
+        //            if (hseqApprovalRequest.Description == null)
+        //            {
+        //                approvalRequest.Description = ncr.Description;
+        //            }
+        //            else {
+        //                approvalRequest.Description = hseqApprovalRequest.Description;
+        //            }
+                    
+        //            if (hseqApprovalRequest.DueDate == null || hseqApprovalRequest.DueDate <DateTime.Now.Subtract(TimeSpan.FromDays(1)))
+        //            {
+        //                approvalRequest.DueDate = DateTime.Now.AddDays(14);
+        //            }
+        //            else {
+        //                approvalRequest.DueDate = hseqApprovalRequest.DueDate;
+        //            }
+                    
+        //            approvalRequest.Status = ApprovalStatus.Active;
+        //            approvalRequest.Response = ApprovalResult.Waiting;
+
+        //            approvalRequest.HseqRecordID = ncr.HseqRecordID;
+        //            ncr.Delegatables.Add(approvalRequest);
+        //        }
+        //    }
+        //}
+
+        public HseqApprovalRequest AddHseqApprovalRequest(HseqRecord record, HseqApprovalRequest approvalRequest, ApplicationDbContext db)
         {
             if (record is Ncr)
             {
                 Ncr ncr = (Ncr)record;
 
-                if (hseqApprovalRequest == null) {
-                    hseqApprovalRequest = new HseqApprovalRequest();
+                if (approvalRequest == null)
+                {
+                    approvalRequest = new HseqApprovalRequest();
                 }
 
-                if (ApproverID != null && ApproverID > 0)
-                {
-
-                    HseqApprovalRequest approvalRequest = new HseqApprovalRequest();
+                   // HseqApprovalRequest approvalRequest = new HseqApprovalRequest();
                     //approvalRequest.Owner = db.HseqUsers.Find(_RecordService.GetCurrentUser().Id);
 
-                    approvalRequest.Owner = db.HseqUsers.Find(ApproverID);
-                    approvalRequest.Assignee = db.HseqUsers.Find(GetCurrentApplicationUser().HseqUserID);
+                    approvalRequest.Owner = db.HseqUsers.Find(GetCurrentApplicationUser().HseqUserID);
+                    approvalRequest.Assignee = Utils.GetCurrentApplicationUser(db); 
+
                     approvalRequest.DateAssigned = DateTime.Now;
-                    if (hseqApprovalRequest.Title == null)
+                    if (approvalRequest.Title == null)
                     {
                         approvalRequest.Title = ncr.Title;
                     }
-                    else {
-                        approvalRequest.Title = hseqApprovalRequest.Title;
+                    else
+                    {
+                        approvalRequest.Title = approvalRequest.Title;
                     }
 
-                    if (hseqApprovalRequest.Description == null)
+                    if (approvalRequest.Description == null)
                     {
                         approvalRequest.Description = ncr.Description;
                     }
-                    else {
-                        approvalRequest.Description = hseqApprovalRequest.Description;
+                    else
+                    {
+                        approvalRequest.Description = approvalRequest.Description;
                     }
-                    
-                    if (hseqApprovalRequest.DueDate == null || hseqApprovalRequest.DueDate <DateTime.Now.Subtract(TimeSpan.FromDays(1)))
+
+                    if (approvalRequest.DueDate == null || approvalRequest.DueDate < DateTime.Now.Subtract(TimeSpan.FromDays(1)))
                     {
                         approvalRequest.DueDate = DateTime.Now.AddDays(14);
                     }
-                    else {
-                        approvalRequest.DueDate = hseqApprovalRequest.DueDate;
+                    else
+                    {
+                        approvalRequest.DueDate = approvalRequest.DueDate;
                     }
-                    
+
                     approvalRequest.Status = ApprovalStatus.Active;
                     approvalRequest.Response = ApprovalResult.Waiting;
 
                     approvalRequest.HseqRecordID = ncr.HseqRecordID;
-                    ncr.Delegatables.Add(approvalRequest);
-                }
+
+                    return approvalRequest;
+                    //ncr.Delegatables.Add(approvalRequest);
+
             }
+
+            return null;
         }
 
         public void AddHseqTaskRequest(HseqRecord record, int? ApproverID, HseqTask taskRequest, ApplicationDbContext db)

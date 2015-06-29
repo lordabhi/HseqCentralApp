@@ -90,9 +90,9 @@ namespace HseqCentralApp.Models
         public String LastUpdatedBy { get; set; }
 
         //Approvals
-        [Display(Name = "Disposition Approver")]
-        public int? ApproverID { get; set; }
-        public virtual HseqUser Approver { get; set; }
+        //[Display(Name = "Disposition Approver")]
+        //public int? ApproverID { get; set; }
+        //public virtual HseqUser Approver { get; set; }
 
         public virtual ICollection<Delegatable> Delegatables { get; set; }
 

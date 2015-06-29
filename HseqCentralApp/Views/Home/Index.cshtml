@@ -23,7 +23,22 @@
             <br />
 
             <h4> Non-Conformance Record (NCR)</h4>
-            @Html.ActionLink("Report a non-conformance", "Create", "Ncrs")
+            @*@Html.ActionLink("Report a non-conformance", "Create", "Ncrs")*@
+            @Html.ActionLink("Report a non-conformance (Without Proposed Disposition)", "Create", "Ncrs",
+                    new
+                    {
+                        ProposedDisposition = false
+                    },
+                    null)
+            <br />
+            <br />
+            @*@Html.ActionLink("Report a non-conformance With Proposed Disposition", "Create", "Ncrs")*@
+            @Html.ActionLink("Report a non-conformance (With Proposed Disposition)", "Create", "Ncrs",
+                    new
+                    {
+                        ProposedDisposition = true
+                    },
+                    null)
             <br />
             <br />
             @Html.ActionLink("View Existing non-conformance Records", "Index", "Ncrs")

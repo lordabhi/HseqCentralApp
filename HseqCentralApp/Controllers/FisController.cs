@@ -62,17 +62,18 @@ namespace HseqCentralApp.Controllers
         // GET: Fis/Create
         public ActionResult Create()
         {
+            Fis fis = new Fis();
 
-            var defaults = _RecordService.PopulateRecordTypeDefaults(RecordType.FIS);
+            fis = (Fis)_RecordService.PopulateRecordTypeDefaults(RecordType.FIS, fis);
 
-            PopulateDefaults(defaults);
+            //PopulateDefaults(defaults);
 
             //ViewBag.BusinessAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
             ViewBag.CodeCategoryList = new SelectList(getCodeCategoryList(), "Id", "Column1");
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
             ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
 
-            return View();
+            return View(fis);
         }
 
 
@@ -117,8 +118,8 @@ namespace HseqCentralApp.Controllers
         public ActionResult CreateLinked(int recordId, String recordSource)
         {
             Fis fis = (Fis)_LinkRecordService.LinkRecord(recordId, recordSource, RecordType.FIS, db);
-            PopulateDefaults(fis);
-
+            //PopulateDefaults(fis);
+            fis = (Fis)_RecordService.PopulateRecordTypeDefaults(RecordType.FIS, fis);
 
             TempData["recordId"] = fis.HseqRecordID;
             TempData["recordSource"] = recordSource;

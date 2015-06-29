@@ -59,12 +59,12 @@ namespace HseqCentralApp.Controllers
         // GET: Cars/Create
         public ActionResult Create()
         {
-            var defaults = _RecordService.PopulateRecordTypeDefaults(RecordType.CAR);
-            PopulateDefaults(defaults);
+            Car car = new Car();
+            car = (Car)_RecordService.PopulateRecordTypeDefaults(RecordType.CAR, car);
 
             ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
             ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
-            return View();
+            return View(car);
         }
 
         // POST: Cars/Create
@@ -105,7 +105,8 @@ namespace HseqCentralApp.Controllers
         public ActionResult CreateLinked(int recordId, String recordSource)
         {
             Car car = (Car)_LinkRecordService.LinkRecord(recordId, recordSource, RecordType.CAR, db);
-            PopulateDefaults(car);
+            //PopulateDefaults(car);
+            car = (Car)_RecordService.PopulateRecordTypeDefaults(RecordType.CAR, car);
 
             TempData["recordId"] = car.HseqRecordID;
             TempData["recordSource"] = recordSource;

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace HseqCentralApp.Models
 {
-    [TrackChanges]
+    //[TrackChanges]
     public class Ncr: HseqRecord
     {
         public Ncr(){}
