@@ -7,9 +7,10 @@
 
     <h2>HSEQ Approval Resquests</h2>
 
-    <p>
+<hr />
+    @*<p>
         @Html.ActionLink("Create New", "Create")
-    </p>
+    </p>*@
     <h4>Owned By Me</h4>
 
 <table class="table">
@@ -21,7 +22,9 @@
         </tr>
     }
 </table>
+
 <hr/>
+
 <h4>Assigned To Me</h4>
 <table class="table">
     @Html.Partial("_ApprovalHeader")

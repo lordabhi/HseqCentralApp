@@ -70,7 +70,7 @@ namespace HseqCentralApp.Controllers
         }
 
         // GET: Ncrs/Create
-        public ActionResult Create(bool ProposedDisposition)
+        public ActionResult Create(bool? ProposedDisposition)
         {
             NcrVM ncrVM = new NcrVM();
             Ncr ncr = new Ncr();
@@ -95,7 +95,10 @@ namespace HseqCentralApp.Controllers
             ncrVM.HseqApprovalRequest = hseqApprovalRequest;
 
             //Populate defaults
-            ncrVM.ProposedDisposition = ProposedDisposition;
+            if (ProposedDisposition == null) {
+                ProposedDisposition = false;
+            }
+            ncrVM.ProposedDisposition = (bool)ProposedDisposition;
             if (ncrVM.ProposedDisposition)
             {
                 ncrVM.Ncr.NcrState = NcrState.DispositionProposed;
@@ -202,7 +205,7 @@ namespace HseqCentralApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateLinked([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,HseqCaseFileID,JobNumber,DrawingNumber,NcrSource,NcrState,DiscrepancyTypeID,DetectedInAreaID,ResponsibleAreaID,DispositionTypeID,DispositionApproverID,DispositionNote,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy,CoordinatorID,ApproverID")]Ncr ncr)
+        public ActionResult CreateLinked([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,HseqCaseFileID,JobNumber,DrawingNumber,NcrSource,NcrState,DiscrepancyTypeID,DetectedInAreaID,ResponsibleAreaID,DispositionTypeID,DispositionApproverID,DispositionNote,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy,CoordinatorID,ApproverID,ResponsibleParty")]Ncr ncr)
         {
             if (ModelState.IsValid)
             {
@@ -264,7 +267,7 @@ namespace HseqCentralApp.Controllers
         // POST: Ncrs/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,HseqCaseFileID,JobNumber,DrawingNumber,NcrSource,NcrState,DiscrepancyTypeID,DetectedInAreaID,ResponsibleAreaID,DispositionTypeID,DispositionApproverID,DispositionNote,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy,LinkedRecordsID,CoordinatorID,ApproverID")] Ncr ncr)
+        public ActionResult Edit([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,HseqCaseFileID,JobNumber,DrawingNumber,NcrSource,NcrState,DiscrepancyTypeID,DetectedInAreaID,ResponsibleAreaID,DispositionTypeID,DispositionApproverID,DispositionNote,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy,LinkedRecordsID,CoordinatorID,ApproverID,ResponsibleParty")] Ncr ncr)
         {
             if (ModelState.IsValid)
             {
@@ -291,6 +294,95 @@ namespace HseqCentralApp.Controllers
             ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncr.CoordinatorID);
             //ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncr.ApproverID);
             return View(ncr);
+        }
+
+        public ActionResult Close(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Ncr ncr = db.NcrRecords.Find(id);
+            if (ncr == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", ncr.HseqCaseFileID);
+            ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+            //ViewBag.DispositionApproverID = new SelectList(db.ApproverDispositions, "ApproverDispositionID", "FullName", ncr.DispositionApproverID);
+            ViewBag.DetectedInAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.DetectedInAreaID);
+            ViewBag.ResponsibleAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.ResponsibleAreaID);
+            ViewBag.LinkedRecordsID = new SelectList(db.HseqRecords, "HseqRecordID", "LinkRecordForDisplay");
+
+            ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncr.CoordinatorID);
+            //ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncr.ApproverID);
+            return View("Edit", ncr);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Close([Bind(Include = "HseqRecordID,AlfrescoNoderef,Title,Description,RecordType,EnteredBy,ReportedBy,HseqCaseFileID,JobNumber,DrawingNumber,NcrSource,NcrState,DiscrepancyTypeID,DetectedInAreaID,ResponsibleAreaID,DispositionTypeID,DispositionApproverID,DispositionNote,DateCreated,DateLastUpdated,CreatedBy,LastUpdatedBy,LinkedRecordsID,CoordinatorID,ApproverID,ResponsibleParty")] Ncr ncr)
+        {
+            if (ModelState.IsValid)
+            {
+                ncr.LastUpdatedBy = _RecordService.GetCurrentUser().FullName;
+
+                db.Entry(ncr).State = EntityState.Modified;
+
+                bool errorExists = false;
+
+                if (ncr.ResponsibleAreaID == null || ncr.ResponsibleAreaID == 0) {
+                    ModelState.AddModelError("ResponsibleAreaID", "Responsible Area Cannot be empty" );
+                    errorExists = true;
+                }
+                if (ncr.ResponsibleParty == null)
+                {
+                    ModelState.AddModelError("ResponsibleParty", "Responsible Party Cannot be empty");
+                    errorExists = true;
+                }
+
+                var activeApprovalsCount = db.HseqApprovalRequests.Where(x => x.HseqRecordID == ncr.HseqRecordID && x.Status == ApprovalStatus.Active).Count();
+                
+                if (activeApprovalsCount > 0) {
+                    ModelState.AddModelError("", "This record cannot be closed since there are Open Approval Requests for this record");
+                    errorExists = true;
+                }
+
+                var activeTaskCount = db.HseqTasks.Where(x => x.HseqRecordID == ncr.HseqRecordID && (x.Status == TaskStatus.Active || x.Status == TaskStatus.NotStarted)).Count();
+                if (activeTaskCount > 0)
+                {
+                    ModelState.AddModelError("", "This record cannot be closed since there are Open Tasks for this record");
+                    errorExists = true;
+                }
+
+
+                if (!errorExists)
+                {
+                    ncr.NcrState = NcrState.Closed;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else {
+
+                    ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID", ncr.HseqCaseFileID);
+                    ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name", ncr.DiscrepancyTypeID);
+                    ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+                    ViewBag.DetectedInAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.DetectedInAreaID);
+                    ViewBag.ResponsibleAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name", ncr.ResponsibleAreaID);
+                    ViewBag.LinkedRecordsID = new SelectList(db.HseqRecords, "HseqRecordID", "LinkRecordForDisplay", ncr.LinkedRecordsID);
+                    ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncr.CoordinatorID);
+
+                    return View("Edit", ncr);
+                }
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                Console.WriteLine(errors);
+            }
+
+            return View("Edit", ncr);
         }
 
         // GET: Ncrs/Delete/5

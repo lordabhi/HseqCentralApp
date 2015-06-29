@@ -51,11 +51,15 @@ namespace HseqCentralApp.Models
         public virtual BusinessArea DetectedInArea { get; set; }
 
         [ForeignKey("ResponsibleArea")]
-        [Required(ErrorMessage = "Select Responsible Area")]
+        //[Required(ErrorMessage = "Select Responsible Area")]
         [Display(Name = "Responsible Area")]
-        public int ResponsibleAreaID { get; set; }
+        public int? ResponsibleAreaID { get; set; }
 
         public virtual BusinessArea ResponsibleArea { get; set; }
+
+        public String CauseDesc { get; set; }
+
+        public String ResponsibleParty { get; set; }
 
     }
 }
