@@ -206,7 +206,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.HseqApprovalRequest.OwnerID, "Disposition Approver", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("ApproverID", null, "", htmlAttributes: new { @class = "form-control" })
+                @*@Html.DropDownList("ApproverID", null, "", htmlAttributes: new { @class = "form-control" })*@
+                @Html.DropDownListFor(model => model.HseqApprovalRequest.OwnerID, new SelectList(Model.ApprovalOwners, "HseqUserID", "FullName", Model.HseqApprovalRequest.OwnerID),
+                        "Select Owner...", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.HseqApprovalRequest.OwnerID, "", new { @class = "text-danger" })
             </div>
         </div>

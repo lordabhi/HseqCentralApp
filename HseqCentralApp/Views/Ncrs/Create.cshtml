@@ -117,7 +117,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Ncr.ResponsibleParty, "Responsible Party", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Ncr.ResponsibleParty, new { @readonly = "readonly", size = 50 })
+                @Html.TextBoxFor(model => model.Ncr.ResponsibleParty, new {size = 50 ,@class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Ncr.ResponsibleParty, "", new { @class = "text-danger" })
             </div>
         </div>

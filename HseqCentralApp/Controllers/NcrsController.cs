@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using HseqCentralApp.Helpers;
 using HseqCentralApp.Models;
 using HseqCentralApp.Services;
 using HseqCentralApp.ViewModels;
@@ -117,6 +118,7 @@ namespace HseqCentralApp.Controllers
             ncrVM.ApprovalOwners = db.HseqUsers;
 
             ncrVM.Ncr.RecordType = RecordType.NCR;
+            ncrVM.HseqApprovalRequest.DueDate = DateTime.Now.AddDays(14);
 
             return View(ncrVM);
         }
@@ -500,7 +502,7 @@ namespace HseqCentralApp.Controllers
             //return View(ncr);
         }
 
-        public ActionResult AddApproval(int? id)
+        public ActionResult AddApproval1(int? id)
         {
             if (id == null)
             {
@@ -528,7 +530,7 @@ namespace HseqCentralApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddApproval([Bind(Include = "Ncr, HseqApprovalRequest, ApproverID, AssigneeID")]HseqApprovalRequestVM hseqApprovalRequestVM)
+        public ActionResult AddApproval1([Bind(Include = "Ncr, HseqApprovalRequest, ApproverID, AssigneeID")]HseqApprovalRequestVM hseqApprovalRequestVM)
         {
             Ncr ncrOrig = null;
             ncrOrig = db.NcrRecords.Find(hseqApprovalRequestVM.Ncr.HseqRecordID);
@@ -557,7 +559,7 @@ namespace HseqCentralApp.Controllers
             //return View(ncr);
         }
 
-        public ActionResult AddTask(int? id)
+        public ActionResult AddTask1(int? id)
         {
             if (id == null)
             {
@@ -587,14 +589,14 @@ namespace HseqCentralApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddTask([Bind(Include = "Ncr, HseqTask, ApproverID")]HseqTaskVM ncrTaskVM)
+        public ActionResult AddTask1([Bind(Include = "Ncr, HseqTask, ApproverID")]HseqTaskVM ncrTaskVM)
         {
             Ncr ncrOrig = null;
             if (ncrTaskVM.ApproverID != null && ncrTaskVM.Ncr.HseqRecordID != null)
             {
                 ncrOrig = db.NcrRecords.Find(ncrTaskVM.Ncr.HseqRecordID);
 
-                _DelegatableService.AddHseqTaskRequest(ncrOrig, ncrTaskVM.ApproverID, ncrTaskVM.HseqTask,  db);
+                //_DelegatableService.AddHseqTaskRequest(ncrOrig, ncrTaskVM.ApproverID, ncrTaskVM.HseqTask,  db);
                 db.SaveChanges();
 
                 ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
@@ -629,6 +631,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
             ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqApprovalRequest.AssigneeID);
             ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqApprovalRequest.OwnerID);
+            ncrVM.ApprovalOwners = db.HseqUsers;
 
             return View(ncrVM);
         }
@@ -676,6 +679,135 @@ namespace HseqCentralApp.Controllers
         }
 
 
+// //////////////// Abhi /////////////////////////////////////////////////////////////////////////////////////////
+        // GET: Ncrs/Edit/5
+        public ActionResult AddApproval(int? recordId)
+        {
+            if (recordId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Ncr ncr = db.NcrRecords.Find(recordId);
+
+            if (ncr == null)
+            {
+                return HttpNotFound();
+            }
+
+            HseqApprovalRequest approvalRequest = new HseqApprovalRequest();
+            approvalRequest.DueDate = DateTime.Now.AddDays(14);
+            approvalRequest.AssigneeID = Utils.GetCurrentApplicationUser(db).HseqUserID;
+
+            NcrVM ncrVM = new NcrVM();
+            ncrVM.Ncr = ncr;
+            ncrVM.HseqApprovalRequest = approvalRequest;
+
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+            ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqApprovalRequest.AssigneeID);
+            ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqApprovalRequest.OwnerID);
+
+            ncrVM.ApprovalOwners = db.HseqUsers;
+            return View(ncrVM);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddApproval(NcrVM ncrVM)
+        {
+
+            Ncr ncr = null;
+            if (ModelState.IsValid)
+            {
+                ncr = db.NcrRecords.Find(ncrVM.Ncr.HseqRecordID);
+                ncrVM.Ncr = ncr;
+
+                HseqApprovalRequest hseqApprovalRequest = ncrVM.HseqApprovalRequest;
+
+                ncr.NcrState = NcrState.DispositionProposed;
+                ncr.DateLastUpdated = DateTime.Now;
+                
+                HseqApprovalRequest approvalRequest = _DelegatableService.AddHseqApprovalRequest(ncr, hseqApprovalRequest, db);
+
+                //ncr.Delegatables.Add(approvalRequest);
+
+                db.SaveChanges();
+                return RedirectToAction("OpenAction", "HseqApprovalRequests");
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                Console.WriteLine(errors);
+            }
+
+            return View(ncrVM);
+
+        }
+
+
+        public ActionResult AddTask(int? recordId)
+        {
+            if (recordId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Ncr ncr = db.NcrRecords.Find(recordId);
+            
+
+            if (ncr == null)
+            {
+                return HttpNotFound();
+            }
+
+            HseqTask hseqTask = new HseqTask();
+            hseqTask.DueDate = DateTime.Now.AddDays(14);
+
+            NcrVM ncrVM = new NcrVM();
+            ncrVM.Ncr = ncr;
+            ncrVM.HseqTask = hseqTask;
+
+            hseqTask.AssigneeID = Utils.GetCurrentApplicationUser(db).HseqUserID;
+
+            ncrVM.TaskOwners = db.HseqUsers;
+
+            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+            ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqTask.AssigneeID);
+            ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqTask.OwnerID);
+            
+            return View(ncrVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddTask(NcrVM ncrVM)
+        {
+
+            Ncr ncr = null;
+            if (ModelState.IsValid)
+            {
+                ncr = db.NcrRecords.Find(ncrVM.Ncr.HseqRecordID);
+                ncrVM.Ncr = ncr;
+
+                HseqTask hseqTask = ncrVM.HseqTask;
+
+                _DelegatableService.AddHseqTaskRequest(ncr, hseqTask, db);
+
+                db.SaveChanges();
+                return RedirectToAction("OpenAction", "HseqTasks");
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                Console.WriteLine(errors);
+            }
+
+            return View(ncrVM);
+        }
+
+// //////////////////////////////////////////
+
         public ActionResult EditTask(int? recordId, int? taskId)
         {
             if (recordId == null || taskId == null)
@@ -698,7 +830,7 @@ namespace HseqCentralApp.Controllers
             ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
             ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqTask.AssigneeID);
             ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqTask.OwnerID);
-
+            ncrVM.TaskOwners = db.HseqUsers;
             return View(ncrVM);
         }
 

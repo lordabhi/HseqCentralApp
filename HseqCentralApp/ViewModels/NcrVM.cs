@@ -24,6 +24,7 @@ namespace HseqCentralApp.ViewModels
         public IEnumerable<DispositionType> DispositionTypes { get; set; }
 
         public IEnumerable<HseqUser> ApprovalOwners { get; set; }
+        public IEnumerable<HseqUser> TaskOwners { get; set; }
 
         public bool ProposedDisposition { get; set; }
 

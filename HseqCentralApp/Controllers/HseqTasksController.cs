@@ -41,8 +41,8 @@ namespace HseqCentralApp.Controllers
         public ActionResult OpenAction()
         {
             HseqUser user = _RecordService.GetCurrentApplicationUser();
-            var ownedRequests = db.HseqTasks.Where(h => h.OwnerID == user.HseqUserID);
-            var assignedRequests = db.HseqTasks.Where(h => h.AssigneeID == user.HseqUserID);
+            var ownedRequests = db.HseqTasks.Where(h => h.OwnerID == user.HseqUserID && (h.Status== TaskStatus.Active || h.Status== TaskStatus.NotStarted));
+            var assignedRequests = db.HseqTasks.Where(h => h.AssigneeID == user.HseqUserID && (h.Status== TaskStatus.Active || h.Status== TaskStatus.NotStarted));
 
             HseqTaskVM hseqTasks = new HseqTaskVM();
             hseqTasks.OwnedTasks= ownedRequests.ToList();

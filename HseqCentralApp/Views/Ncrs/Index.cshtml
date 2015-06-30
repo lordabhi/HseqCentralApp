@@ -82,11 +82,27 @@
                         recordSource = "NCR"
                     },
                     null) |
-                @Html.ActionLink("Link Existing Record", "LinkExistingRecord", new {id = item.HseqRecordID}) |
-                @Html.ActionLink("Approval Request", "AddApproval", new { id = item.HseqRecordID }) |
-                @Html.ActionLink("Task", "AddTask", new { id = item.HseqRecordID }) |
+                @Html.ActionLink("Link Existing Record", "LinkExistingRecord", new { id = item.HseqRecordID }) |
+                @*@Html.ActionLink("Approval Request", "AddApproval", new { id = item.HseqRecordID }) |*@
+
+                @Html.ActionLink("Add Approval Request", "AddApproval", "Ncrs",
+                new
+                {
+                    recordId = item.HseqRecordID
+                },
+                null) |
+
+                @*@Html.ActionLink("Add Task", "AddTask", new { id = item.HseqRecordID }) |*@
+                @Html.ActionLink("Add Task", "AddTask", "Ncrs",
+                new
+                {
+                    recordId = item.HseqRecordID
+                },
+                null) |
                 @Html.ActionLink("Close", "Close", new { id = item.HseqRecordID })
-               
+
+
+
             </td>
         </tr>
     }

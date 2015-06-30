@@ -36,5 +36,6 @@ namespace HseqCentralApp.Helpers
             return hseqUser;
         }
 
+
     }
 }

@@ -42,8 +42,8 @@ namespace HseqCentralApp.Controllers
         {
             HseqUser user = _RecordService.GetCurrentApplicationUser();
             //var delegatables = db.HseqApprovalRequests.Include(h => h.Assignee).Include(h => h.HseqRecord).Include(h => h.Owner);
-            var ownedRequests = db.HseqApprovalRequests.Where(h => h.OwnerID == user.HseqUserID);
-            var assignedRequests = db.HseqApprovalRequests.Where(h => h.AssigneeID == user.HseqUserID);
+            var ownedRequests = db.HseqApprovalRequests.Where(h => h.OwnerID == user.HseqUserID && h.Status==ApprovalStatus.Active);
+            var assignedRequests = db.HseqApprovalRequests.Where(h => h.AssigneeID == user.HseqUserID && h.Status == ApprovalStatus.Active);
 
             HseqApprovalRequestVM approvalRequests = new HseqApprovalRequestVM();
             approvalRequests.OwnedRequests = ownedRequests.ToList();

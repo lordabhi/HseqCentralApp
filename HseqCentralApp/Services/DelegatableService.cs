@@ -86,7 +86,7 @@ namespace HseqCentralApp.Services
                    // HseqApprovalRequest approvalRequest = new HseqApprovalRequest();
                     //approvalRequest.Owner = db.HseqUsers.Find(_RecordService.GetCurrentUser().Id);
 
-                    approvalRequest.Owner = db.HseqUsers.Find(GetCurrentApplicationUser().HseqUserID);
+                    approvalRequest.Owner = db.HseqUsers.Find(approvalRequest.OwnerID);
                     approvalRequest.Assignee = Utils.GetCurrentApplicationUser(db); 
 
                     approvalRequest.DateAssigned = DateTime.Now;
@@ -121,25 +121,27 @@ namespace HseqCentralApp.Services
                     approvalRequest.Response = ApprovalResult.Waiting;
 
                     approvalRequest.HseqRecordID = ncr.HseqRecordID;
+                
+                    ncr.Delegatables.Add(approvalRequest);
 
                     return approvalRequest;
-                    //ncr.Delegatables.Add(approvalRequest);
 
             }
 
             return null;
         }
 
-        public void AddHseqTaskRequest(HseqRecord record, int? ApproverID, HseqTask taskRequest, ApplicationDbContext db)
+        public void AddHseqTaskRequest(HseqRecord record, HseqTask taskRequest, ApplicationDbContext db)
         {
             if (record is Ncr)
             {
                 Ncr ncr = (Ncr)record;
 
-                if (ApproverID != null && ApproverID > 0)
-                {
                     //HseqTask taskRequest = new HseqTask();
-                    taskRequest.Owner = db.HseqUsers.Find(ApproverID);
+
+                    //taskRequest.Owner = db.HseqUsers.Find(ApproverID);
+
+                    taskRequest.Owner = db.HseqUsers.Find(taskRequest.OwnerID);
                     taskRequest.Assignee = db.HseqUsers.Find(GetCurrentApplicationUser().HseqUserID);
                     taskRequest.DateAssigned = DateTime.Now;
                     if (taskRequest.DueDate == null || taskRequest.DueDate < DateTime.Now.Subtract(TimeSpan.FromDays(1)))
@@ -150,12 +152,16 @@ namespace HseqCentralApp.Services
                     {
                         taskRequest.DueDate = taskRequest.DueDate;
                     }
-                    taskRequest.Status = TaskStatus.NotStarted;
+
+                    if (taskRequest.Status == null)
+                    {
+                        taskRequest.Status = TaskStatus.NotStarted;
+                    }
                     taskRequest.HseqRecordID = ncr.HseqRecordID;
                     ncr.Delegatables.Add(taskRequest);
-                }
             }
         }
+
         public ApplicationUser GetCurrentUser()
         {
 
