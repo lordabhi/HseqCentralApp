@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Net;
 using System.Web.Mvc;
 using HseqCentralApp.Models;
+using HseqCentralApp.Helpers;
 
 using System.Security.Principal;
 using System.Configuration;
@@ -103,7 +104,7 @@ namespace HseqCentralApp.Services
         }
 
 
-        internal int GetNextCaseNumber(ApplicationDbContext db)
+        internal int GetNextCaseNumber2(ApplicationDbContext db)
         {
             int caseNo = 1;
 
@@ -117,6 +118,40 @@ namespace HseqCentralApp.Services
             }
             return caseNo;
         }
+
+        internal int GetNextCaseNumber(ApplicationDbContext db)
+        {
+
+            int year = DateTime.Now.Year;
+            int lastTwoYearDigits = year % 100;
+
+            int nextCaseNbr;
+            int currentMaxCaseNbr = 0;
+
+            IList<HseqCaseFile> hseqCaseFilesList = db.HseqCaseFiles.ToList();
+
+            if (hseqCaseFilesList != null && hseqCaseFilesList.LongCount() > 0)
+            {
+                currentMaxCaseNbr = hseqCaseFilesList.Max(p => p.CaseNo);
+            }
+
+            if (currentMaxCaseNbr.ToString().StartsWith(lastTwoYearDigits.ToString()))
+            {
+                nextCaseNbr = currentMaxCaseNbr + 1;
+            }
+            else if (lastTwoYearDigits == 0)
+            {
+
+                nextCaseNbr = (Convert.ToInt32(year.ToString().Substring(0, 2)) * 10000) + 1000;
+            }
+            else
+            {
+                nextCaseNbr = (lastTwoYearDigits * 10000) + 1000;
+            }
+
+            return nextCaseNbr;
+        }
+
 
         public HseqRecord CreateCaseFile(HseqRecord record, out int caseNo, out HseqCaseFile hseqCaseFile, ApplicationDbContext db)
         {

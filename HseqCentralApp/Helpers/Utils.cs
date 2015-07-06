@@ -12,6 +12,12 @@ namespace HseqCentralApp.Helpers
 
         private static ApplicationDbContext db = new ApplicationDbContext();
 
+        public static int CurrentCaseNumber
+        {
+            get { return int.Parse(HttpContext.Current.Session["CurrentCaseNumber"].ToString()); }
+            set { HttpContext.Current.Session["CurrentCaseNumber"] = 0; }
+        }
+
         public static ApplicationUser GetCurrentUser()
         {
 
@@ -34,6 +40,18 @@ namespace HseqCentralApp.Helpers
             ApplicationUser currentUser = GetCurrentUser();
             HseqUser hseqUser = db.HseqUsers.Where(a => a.UserID == currentUser.Id).First();
             return hseqUser;
+        }
+
+        public static String CaseNumberForDisplay(int caseNbr) {
+
+            string caseNbrStr = caseNbr.ToString();
+
+            if (caseNbrStr.Length > 2)
+            {
+                return (caseNbrStr.Insert(2, "-"));
+            }
+
+            return caseNbrStr;
         }
 
 

@@ -110,7 +110,7 @@ namespace HseqCentralApp.Controllers
         {
             HseqRecord linkedRecord = _LinkRecordService.GetSourceRecord(recordId, recordSource, db);
 
-            Par par = (Par)_LinkRecordService.LinkRecord(recordId, recordSource, RecordType.PAR, db);
+            Par par = (Par)_LinkRecordService.CreateLinkedRecord(recordId, recordSource, RecordType.PAR, db);
             //PopulateDefaults(par);
             par = (Par)_RecordService.PopulateRecordTypeDefaults(RecordType.PAR, par);
 

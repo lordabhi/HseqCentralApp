@@ -47,6 +47,7 @@ namespace HseqCentralApp.Models
         public String Title { get; set; }
 
         [Required]
+        [DataType(DataType.MultilineText)]
         public String Description { get; set; }
 
         [Display(Name = "Record Type")]
@@ -117,5 +118,13 @@ namespace HseqCentralApp.Models
 
         }
 
+    }
+
+    public enum RecordType
+    {
+        NCR = 1,
+        FIS = 2,
+        CAR = 3,
+        PAR = 4
     }
 }

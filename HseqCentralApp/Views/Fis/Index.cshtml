@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<HseqCentralApp.Models.Fis>
 
+@using HseqCentralApp.Helpers; 
+
 @{
     ViewBag.Title = "Index";
 }
@@ -33,7 +35,7 @@
         <tr>
             <td>
                 @*@Html.DisplayFor(modelItem => item.HseqCaseFile.CaseNo)*@
-                @Html.ActionLink(item.HseqCaseFile.CaseNo + "", "Details", "HseqCaseFiles", new { id = item.HseqCaseFile.HseqCaseFileID }, null)
+                @Html.ActionLink(Utils.CaseNumberForDisplay(item.HseqCaseFile.CaseNo) + "", "Details", "HseqCaseFiles", new { id = item.HseqCaseFile.HseqCaseFileID }, null)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateCreatedForDisplay)

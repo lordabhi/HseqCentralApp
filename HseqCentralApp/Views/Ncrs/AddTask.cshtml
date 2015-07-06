@@ -1,5 +1,7 @@
 ﻿@model HseqCentralApp.ViewModels.NcrVM
 
+@using HseqCentralApp.Helpers; 
+
 @{
     ViewBag.Title = "EditTask";
 }
@@ -44,7 +46,7 @@
                 @Html.DisplayNameFor(model => model.Ncr.HseqCaseFile.CaseNo)
             </dt>
             <dd>
-                @Html.ActionLink(Model.Ncr.HseqCaseFile.CaseNo + "", "Details", "HseqCaseFiles", new { id = Model.Ncr.HseqCaseFile.HseqCaseFileID }, null)
+                @Html.ActionLink(Utils.CaseNumberForDisplay(Model.Ncr.HseqCaseFile.CaseNo) + "", "Details", "HseqCaseFiles", new { id = Model.Ncr.HseqCaseFile.HseqCaseFileID }, null)
             </dd>
             <dt>
                 @Html.DisplayNameFor(model => model.Ncr.RecordType)
@@ -88,17 +90,18 @@
             <dd>
                 @Html.DisplayFor(model => model.Ncr.ReportedBy)
             </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Ncr.DiscrepancyType.Name)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Ncr.DiscrepancyType.Name)
-            </dd>
+
             <dt>
                 @Html.DisplayNameFor(model => model.Ncr.DetectedInArea.Name)
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.Ncr.DetectedInArea.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Ncr.DiscrepancyType.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Ncr.DiscrepancyType.Name)
             </dd>
             <dt>
                 @Html.DisplayNameFor(model => model.Ncr.ResponsibleArea.Name)

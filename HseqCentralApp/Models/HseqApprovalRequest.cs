@@ -25,6 +25,7 @@ namespace HseqCentralApp.Models
         public DateTime? ResponseDate { get; set; }
 
         [Display(Name = "Response Comment")]
+        [DataType(DataType.MultilineText)]
         public String ResponseComment { get; set; }
 
     }

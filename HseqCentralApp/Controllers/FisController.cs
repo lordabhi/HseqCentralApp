@@ -117,7 +117,7 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult CreateLinked(int recordId, String recordSource)
         {
-            Fis fis = (Fis)_LinkRecordService.LinkRecord(recordId, recordSource, RecordType.FIS, db);
+            Fis fis = (Fis)_LinkRecordService.CreateLinkedRecord(recordId, recordSource, RecordType.FIS, db);
             //PopulateDefaults(fis);
             fis = (Fis)_RecordService.PopulateRecordTypeDefaults(RecordType.FIS, fis);
 

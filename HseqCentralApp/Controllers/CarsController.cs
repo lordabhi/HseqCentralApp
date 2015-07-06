@@ -104,7 +104,7 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult CreateLinked(int recordId, String recordSource)
         {
-            Car car = (Car)_LinkRecordService.LinkRecord(recordId, recordSource, RecordType.CAR, db);
+            Car car = (Car)_LinkRecordService.CreateLinkedRecord(recordId, recordSource, RecordType.CAR, db);
             //PopulateDefaults(car);
             car = (Car)_RecordService.PopulateRecordTypeDefaults(RecordType.CAR, car);
 

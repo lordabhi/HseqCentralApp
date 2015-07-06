@@ -18,38 +18,38 @@ namespace HseqCentralApp.Services
             _RecordService = new RecordService();
         }
 
-        public HseqRecord LinkRecord(int recordId, String recordSource, RecordType recordType, ApplicationDbContext db)
+        public HseqRecord CreateLinkedRecord(int recordId, String recordSource, RecordType recordType, ApplicationDbContext db)
         {
-            HseqRecord linkedRecord = GetSourceRecord(recordId, recordSource, db);
+            HseqRecord sourceRecord = GetSourceRecord(recordId, recordSource, db);
 
             //var defaults = PopulateRecordTypeLinked(linkedRecord, RecordType.NCR);
 
-            HseqRecord record = null;
+            HseqRecord newRecord = null;
             
             if (recordType == RecordType.NCR) {
-                 record = new Ncr(linkedRecord);
-                 record.RecordType = RecordType.NCR;
+                 newRecord = new Ncr(sourceRecord);
+                 newRecord.RecordType = RecordType.NCR;
             }
             else if (recordType == RecordType.FIS)
             {
-                record = new Fis(linkedRecord);
-                record.RecordType = RecordType.FIS;
+                newRecord = new Fis(sourceRecord);
+                newRecord.RecordType = RecordType.FIS;
             }
             else if (recordType == RecordType.CAR)
             {
-                record = new Car(linkedRecord);
-                record.RecordType = RecordType.CAR;
+                newRecord = new Car(sourceRecord);
+                newRecord.RecordType = RecordType.CAR;
             }
             else if (recordType == RecordType.PAR)
             {
-                record = new Par(linkedRecord);
-                record.RecordType = RecordType.PAR;
+                newRecord = new Par(sourceRecord);
+                newRecord.RecordType = RecordType.PAR;
             }            
             
-            record.HseqRecordID = linkedRecord.HseqRecordID;
+            newRecord.HseqRecordID = sourceRecord.HseqRecordID;
 
-            linkedRecord.LinkedRecords.Add(record);
-            return record;
+            sourceRecord.LinkedRecords.Add(newRecord);
+            return newRecord;
         }
 
         internal HseqRecord GetSourceRecord(int recordId, string recordSource, ApplicationDbContext db)

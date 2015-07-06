@@ -1,5 +1,7 @@
 ﻿@model HseqCentralApp.Models.Fis
 
+@using HseqCentralApp.Helpers; 
+
 @{
     ViewBag.Title = "Details";
 }
@@ -16,7 +18,7 @@
         </dt>
         <dd>
             @*@Html.DisplayFor(model => model.HseqCaseFile.CaseNo)*@
-            @Html.ActionLink(Model.HseqCaseFile.CaseNo + "", "Details", "HseqCaseFiles", new { id = Model.HseqCaseFile.HseqCaseFileID }, null)
+            @Html.ActionLink(Utils.CaseNumberForDisplay(Model.HseqCaseFile.CaseNo) + "", "Details", "HseqCaseFiles", new { id = Model.HseqCaseFile.HseqCaseFileID }, null)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Title)

@@ -1,5 +1,7 @@
 ﻿@model HseqCentralApp.Models.Ncr
 
+@using HseqCentralApp.Helpers; 
+
 @{
     ViewBag.Title = "Delete";
 }
@@ -16,7 +18,7 @@
         </dt>
         <dd>
             @*@Html.DisplayFor(model => model.HseqCaseFile.CaseNo)*@
-            @Html.ActionLink(Model.HseqCaseFile.CaseNo + "", "Details", "HseqCaseFiles", new { id = Model.HseqCaseFile.HseqCaseFileID }, null)
+            @Html.ActionLink(Utils.CaseNumberForDisplay(Model.HseqCaseFile.CaseNo) + "", "Details", "HseqCaseFiles", new { id = Model.HseqCaseFile.HseqCaseFileID }, null)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.RecordType)
@@ -60,23 +62,17 @@
         <dd>
             @Html.DisplayFor(model => model.ReportedBy)
         </dd>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.QualityCoordinator)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.QualityCoordinator)
-        </dd>*@
-        <dt>
-            @Html.DisplayNameFor(model => model.DiscrepancyType.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DiscrepancyType.Name)
-        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.DetectedInArea.Name)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.DetectedInArea.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscrepancyType.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DiscrepancyType.Name)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.ResponsibleArea.Name)

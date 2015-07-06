@@ -35,6 +35,7 @@ namespace HseqCentralApp.Models
 
         public String Title { get; set; }
 
+        [DataType(DataType.MultilineText)]
         public String Description { get; set; }
 
         [DataType(DataType.DateTime)]
