@@ -409,6 +409,7 @@
     <Content Include="Views\HseqApprovalRequests\Create.cshtml" />
     <Content Include="Views\HseqApprovalRequests\Edit.cshtml" />
     <Content Include="Views\HseqTasks\Create.cshtml" />
+    <Content Include="Views\Ncrs\_CreateDisposition.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

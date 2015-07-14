@@ -91,18 +91,26 @@ namespace HseqCentralApp.Controllers
 
             //ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
 
-            HseqApprovalRequest hseqApprovalRequest = new HseqApprovalRequest();
+
             ncrVM.Ncr = ncr;
-            ncrVM.HseqApprovalRequest = hseqApprovalRequest;
+
 
             //Populate defaults
-            if (ProposedDisposition == null) {
+            if (ProposedDisposition == null)
+            {
                 ProposedDisposition = false;
             }
             ncrVM.ProposedDisposition = (bool)ProposedDisposition;
             if (ncrVM.ProposedDisposition)
             {
                 ncrVM.Ncr.NcrState = NcrState.DispositionProposed;
+                HseqApprovalRequest hseqApprovalRequest = new HseqApprovalRequest();
+                ncrVM.HseqApprovalRequest = hseqApprovalRequest;
+                ncrVM.DispositionTypes = db.DispositionTypes;
+                ncrVM.ApprovalOwners = db.HseqUsers;
+                ncrVM.HseqApprovalRequest.DueDate = DateTime.Now.AddDays(14);
+                ncrVM.HseqApprovalRequest.OwnerID = Utils.GetCurrentApplicationUser(db).HseqUserID;
+
             }
             else if (!ncrVM.ProposedDisposition)
             {
@@ -113,16 +121,11 @@ namespace HseqCentralApp.Controllers
             ncrVM.ResponsibleAreas = db.BusinessAreas;
             ncrVM.DiscrepancyTypes = db.DiscrepancyTypes;
             ncrVM.Coordinators = db.HseqUsers;
-            ncrVM.DispositionTypes = db.DispositionTypes;
-            ncrVM.ApprovalOwners = db.HseqUsers;
 
             ncrVM.Ncr.RecordType = RecordType.NCR;
             ncrVM.Ncr.NcrSource = NcrSource.Internal;
 
-            ncrVM.HseqApprovalRequest.DueDate = DateTime.Now.AddDays(14);
-            ncrVM.HseqApprovalRequest.OwnerID = Utils.GetCurrentApplicationUser(db).HseqUserID;
- 
-            string caseNo = _RecordService.GetNextCaseNumber(db);
+            //string caseNo = _RecordService.GetNextCaseNumber(db);
             return View(ncrVM);
         }
 

@@ -1,0 +1,57 @@
+﻿@model HseqCentralApp.ViewModels.NcrVM
+
+@Html.HiddenFor(model => model.HseqApprovalRequest.DelegatableID)
+
+@Html.HiddenFor(model => model.HseqApprovalRequest.OwnerID)
+@*@Html.HiddenFor(model => model.HseqApprovalRequest.OwnerID)*@
+@Html.HiddenFor(model => model.HseqApprovalRequest.HseqRecordID)
+
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Ncr.DispositionTypeID, "Disposition Type", htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.Ncr.DispositionTypeID, new SelectList(Model.DispositionTypes, "DispositionTypeID", "Name", Model.Ncr.DispositionTypeID),
+                        "Select Disposition Type...", htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Ncr.DispositionTypeID, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Ncr.DispositionNote, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextAreaFor(model => model.Ncr.DispositionNote, new { htmlAttributes = new { @class = "form-control" }, style = "width:1150px; height: 50px" })
+        @Html.ValidationMessageFor(model => model.Ncr.DispositionNote, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.HseqApprovalRequest.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.HseqApprovalRequest.Title, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.HseqApprovalRequest.Title, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.HseqApprovalRequest.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextAreaFor(model => model.HseqApprovalRequest.Description, new { htmlAttributes = new { @class = "form-control" }, style = "width:1150px; height: 50px" })
+        @Html.ValidationMessageFor(model => model.HseqApprovalRequest.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.HseqApprovalRequest.AssigneeID, "Disposition Approver", htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.HseqApprovalRequest.AssigneeID, new SelectList(Model.ApprovalOwners, "HseqUserID", "FullName", Model.HseqApprovalRequest.AssigneeID),
+                        "Select Owner...", htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.HseqApprovalRequest.AssigneeID, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.HseqApprovalRequest.DueDate, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.HseqApprovalRequest.DueDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.HseqApprovalRequest.DueDate, "", new { @class = "text-danger" })
+    </div>
+</div>
