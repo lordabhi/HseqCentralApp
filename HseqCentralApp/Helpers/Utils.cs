@@ -42,10 +42,12 @@ namespace HseqCentralApp.Helpers
             return hseqUser;
         }
 
-        public static String CaseNumberForDisplay(int caseNbr) {
+        public static String CaseNumberForDisplay(string caseNbrStr) {
 
-            string caseNbrStr = caseNbr.ToString();
-
+            //string caseNbrStr = caseNbr.ToString();
+            if (string.IsNullOrEmpty(caseNbrStr)) { 
+                return "";
+            }
             if (caseNbrStr.Length > 2)
             {
                 return (caseNbrStr.Insert(2, "-"));

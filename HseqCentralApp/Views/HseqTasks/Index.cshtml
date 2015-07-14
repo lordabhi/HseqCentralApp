@@ -74,7 +74,13 @@
         </td>
 
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.DelegatableID }) |
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.DelegatableID }) |*@
+            @Html.ActionLink("Edit", "Edit", "HseqTasks",
+                new
+                {
+                    recordId = item.DelegatableID
+                },
+                null) |
             @Html.ActionLink("Details", "Details", new { id=item.DelegatableID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.DelegatableID })
         </td>

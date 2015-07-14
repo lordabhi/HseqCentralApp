@@ -113,47 +113,51 @@ namespace HseqCentralApp.Services
             if (hseqCaseFilesList != null && hseqCaseFilesList.LongCount() > 0)
             {
 
-                caseNo = hseqCaseFilesList.Max(p => p.CaseNo) + 1;
+                //caseNo = hseqCaseFilesList.Max(p => p.CaseNo) + 1;
 
             }
             return caseNo;
         }
 
-        internal int GetNextCaseNumber(ApplicationDbContext db)
+        internal string GetNextCaseNumber(ApplicationDbContext db)
         {
 
             int year = DateTime.Now.Year;
             int lastTwoYearDigits = year % 100;
 
-            int nextCaseNbr;
-            int currentMaxCaseNbr = 0;
+            string nextCaseNbr = "";
+            string currentMaxCaseNbr="";
 
             IList<HseqCaseFile> hseqCaseFilesList = db.HseqCaseFiles.ToList();
 
-            if (hseqCaseFilesList != null && hseqCaseFilesList.LongCount() > 0)
+            if (hseqCaseFilesList == null || hseqCaseFilesList.LongCount() == 0)
+            {
+                //nextCaseNbr = lastTwoYearDigits + "-" + "1000";
+                //nextCaseNbr = String.Format("{0}-{1}", lastTwoYearDigits, "1000");
+                nextCaseNbr = ((lastTwoYearDigits * 10000) + 1000).ToString();
+            }
+
+            else if (hseqCaseFilesList != null && hseqCaseFilesList.LongCount() > 0)
             {
                 currentMaxCaseNbr = hseqCaseFilesList.Max(p => p.CaseNo);
-            }
 
-            if (currentMaxCaseNbr.ToString().StartsWith(lastTwoYearDigits.ToString()))
-            {
-                nextCaseNbr = currentMaxCaseNbr + 1;
-            }
-            else if (lastTwoYearDigits == 0)
-            {
-
-                nextCaseNbr = (Convert.ToInt32(year.ToString().Substring(0, 2)) * 10000) + 1000;
-            }
-            else
-            {
-                nextCaseNbr = (lastTwoYearDigits * 10000) + 1000;
+                if (currentMaxCaseNbr.StartsWith(lastTwoYearDigits.ToString()))
+                {
+                    nextCaseNbr = (Convert.ToInt32(currentMaxCaseNbr) + 1).ToString();
+                }
+                else if (lastTwoYearDigits == 0)
+                {
+                    //nextCaseNbr = String.Format("{0}-{1}",lastTwoYearDigits ,"1000");
+                    //nextCaseNbr = ((Convert.ToInt32(year.ToString().Substring(0, 2)) * 10000) + 1000).ToString();
+                    nextCaseNbr = ((lastTwoYearDigits * 10000) + 1000).ToString();
+                }
             }
 
             return nextCaseNbr;
         }
 
 
-        public HseqRecord CreateCaseFile(HseqRecord record, out int caseNo, out HseqCaseFile hseqCaseFile, ApplicationDbContext db)
+        public HseqRecord CreateCaseFile(HseqRecord record, out string caseNo, out HseqCaseFile hseqCaseFile, ApplicationDbContext db)
         {
             caseNo = GetNextCaseNumber(db);
 

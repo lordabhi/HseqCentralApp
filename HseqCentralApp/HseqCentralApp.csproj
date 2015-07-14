@@ -255,6 +255,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\HseqTaskVM.cs" />
     <Compile Include="ViewModels\HseqApprovalRequestVM.cs" />
+    <Compile Include="ViewModels\DelegatableVM.cs" />
     <Compile Include="ViewModels\NcrVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -392,30 +393,22 @@
     <Content Include="Views\HseqUsers\Details.cshtml" />
     <Content Include="Views\HseqUsers\Edit.cshtml" />
     <Content Include="Views\HseqUsers\Index.cshtml" />
-    <Content Include="Views\HseqApprovalRequests\Create.cshtml" />
     <Content Include="Views\HseqApprovalRequests\Delete.cshtml" />
     <Content Include="Views\HseqApprovalRequests\Details.cshtml" />
-    <Content Include="Views\HseqApprovalRequests\Edit.cshtml" />
     <Content Include="Views\HseqApprovalRequests\Index.cshtml" />
-    <Content Include="Views\Ncrs\AddApproval1.cshtml" />
     <Content Include="Views\Shared\_ApprovalHeader.cshtml" />
     <Content Include="Views\Shared\_ApprovalDetails.cshtml" />
     <Content Include="Views\HseqApprovalRequests\OpenAction.cshtml" />
-    <Content Include="Views\Ncrs\AddTask1.cshtml" />
     <Content Include="Views\Shared\_TaskDetails.cshtml" />
     <Content Include="Views\Shared\_TaskHeader.cshtml" />
-    <Content Include="Views\Ncrs\Create - Copy.cshtml" />
-    <Content Include="Views\HseqTasks\Create.cshtml" />
     <Content Include="Views\HseqTasks\Delete.cshtml" />
     <Content Include="Views\HseqTasks\Details.cshtml" />
-    <Content Include="Views\HseqTasks\Edit.cshtml" />
     <Content Include="Views\HseqTasks\OpenAction.cshtml" />
     <Content Include="Views\HseqTasks\Index.cshtml" />
-    <Content Include="Views\Ncrs\EditApproval.cshtml" />
-    <Content Include="Views\Ncrs\EditTask.cshtml" />
-    <Content Include="Views\Ncrs\AddApproval.cshtml" />
-    <Content Include="Views\Ncrs\AddTask.cshtml" />
-    <Content Include="Views\Ncrs\Edit - Copy.cshtml" />
+    <Content Include="Views\HseqTasks\Edit.cshtml" />
+    <Content Include="Views\HseqApprovalRequests\Create.cshtml" />
+    <Content Include="Views\HseqApprovalRequests\Edit.cshtml" />
+    <Content Include="Views\HseqTasks\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

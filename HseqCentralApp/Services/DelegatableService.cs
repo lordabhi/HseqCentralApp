@@ -74,40 +74,19 @@ namespace HseqCentralApp.Services
 
         public HseqApprovalRequest AddHseqApprovalRequest(HseqRecord record, HseqApprovalRequest approvalRequest, ApplicationDbContext db)
         {
-            if (record is Ncr)
-            {
-                Ncr ncr = (Ncr)record;
+           // if (record is Ncr)
+            //{
+                //Ncr ncr = (Ncr)record;
 
                 if (approvalRequest == null)
                 {
                     approvalRequest = new HseqApprovalRequest();
                 }
 
-                   // HseqApprovalRequest approvalRequest = new HseqApprovalRequest();
-                    //approvalRequest.Owner = db.HseqUsers.Find(_RecordService.GetCurrentUser().Id);
-
                     approvalRequest.Owner = db.HseqUsers.Find(approvalRequest.OwnerID);
-                    approvalRequest.Assignee = Utils.GetCurrentApplicationUser(db); 
 
                     approvalRequest.DateAssigned = DateTime.Now;
-                    if (approvalRequest.Title == null)
-                    {
-                        approvalRequest.Title = ncr.Title;
-                    }
-                    else
-                    {
-                        approvalRequest.Title = approvalRequest.Title;
-                    }
-
-                    if (approvalRequest.Description == null)
-                    {
-                        approvalRequest.Description = ncr.Description;
-                    }
-                    else
-                    {
-                        approvalRequest.Description = approvalRequest.Description;
-                    }
-
+                    
                     if (approvalRequest.DueDate == null || approvalRequest.DueDate < DateTime.Now.Subtract(TimeSpan.FromDays(1)))
                     {
                         approvalRequest.DueDate = DateTime.Now.AddDays(14);
@@ -117,32 +96,32 @@ namespace HseqCentralApp.Services
                         approvalRequest.DueDate = approvalRequest.DueDate;
                     }
 
-                    approvalRequest.Status = ApprovalStatus.Active;
-                    approvalRequest.Response = ApprovalResult.Waiting;
+                    //approvalRequest.Status = ApprovalStatus.Active;
+                    //approvalRequest.Response = ApprovalResult.Waiting;
 
-                    approvalRequest.HseqRecordID = ncr.HseqRecordID;
-                
-                    ncr.Delegatables.Add(approvalRequest);
+                    //approvalRequest.HseqRecordID = ncr.HseqRecordID;
+
+                    record.Delegatables.Add(approvalRequest);
 
                     return approvalRequest;
 
-            }
+            //}
 
-            return null;
+            //return null;
         }
 
         public void AddHseqTaskRequest(HseqRecord record, HseqTask taskRequest, ApplicationDbContext db)
         {
-            if (record is Ncr)
-            {
-                Ncr ncr = (Ncr)record;
+            //if (record is Ncr)
+            //{
+            //    Ncr ncr = (Ncr)record;
 
                     //HseqTask taskRequest = new HseqTask();
 
                     //taskRequest.Owner = db.HseqUsers.Find(ApproverID);
 
                     taskRequest.Owner = db.HseqUsers.Find(taskRequest.OwnerID);
-                    taskRequest.Assignee = db.HseqUsers.Find(GetCurrentApplicationUser().HseqUserID);
+                    taskRequest.Assignee = db.HseqUsers.Find(taskRequest.AssigneeID);
                     taskRequest.DateAssigned = DateTime.Now;
                     if (taskRequest.DueDate == null || taskRequest.DueDate < DateTime.Now.Subtract(TimeSpan.FromDays(1)))
                     {
@@ -157,9 +136,9 @@ namespace HseqCentralApp.Services
                     {
                         taskRequest.Status = TaskStatus.NotStarted;
                     }
-                    taskRequest.HseqRecordID = ncr.HseqRecordID;
-                    ncr.Delegatables.Add(taskRequest);
-            }
+                    taskRequest.HseqRecordID = record.HseqRecordID;
+                    record.Delegatables.Add(taskRequest);
+            //}
         }
 
         public ApplicationUser GetCurrentUser()

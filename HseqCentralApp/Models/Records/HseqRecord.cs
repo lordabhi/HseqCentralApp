@@ -38,10 +38,11 @@ namespace HseqCentralApp.Models
         public int? AlfrescoNoderef { get; set; }
 
         [Display(Name = "Case No")]
-        public int CaseNo { get; set; }
+        [DisplayFormat(DataFormatString = "{0:##-####}")]
+        public string CaseNo { get; set; }
 
         [Display(Name = "Record No")]
-        public int RecordNo { get; set; }
+        public string RecordNo { get; set; }
 
         [Required]
         public String Title { get; set; }

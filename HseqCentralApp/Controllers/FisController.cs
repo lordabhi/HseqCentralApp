@@ -86,7 +86,7 @@ namespace HseqCentralApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                int caseNo;
+                string caseNo;
                 HseqCaseFile hseqCaseFile;
                 fis.CreatedBy = _RecordService.GetCurrentUser().FullName;
                 fis = (Fis)_RecordService.CreateCaseFile(fis, out caseNo, out hseqCaseFile, db);
@@ -97,10 +97,10 @@ namespace HseqCentralApp.Controllers
                 //create the folder in Alfresco and return the alfresconoderef
                 //Dummy for now
 
-                int alfresconoderef = caseNo;
-                hseqCaseFile.AlfrescoNoderef = caseNo;
+                //int alfresconoderef = caseNo;
+                //hseqCaseFile.AlfrescoNoderef = caseNo;
 
-                fis.AlfrescoNoderef = caseNo;
+                //fis.AlfrescoNoderef = caseNo;
 
                 db.SaveChanges();
 

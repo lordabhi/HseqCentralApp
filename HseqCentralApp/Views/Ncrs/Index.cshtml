@@ -87,7 +87,7 @@
                 @Html.ActionLink("Link Existing Record", "LinkExistingRecord", new { id = item.HseqRecordID }) |
                 @*@Html.ActionLink("Approval Request", "AddApproval", new { id = item.HseqRecordID }) |*@
 
-                @Html.ActionLink("Add Approval Request", "AddApproval", "Ncrs",
+                @Html.ActionLink("Create Approval Request", "Create", "HseqApprovalRequests",
                 new
                 {
                     recordId = item.HseqRecordID
@@ -95,7 +95,8 @@
                 null) |
 
                 @*@Html.ActionLink("Add Task", "AddTask", new { id = item.HseqRecordID }) |*@
-                @Html.ActionLink("Add Task", "AddTask", "Ncrs",
+                
+                @Html.ActionLink("Create Task", "Create", "HseqTasks",
                 new
                 {
                     recordId = item.HseqRecordID

@@ -63,6 +63,18 @@
                         recordId = item.HseqRecordID,
                         recordSource = "PAR"
                     },
+                    null) |
+                @Html.ActionLink("Create Approval Request", "Create", "HseqApprovalRequests",
+                    new
+                    {
+                        recordId = item.HseqRecordID
+                    },
+                    null) |
+                @Html.ActionLink("Create Task", "Create", "HseqTasks",
+                    new
+                    {
+                        recordId = item.HseqRecordID
+                    },
                     null)
             </td>
         </tr>

@@ -1,86 +1,122 @@
-﻿@model HseqCentralApp.Models.HseqTask
+﻿@model HseqCentralApp.ViewModels.DelegatableVM
+
+@using HseqCentralApp.Helpers; 
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "AddTask";
 }
 
-<h2>Create</h2>
+<h2>Create Task</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Hseq Tasks</h4>
+        <h4>Ncr</h4>
         <hr />
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @*@Html.HiddenFor(model => model.HseqRecord.HseqRecordID)*@
+        @Html.HiddenFor(model => model.HseqTask.DelegatableID)
+
+        @Html.HiddenFor(model => model.HseqTask.HseqRecordID)
+        @Html.HiddenFor(model => model.HseqTask.OwnerID)
+        @Html.HiddenFor(model => model.HseqTask.DateAssigned)
+        
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.HseqRecord.HseqCaseFile.CaseNo)
+            </dt>
+            <dd>
+                @Html.ActionLink(Utils.CaseNumberForDisplay(Model.HseqRecord.HseqCaseFile.CaseNo) + "", "Details", "HseqCaseFiles", new { id = Model.HseqRecord.HseqCaseFile.HseqCaseFileID }, null)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.HseqRecord.RecordType)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.HseqRecord.RecordType)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.HseqRecord.Title)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.HseqRecord.Title)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.HseqRecord.Description)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.HseqRecord.Description)
+            </dd>
+
+        </dl>
+
         <div class="form-group">
-            @Html.LabelFor(model => model.OwnerID, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.HseqTask.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("OwnerID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.OwnerID, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.HseqTask.Title, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.HseqTask.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.HseqTask.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.HseqTask.Description, new { htmlAttributes = new { @class = "form-control", @required = "required" }, style = "width:1150px; height: 50px" })
+                @Html.ValidationMessageFor(model => model.HseqTask.Description, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AssigneeID, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.HseqTask.DateAssigned, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("AssigneeID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.AssigneeID, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.HseqTask.DateAssigned, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.HseqTask.DateAssigned, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HseqTask.OwnerID, "Owner", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.DropDownList("ApproverID", null, "", htmlAttributes: new { @class = "form-control" })*@
+                @Html.DropDownListFor(model => model.HseqTask.OwnerID, new SelectList(Model.TaskOwners, "HseqUserID", "FullName", Model.HseqTask.OwnerID),
+                 "Select Owner...", htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.HseqTask.OwnerID, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.DateAssigned, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.HseqTask.AssigneeID, "Assigned To",htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateAssigned, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateAssigned, "", new { @class = "text-danger" })
+                @*@Html.DropDownList("AssigneeID", null, "", htmlAttributes: new { @class = "form-control" })*@
+                @Html.DropDownListFor(model => model.HseqTask.AssigneeID, new SelectList(Model.TaskOwners, "HseqUserID", "FullName", Model.HseqTask.AssigneeID),
+                        "Select Assignee...", htmlAttributes: new { @class = "form-control", @required = "required"})
+                @Html.ValidationMessageFor(model => model.HseqTask.AssigneeID, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.HseqTask.DueDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.HseqTask.DueDate, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.HseqTask.DueDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.HseqTask.Status, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, style = "width:1150px; height: 50px" })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.HseqRecordID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("HseqRecordID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.HseqRecordID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                @Html.EnumDropDownListFor(model => model.HseqTask.Status, htmlAttributes: new { @class = "form-control", @required = "required" })
+                @Html.ValidationMessageFor(model => model.HseqTask.Status, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Submit" class="btn btn-default" />
             </div>
         </div>
     </div>

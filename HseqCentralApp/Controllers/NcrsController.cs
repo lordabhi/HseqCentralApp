@@ -81,15 +81,15 @@ namespace HseqCentralApp.Controllers
 
             //PopulateDefaults(defaults);
 
-            ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
-            ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
-            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name");
+            //ViewBag.HseqCaseFileID = new SelectList(db.HseqCaseFiles, "HseqCaseFileID", "HseqCaseFileID");
+            //ViewBag.DiscrepancyTypeID = new SelectList(db.DiscrepancyTypes, "DiscrepancyTypeID", "Name");
+            //ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name");
 
-            ViewBag.DetectedInAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
-            ViewBag.ResponsibleAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
-            ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
+            //ViewBag.DetectedInAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
+            //ViewBag.ResponsibleAreaID = new SelectList(db.BusinessAreas, "BusinessAreaID", "Name");
+            //ViewBag.CoordinatorID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
 
-            ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
+            //ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
 
             HseqApprovalRequest hseqApprovalRequest = new HseqApprovalRequest();
             ncrVM.Ncr = ncr;
@@ -107,7 +107,6 @@ namespace HseqCentralApp.Controllers
             else if (!ncrVM.ProposedDisposition)
             {
                 ncrVM.Ncr.NcrState = NcrState.New;
-                ncrVM.HseqApprovalRequest.OwnerID = 1;
             }
 
             ncrVM.DetectedInAreas = db.BusinessAreas;
@@ -121,8 +120,9 @@ namespace HseqCentralApp.Controllers
             ncrVM.Ncr.NcrSource = NcrSource.Internal;
 
             ncrVM.HseqApprovalRequest.DueDate = DateTime.Now.AddDays(14);
-
-            int caseNo = _RecordService.GetNextCaseNumber(db);
+            ncrVM.HseqApprovalRequest.OwnerID = Utils.GetCurrentApplicationUser(db).HseqUserID;
+ 
+            string caseNo = _RecordService.GetNextCaseNumber(db);
             return View(ncrVM);
         }
 
@@ -134,7 +134,7 @@ namespace HseqCentralApp.Controllers
             {
                 Ncr ncr = ncrVM.Ncr;
 
-                int caseNo;
+                string caseNo;
                 HseqCaseFile hseqCaseFile;
                 ncr.CreatedBy = _RecordService.GetCurrentUser().FullName;
                 ncr = (Ncr)_RecordService.CreateCaseFile(ncr, out caseNo, out hseqCaseFile, db);
@@ -145,10 +145,10 @@ namespace HseqCentralApp.Controllers
                 //create the folder in Alfresco and return the alfresconoderef
                 //Dummy for now
 
-                int alfresconoderef = caseNo;
-                hseqCaseFile.AlfrescoNoderef = caseNo;
+                //int alfresconoderef = caseNo;
+                //hseqCaseFile.AlfrescoNoderef = caseNo;
 
-                ncr.AlfrescoNoderef = caseNo;
+                //ncr.AlfrescoNoderef = caseNo;
 
                 //Create Approvals
                 if (ncrVM.ProposedDisposition)
@@ -530,379 +530,144 @@ namespace HseqCentralApp.Controllers
             //return View(ncr);
         }
 
-        public ActionResult AddApproval1(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Ncr ncr = db.NcrRecords.Find(id);
-            if (ncr == null)
-            {
-                return HttpNotFound();
-            }
+   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
-            ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
-            HseqApprovalRequestVM approvalRequestVM = new HseqApprovalRequestVM(ncr);
-            HseqApprovalRequest hseqApprovalRequest = new HseqApprovalRequest();
-            approvalRequestVM.HseqApprovalRequest = hseqApprovalRequest;
-            //approvalRequestVM.Ncr = ncr;
+       //// GET: Ncrs/Edit/5
+       // public ActionResult EditApproval(int? recordId, int? approvalId)
+       // {
+       //     if (recordId == null || approvalId == null)
+       //     {
+       //         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+       //     }
 
-            approvalRequestVM.HseqApprovalRequest.DateAssigned = System.DateTime.Now;
-            approvalRequestVM.HseqApprovalRequest.DueDate = DateTime.Now.AddDays(14); ;
-            approvalRequestVM.HseqApprovalRequest.AssigneeID = _RecordService.GetCurrentApplicationUser().HseqUserID;
-            approvalRequestVM.HseqApprovalRequest.Assignee = _RecordService.GetCurrentApplicationUser(); 
+       //     Ncr ncr = db.NcrRecords.Find(recordId);
+       //     HseqApprovalRequest approvalRequest = db.HseqApprovalRequests.Find(approvalId);
 
-            return View(approvalRequestVM);
-        }
+       //     if (ncr == null || approvalRequest== null)
+       //     {
+       //         return HttpNotFound();
+       //     }
 
-        [HttpPost]
-        public ActionResult AddApproval1([Bind(Include = "Ncr, HseqApprovalRequest, ApproverID, AssigneeID")]HseqApprovalRequestVM hseqApprovalRequestVM)
-        {
-            Ncr ncrOrig = null;
-            ncrOrig = db.NcrRecords.Find(hseqApprovalRequestVM.Ncr.HseqRecordID);
-            if (ModelState.IsValid)
-            {
-                
-                if (hseqApprovalRequestVM.ApproverID != null && hseqApprovalRequestVM.Ncr.HseqRecordID != null)
-                {
-                    //Abhi Create Approvals
-                    // _DelegatableService.AddHseqApprovalRequest(ncrOrig, hseqApprovalRequestVM.ApproverID, hseqApprovalRequestVM.HseqApprovalRequest, db);
-                    HseqApprovalRequest approvalRequest = _DelegatableService.AddHseqApprovalRequest(ncrOrig, hseqApprovalRequestVM.HseqApprovalRequest, db);
-                    ncrOrig.Delegatables.Add(approvalRequest);
-                    db.SaveChanges();
+       //     NcrVM ncrVM = new NcrVM();
+       //     ncrVM.Ncr = ncr;
+       //     ncrVM.HseqApprovalRequest = approvalRequest;
 
-                    ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
-                    ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
-                }
-            }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                Console.WriteLine(errors);
-            }
+       //     ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+       //     ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqApprovalRequest.AssigneeID);
+       //     ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqApprovalRequest.OwnerID);
+       //     ncrVM.ApprovalOwners = db.HseqUsers;
 
-            return RedirectToAction("AddApproval", "Ncrs", ncrOrig.RecordNo);
-            //return View(ncr);
-        }
-
-        public ActionResult AddTask1(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Ncr ncr = db.NcrRecords.Find(id);
-            if (ncr == null)
-            {
-                return HttpNotFound();
-            }
-
-            ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
-            ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
-
-            HseqTaskVM taskVM = new HseqTaskVM(ncr);
+       //     return View(ncrVM);
+       // }
 
 
-            HseqTask hseqTask = new HseqTask();
-            taskVM.HseqTask = hseqTask;
+       // [HttpPost]
+       // [ValidateAntiForgeryToken]
+       // public ActionResult EditApproval(NcrVM ncrVM)
+       // {
 
-            taskVM.HseqTask.DateAssigned = System.DateTime.Now;
-            taskVM.HseqTask.DueDate = DateTime.Now.AddDays(14); ;
-            taskVM.HseqTask.AssigneeID = _RecordService.GetCurrentApplicationUser().HseqUserID;
-            taskVM.HseqTask.Assignee = _RecordService.GetCurrentApplicationUser(); 
+       //     Ncr ncr = null;
+       //     if (ModelState.IsValid)
+       //     {
+       //         ncr = db.NcrRecords.Find(ncrVM.Ncr.HseqRecordID);
+       //         ncrVM.Ncr = ncr;
 
-            return View(taskVM);
-        }
+       //         HseqApprovalRequest hseqApprovalRequest = ncrVM.HseqApprovalRequest;
 
-        [HttpPost]
-        public ActionResult AddTask1([Bind(Include = "Ncr, HseqTask, ApproverID")]HseqTaskVM ncrTaskVM)
-        {
-            Ncr ncrOrig = null;
-            if (ncrTaskVM.ApproverID != null && ncrTaskVM.Ncr.HseqRecordID != null)
-            {
-                ncrOrig = db.NcrRecords.Find(ncrTaskVM.Ncr.HseqRecordID);
+       //         //Update Ncr Status
+       //         if (hseqApprovalRequest.Response == ApprovalResult.Approved)
+       //         {
+       //             ncr.NcrState = NcrState.DispositionApproved;
+       //             ncr.DateLastUpdated = DateTime.Now;
+       //             db.Entry(ncr).State = EntityState.Modified;
+       //         }
+       //         else if (hseqApprovalRequest.Response == ApprovalResult.Rejected)
+       //         {
+       //             ncr.NcrState = NcrState.DispositionRejected;
+       //             ncr.DateLastUpdated = DateTime.Now;
+       //             db.Entry(ncr).State = EntityState.Modified;
+       //         }
 
-                //_DelegatableService.AddHseqTaskRequest(ncrOrig, ncrTaskVM.ApproverID, ncrTaskVM.HseqTask,  db);
-                db.SaveChanges();
+       //         db.Entry(hseqApprovalRequest).State = EntityState.Modified;
+       //         db.SaveChanges();
+       //         return RedirectToAction("OpenAction", "HseqApprovalRequests");
+       //     }
+       //     else
+       //     {
+       //         var errors = ModelState.Values.SelectMany(v => v.Errors);
+       //         Console.WriteLine(errors);
+       //     }
 
-                ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
-            }
+       //     return View(ncrVM);
 
-            return RedirectToAction("AddTask", "Ncrs", ncrOrig.RecordNo);
-            //return View(ncr);
-        }
-
- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-       // GET: Ncrs/Edit/5
-        public ActionResult EditApproval(int? recordId, int? approvalId)
-        {
-            if (recordId == null || approvalId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Ncr ncr = db.NcrRecords.Find(recordId);
-            HseqApprovalRequest approvalRequest = db.HseqApprovalRequests.Find(approvalId);
-
-            if (ncr == null || approvalRequest== null)
-            {
-                return HttpNotFound();
-            }
-
-            NcrVM ncrVM = new NcrVM();
-            ncrVM.Ncr = ncr;
-            ncrVM.HseqApprovalRequest = approvalRequest;
-
-            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
-            ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqApprovalRequest.AssigneeID);
-            ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqApprovalRequest.OwnerID);
-            ncrVM.ApprovalOwners = db.HseqUsers;
-
-            return View(ncrVM);
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditApproval(NcrVM ncrVM)
-        {
-
-            Ncr ncr = null;
-            if (ModelState.IsValid)
-            {
-                ncr = db.NcrRecords.Find(ncrVM.Ncr.HseqRecordID);
-                ncrVM.Ncr = ncr;
-
-                HseqApprovalRequest hseqApprovalRequest = ncrVM.HseqApprovalRequest;
-
-                //Update Ncr Status
-                if (hseqApprovalRequest.Response == ApprovalResult.Approved)
-                {
-                    ncr.NcrState = NcrState.DispositionApproved;
-                    ncr.DateLastUpdated = DateTime.Now;
-                    db.Entry(ncr).State = EntityState.Modified;
-                }
-                else if (hseqApprovalRequest.Response == ApprovalResult.Rejected)
-                {
-                    ncr.NcrState = NcrState.DispositionRejected;
-                    ncr.DateLastUpdated = DateTime.Now;
-                    db.Entry(ncr).State = EntityState.Modified;
-                }
-
-                db.Entry(hseqApprovalRequest).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("OpenAction", "HseqApprovalRequests");
-            }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                Console.WriteLine(errors);
-            }
-
-            return View(ncrVM);
-
-        }
+       // }
 
 
 // //////////////// Abhi /////////////////////////////////////////////////////////////////////////////////////////
         // GET: Ncrs/Edit/5
-        public ActionResult AddApproval(int? recordId)
-        {
-            if (recordId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+        //public ActionResult AddApproval(int? recordId)
+        //{
+        //    if (recordId == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
 
-            Ncr ncr = db.NcrRecords.Find(recordId);
+        //    Ncr ncr = db.NcrRecords.Find(recordId);
 
-            if (ncr == null)
-            {
-                return HttpNotFound();
-            }
+        //    if (ncr == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
 
-            HseqApprovalRequest approvalRequest = new HseqApprovalRequest();
-            approvalRequest.DueDate = DateTime.Now.AddDays(14);
-            approvalRequest.AssigneeID = Utils.GetCurrentApplicationUser(db).HseqUserID;
+        //    HseqApprovalRequest approvalRequest = new HseqApprovalRequest();
+        //    approvalRequest.DueDate = DateTime.Now.AddDays(14);
+        //    approvalRequest.AssigneeID = Utils.GetCurrentApplicationUser(db).HseqUserID;
 
-            NcrVM ncrVM = new NcrVM();
-            ncrVM.Ncr = ncr;
-            ncrVM.HseqApprovalRequest = approvalRequest;
+        //    NcrVM ncrVM = new NcrVM();
+        //    ncrVM.Ncr = ncr;
+        //    ncrVM.HseqApprovalRequest = approvalRequest;
 
-            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
-            ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqApprovalRequest.AssigneeID);
-            ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqApprovalRequest.OwnerID);
+        //    ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
+        //    ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqApprovalRequest.AssigneeID);
+        //    ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqApprovalRequest.OwnerID);
 
-            ncrVM.ApprovalOwners = db.HseqUsers;
-            return View(ncrVM);
-        }
+        //    ncrVM.ApprovalOwners = db.HseqUsers;
+        //    return View(ncrVM);
+        //}
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddApproval(NcrVM ncrVM)
-        {
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult AddApproval(NcrVM ncrVM)
+        //{
 
-            Ncr ncr = null;
-            if (ModelState.IsValid)
-            {
-                ncr = db.NcrRecords.Find(ncrVM.Ncr.HseqRecordID);
-                ncrVM.Ncr = ncr;
+        //    Ncr ncr = null;
+        //    if (ModelState.IsValid)
+        //    {
+        //        ncr = db.NcrRecords.Find(ncrVM.Ncr.HseqRecordID);
+        //        ncrVM.Ncr = ncr;
 
-                HseqApprovalRequest hseqApprovalRequest = ncrVM.HseqApprovalRequest;
+        //        HseqApprovalRequest hseqApprovalRequest = ncrVM.HseqApprovalRequest;
 
-                ncr.NcrState = NcrState.DispositionProposed;
-                ncr.DateLastUpdated = DateTime.Now;
+        //        ncr.NcrState = NcrState.DispositionProposed;
+        //        ncr.DateLastUpdated = DateTime.Now;
                 
-                HseqApprovalRequest approvalRequest = _DelegatableService.AddHseqApprovalRequest(ncr, hseqApprovalRequest, db);
+        //        HseqApprovalRequest approvalRequest = _DelegatableService.AddHseqApprovalRequest(ncr, hseqApprovalRequest, db);
 
-                //ncr.Delegatables.Add(approvalRequest);
+        //        //ncr.Delegatables.Add(approvalRequest);
 
-                db.SaveChanges();
-                return RedirectToAction("OpenAction", "HseqApprovalRequests");
-            }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                Console.WriteLine(errors);
-            }
+        //        db.SaveChanges();
+        //        return RedirectToAction("OpenAction", "HseqApprovalRequests");
+        //    }
+        //    else
+        //    {
+        //        var errors = ModelState.Values.SelectMany(v => v.Errors);
+        //        Console.WriteLine(errors);
+        //    }
 
-            return View(ncrVM);
+        //    return View(ncrVM);
 
-        }
-
-
-        public ActionResult AddTask(int? recordId)
-        {
-            if (recordId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Ncr ncr = db.NcrRecords.Find(recordId);
-            
-
-            if (ncr == null)
-            {
-                return HttpNotFound();
-            }
-
-            HseqTask hseqTask = new HseqTask();
-            hseqTask.DueDate = DateTime.Now.AddDays(14);
-
-            NcrVM ncrVM = new NcrVM();
-            ncrVM.Ncr = ncr;
-            ncrVM.HseqTask = hseqTask;
-
-            hseqTask.AssigneeID = Utils.GetCurrentApplicationUser(db).HseqUserID;
-
-            ncrVM.TaskOwners = db.HseqUsers;
-
-            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
-            ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqTask.AssigneeID);
-            ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqTask.OwnerID);
-            
-            return View(ncrVM);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddTask(NcrVM ncrVM)
-        {
-
-            Ncr ncr = null;
-            if (ModelState.IsValid)
-            {
-                ncr = db.NcrRecords.Find(ncrVM.Ncr.HseqRecordID);
-                ncrVM.Ncr = ncr;
-
-                HseqTask hseqTask = ncrVM.HseqTask;
-
-                _DelegatableService.AddHseqTaskRequest(ncr, hseqTask, db);
-
-                db.SaveChanges();
-                return RedirectToAction("OpenAction", "HseqTasks");
-            }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                Console.WriteLine(errors);
-            }
-
-            return View(ncrVM);
-        }
-
-// //////////////////////////////////////////
-
-        public ActionResult EditTask(int? recordId, int? taskId)
-        {
-            if (recordId == null || taskId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Ncr ncr = db.NcrRecords.Find(recordId);
-            HseqTask task = db.HseqTasks.Find(taskId);
-
-            if (ncr == null || task == null)
-            {
-                return HttpNotFound();
-            }
-
-            NcrVM ncrVM = new NcrVM();
-            ncrVM.Ncr = ncr;
-            ncrVM.HseqTask = task;
-
-            ViewBag.DispositionTypeID = new SelectList(db.DispositionTypes, "DispositionTypeID", "Name", ncr.DispositionTypeID);
-            ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqTask.AssigneeID);
-            ViewBag.ApproverID = new SelectList(db.HseqUsers, "HseqUserID", "FullName", ncrVM.HseqTask.OwnerID);
-            ncrVM.TaskOwners = db.HseqUsers;
-            return View(ncrVM);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditTask(NcrVM ncrVM)
-        {
-
-            Ncr ncr = null;
-            if (ModelState.IsValid)
-            {
-                ncr = db.NcrRecords.Find(ncrVM.Ncr.HseqRecordID);
-                ncrVM.Ncr = ncr;
-
-                HseqTask hseqTask = ncrVM.HseqTask;
-
-                //Update Ncr Status
-                //if (hseqApprovalRequest.Response == ApprovalResult.Approved) {
-                //    ncr.NcrState = NcrState.DispositionApproved;
-                //    ncr.DateLastUpdated = DateTime.Now;
-                //    db.Entry(ncr).State = EntityState.Modified;
-                //}
-                //else if (hseqApprovalRequest.Response == ApprovalResult.Rejected)
-                //{
-                //    ncr.NcrState = NcrState.DispositionRejected;
-                //    ncr.DateLastUpdated = DateTime.Now;
-                //    db.Entry(ncr).State = EntityState.Modified;
-                //}
-
-                db.Entry(hseqTask).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("OpenAction", "HseqTasks");
-            }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                Console.WriteLine(errors);
-            }
-
-            return View(ncrVM);
-            
-        }
-
- 
+        //}
 
     }
 }

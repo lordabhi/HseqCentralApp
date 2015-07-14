@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using HseqCentralApp.Helpers;
 using HseqCentralApp.Models;
 using HseqCentralApp.Services;
 using HseqCentralApp.ViewModels;
@@ -19,17 +20,23 @@ namespace HseqCentralApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         RecordService _RecordService;
+        DelegatableService _DelegatableService;
 
         public HseqApprovalRequestsController()
         {
             _RecordService = new RecordService();
+            _DelegatableService = new DelegatableService();
         }
 
         public HseqApprovalRequestsController(RecordService service)
         {
             _RecordService = service;
         }
-
+        
+        public HseqApprovalRequestsController(DelegatableService service)
+        {
+            _DelegatableService = service;
+        }
         // GET: HseqApprovalRequests1
         public ActionResult Index()
         {
@@ -67,7 +74,7 @@ namespace HseqCentralApp.Controllers
         }
 
         // GET: HseqApprovalRequests1/Create
-        public ActionResult Create()
+        public ActionResult Create1()
         {
             ViewBag.AssigneeID = new SelectList(db.HseqUsers, "HseqUserID", "FullName");
             ViewBag.HseqRecordID = new SelectList(db.HseqRecords, "HseqRecordID", "Title");
@@ -80,7 +87,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "DelegatableID,OwnerID,AssigneeID,DateAssigned,Title,Description,DueDate,HseqRecordID,Status,Response,ResponseDate,ResponseComment")] HseqApprovalRequest hseqApprovalRequest)
+        public ActionResult Create1([Bind(Include = "DelegatableID,OwnerID,AssigneeID,DateAssigned,Title,Description,DueDate,HseqRecordID,Status,Response,ResponseDate,ResponseComment")] HseqApprovalRequest hseqApprovalRequest)
         {
             if (ModelState.IsValid)
             {
@@ -132,7 +139,7 @@ namespace HseqCentralApp.Controllers
         }
 
         // GET: HseqApprovalRequests1/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit1(int? id)
         {
             if (id == null)
             {
@@ -154,7 +161,7 @@ namespace HseqCentralApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DelegatableID,OwnerID,AssigneeID,DateAssigned,Title,Description,DueDate,HseqRecordID,Status,Response,ResponseDate,ResponseComment")] HseqApprovalRequest hseqApprovalRequest)
+        public ActionResult Edit1([Bind(Include = "DelegatableID,OwnerID,AssigneeID,DateAssigned,Title,Description,DueDate,HseqRecordID,Status,Response,ResponseDate,ResponseComment")] HseqApprovalRequest hseqApprovalRequest)
         {
             if (ModelState.IsValid)
             {
@@ -202,5 +209,160 @@ namespace HseqCentralApp.Controllers
             }
             base.Dispose(disposing);
         }
+
+        // //////////////// Abhi /////////////////////////////////////////////////////////////////////////////////////////
+        // GET: Ncrs/Edit/5
+        public ActionResult Create(int? recordId)
+        {
+            if (recordId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            //Ncr ncr = db.NcrRecords.Find(recordId);
+            HseqRecord hseqRecord = db.HseqRecords.Find(recordId);
+
+            if (hseqRecord == null)
+            {
+                return HttpNotFound();
+            }
+
+            HseqApprovalRequest approvalRequest = new HseqApprovalRequest() { 
+                DueDate = DateTime.Now.AddDays(14), 
+                OwnerID = Utils.GetCurrentApplicationUser(db).HseqUserID,
+                Status = ApprovalStatus.Active,
+                HseqRecordID = hseqRecord.HseqRecordID
+            };
+
+            DelegatableVM ncrVM = new DelegatableVM() { 
+                HseqRecord = hseqRecord, 
+                HseqApprovalRequest = approvalRequest, 
+                ApprovalOwners = db.HseqUsers 
+            };
+
+            return View(ncrVM);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(DelegatableVM ncrVM)
+        {
+
+            HseqRecord hseqRecord = null;
+            if (ModelState.IsValid)
+            {
+                hseqRecord = db.HseqRecords.Find(ncrVM.HseqApprovalRequest.HseqRecordID);
+                ncrVM.HseqRecord = hseqRecord;
+
+                HseqApprovalRequest hseqApprovalRequest = ncrVM.HseqApprovalRequest;
+
+                if (hseqRecord.RecordType == RecordType.NCR)
+                {
+                    Ncr ncr = db.NcrRecords.Find(ncrVM.HseqRecord.HseqRecordID);
+                    ncr.NcrState = NcrState.DispositionProposed;
+                    ncr.DateLastUpdated = DateTime.Now;
+                }
+                else {
+                    hseqRecord.DateLastUpdated = DateTime.Now;
+                }
+
+                HseqApprovalRequest approvalRequest = _DelegatableService.AddHseqApprovalRequest(hseqRecord, hseqApprovalRequest, db);
+
+                //ncr.Delegatables.Add(approvalRequest);
+
+                db.SaveChanges();
+                return RedirectToAction("OpenAction", "HseqApprovalRequests");
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                Console.WriteLine(errors);
+            }
+
+            return View(ncrVM);
+
+        }
+
+        /////////////////////////////////////////////////////////////////
+
+        public ActionResult Edit(int? recordId)
+        {
+            if (recordId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            HseqApprovalRequest approvalRequest = db.HseqApprovalRequests.Find(recordId);
+
+            if (approvalRequest == null)
+            {
+                return HttpNotFound();
+            }
+
+            //Ncr ncr = db.NcrRecords.Find(recordId);
+            HseqRecord hseqRecord = db.HseqRecords.Find(approvalRequest.HseqRecordID);
+
+            if (hseqRecord == null)
+            {
+                return HttpNotFound();
+            }
+
+            //NcrVM ncrVM = new NcrVM();
+            DelegatableVM ncrVM = new DelegatableVM() { 
+                HseqRecord = hseqRecord, 
+                HseqApprovalRequest = approvalRequest, 
+                ApprovalOwners = db.HseqUsers 
+            };
+
+            return View(ncrVM);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(DelegatableVM ncrVM)
+        {
+
+            Ncr ncr = null;
+            if (ModelState.IsValid)
+            {
+                HseqRecord hseqRecord = db.HseqRecords.Find(ncrVM.HseqApprovalRequest.HseqRecordID);
+                //ncrVM.Ncr = ncr;
+
+                HseqApprovalRequest hseqApprovalRequest = ncrVM.HseqApprovalRequest;
+
+                //Update Ncr Status
+                if (hseqRecord.RecordType == RecordType.NCR)
+                {
+                    ncr = db.NcrRecords.Find(ncrVM.HseqApprovalRequest.HseqRecordID);
+                    if (hseqApprovalRequest.Response == ApprovalResult.Approved)
+                    {
+                        ncr.NcrState = NcrState.DispositionApproved;
+                        ncr.DateLastUpdated = DateTime.Now;
+                        db.Entry(ncr).State = EntityState.Modified;
+                    }
+                    else if (hseqApprovalRequest.Response == ApprovalResult.Rejected)
+                    {
+                        ncr.NcrState = NcrState.DispositionRejected;
+                        ncr.DateLastUpdated = DateTime.Now;
+                        db.Entry(ncr).State = EntityState.Modified;
+                    }
+                }
+
+                db.Entry(hseqApprovalRequest).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("OpenAction", "HseqApprovalRequests");
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                Console.WriteLine(errors);
+            }
+
+            return View(ncrVM);
+
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////
     }
 }

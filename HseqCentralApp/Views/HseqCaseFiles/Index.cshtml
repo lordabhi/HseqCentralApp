@@ -1,4 +1,6 @@
-﻿@model IEnumerable<HseqCentralApp.Models.HseqCaseFile>
+﻿@using HseqCentralApp.Helpers; 
+
+@model IEnumerable<HseqCentralApp.Models.HseqCaseFile>
 
 @{
     ViewBag.Title = "Index";
@@ -24,7 +26,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.CaseNo)
+                @Html.DisplayFor(modelItem => item.CaseNo, "{xx-xxxx}")
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AlfrescoNoderef)

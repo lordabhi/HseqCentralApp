@@ -14,11 +14,11 @@ namespace HseqCentralApp.ViewModels
 
         public HseqTaskVM(Ncr ncr)
         {
-            this.Ncr = ncr;
-            HseqTasks = (List<HseqTask>)this.Ncr.Delegatables.OfType<HseqTask>().ToList();
+            this.HseqRecord = ncr;
+            HseqTasks = (List<HseqTask>)this.HseqRecord.Delegatables.OfType<HseqTask>().ToList();
         }
 
-        public Ncr Ncr { get; set; }
+        public HseqRecord HseqRecord { get; set; }
        
         public int? ApproverID { get; set; }
         public virtual HseqUser Approver { get; set; }

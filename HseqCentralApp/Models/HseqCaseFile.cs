@@ -18,7 +18,8 @@ namespace HseqCentralApp.Models
         public int HseqCaseFileID { get; set; }
 
         [Display(Name="Case No")]
-        public int CaseNo { get; set; }
+        [DisplayFormat(DataFormatString = "{0:##-####}")]
+        public string CaseNo { get; set; }
 
         [Display(Name = "Alfresco Node Reference")]
         public int AlfrescoNoderef { get; set; }
