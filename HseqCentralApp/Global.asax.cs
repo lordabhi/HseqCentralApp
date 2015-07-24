@@ -22,6 +22,7 @@ namespace HseqCentralApp
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             //Register your View Engine Here.
+            ModelBinders.Binders.DefaultBinder = new DevExpress.Web.Mvc.DevExpressEditorsBinder();
             //ViewEngines.Engines.Add(new MyViewEngine());
         }
     }

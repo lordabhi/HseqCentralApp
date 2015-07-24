@@ -1,0 +1,49 @@
+﻿@model System.Collections.IEnumerable
+
+@Html.DevExpress().Splitter(settings =>
+{
+    settings.Name = "TaskSplitter";
+
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.Styles.Pane.Paddings.Padding = 0;
+    settings.AllowResize = true;
+    //settings.AutoLayout = true;
+    settings.ShowCollapseForwardButton = true;
+    settings.ShowCollapseBackwardButton = true;
+
+    settings.Styles.Separator.BackColor = System.Drawing.Color.LightGray;
+    
+    settings.Orientation = System.Web.UI.WebControls.Orientation.Vertical;
+
+    settings.Panes.Add(pane =>
+    {
+        pane.Name = "TaskChartContainer";
+        pane.MinSize = 200;
+        pane.MaxSize = 400;
+        pane.SetContent(() =>
+        {
+            ViewContext.Writer.Write(
+            @Html.Action("_TaskChartContainer", "HseqTasks"));
+        });
+    });
+
+
+    settings.Panes.Add(gridPane =>
+    {
+        gridPane.Name = "TaskGridContainer";
+
+        gridPane.MinSize = 400;
+        gridPane.ScrollBars = System.Web.UI.WebControls.ScrollBars.Auto;
+
+        gridPane.PaneStyle.Paddings.PaddingTop = Unit.Pixel(10);
+        gridPane.SetContent(() =>
+        {
+            //ViewContext.Writer.Write(Html.Action("_TaskGridViewPartial", "Home"));
+            
+            ViewContext.Writer.Write(Html.Action("TaskGridViewPartial", "HseqTasks"));
+            
+        });
+    });
+
+
+}).GetHtml()

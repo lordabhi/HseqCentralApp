@@ -1,0 +1,72 @@
+﻿@{ bool Collapsed = ViewData["Collapsed"] == null ? false : (bool)ViewData["Collapsed"];
+
+}
+
+
+@Html.DevExpress().Label(
+    settings =>
+    {
+        settings.Name = "label1";
+        settings.Text = "Details";
+        //settings.Width = new Unit(70, UnitType.Pixel);
+        settings.Style["font-size"] = "20px";
+        
+        settings.Properties.EnableClientSideAPI = true;
+    }).GetHtml()
+
+@Html.DevExpress().RoundPanel(settings =>
+{
+    settings.Name = "AttachmentsPanel";
+    settings.HeaderText = "Attachments";
+
+    settings.ShowHeader = true;
+    settings.AllowCollapsingByHeaderClick = true;
+    settings.ShowCollapseButton = false;
+    settings.EnableAnimation = true;
+    settings.Width = Unit.Percentage(100);
+    settings.Collapsed = Collapsed;
+    settings.ControlStyle.Font.Size = FontUnit.Medium;
+
+    settings.SetContent(() =>
+    {
+        ViewContext.Writer.Write("Container for Projects / Jobs");
+    });
+}).GetHtml()
+
+@Html.DevExpress().RoundPanel(settings =>
+{
+    settings.Name = "LinkedItemsPanel";
+    settings.HeaderText = "Linked Items";
+
+    settings.ShowHeader = true;
+    settings.AllowCollapsingByHeaderClick = true;
+    settings.ShowCollapseButton = false;
+    settings.EnableAnimation = true;
+    settings.Width = Unit.Percentage(100);
+    settings.Collapsed = true;
+    settings.ControlStyle.Font.Size = FontUnit.Medium;
+
+    settings.SetContent(() =>
+    {
+        ViewContext.Writer.Write("Container for Projects / Jobs");
+    });
+}).GetHtml()
+
+@Html.DevExpress().RoundPanel(settings =>
+{
+    settings.Name = "CostsPanel";
+    settings.HeaderText = "Costs";
+
+    settings.ShowHeader = true;
+    settings.AllowCollapsingByHeaderClick = true;
+    settings.ShowCollapseButton = false;
+    settings.EnableAnimation = true;
+    settings.Width = Unit.Percentage(100);
+    settings.Collapsed = true;
+    settings.ControlStyle.Font.Size = FontUnit.Medium;
+
+    settings.SetContent(() =>
+    {
+        ViewContext.Writer.Write("Container for Projects / Jobs");
+    });
+}).GetHtml()

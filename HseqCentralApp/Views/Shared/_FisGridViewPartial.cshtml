@@ -1,0 +1,125 @@
+﻿@using HseqCentralApp.Helpers;
+@using HseqCentralApp.Models;
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "FisGridView";
+        settings.CallbackRouteValues = new { Controller = "Fis", Action = "FisGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Fis", Action = "FisGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Fis", Action = "FisGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Fis", Action = "FisGridViewPartialDelete" };
+        //settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+        settings.KeyFieldName = "HseqRecordID";
+
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        //settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
+
+        settings.Columns.Add("CaseNo").VisibleIndex = 1;
+
+        settings.Columns.Add("RecordNo");
+
+        settings.Columns.Add("Title");
+
+
+
+        settings.Columns.Add("HseqRecordID").Visible = false;
+        settings.Columns.Add("AlfrescoNoderef").Visible = false; ;
+
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Description";
+            column.Caption = "Description";
+
+            column.ColumnType = MVCxGridViewColumnType.Memo;
+            column.EditFormSettings.Visible = DefaultBoolean.True;
+            column.Visible = false;
+            column.VisibleIndex = 101;
+        });
+
+
+        settings.Columns.Add("EnteredBy");
+        settings.Columns.Add("ReportedBy").Width = Unit.Pixel(200);
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "CoordinatorID";
+            column.Caption = "Coordinator";
+
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+            comboBoxProperties.DataSource = Utils.AppUsers();
+            comboBoxProperties.TextField = "FullName";
+            comboBoxProperties.ValueField = "HseqUserID";
+            comboBoxProperties.ValueType = typeof(string);
+            comboBoxProperties.DropDownStyle = DropDownStyle.DropDown;
+        });
+
+        settings.Columns.Add("LinkedRecordsID").Visible = false;
+        settings.Columns.Add("HseqCaseFileID").Visible = false;
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "JobNumber";
+            column.Caption = "Job Number";
+
+            column.ColumnType = MVCxGridViewColumnType.Default;
+            column.EditFormSettings.Visible = DefaultBoolean.True;
+            column.Visible = false;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "DrawingNumber";
+            column.Caption = "Drawing Number";
+
+            column.ColumnType = MVCxGridViewColumnType.Default;
+            column.EditFormSettings.Visible = DefaultBoolean.True;
+            column.Visible = false;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "DateCreated";
+            column.Caption = "Date Created";
+
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dateEditProperties = column.PropertiesEdit as DateEditProperties;
+            dateEditProperties.DisplayFormatString = "D";
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "DateLastUpdated";
+            column.Caption = "Date Last Updated";
+
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dateEditProperties = column.PropertiesEdit as DateEditProperties;
+            dateEditProperties.DisplayFormatString = "D";
+        });
+
+
+        settings.Columns.Add("LastUpdatedBy");
+        settings.Columns.Add("DateCreatedForDisplay").Visible = false;
+
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

@@ -1,0 +1,39 @@
+@using HseqCentralApp.Helpers;
+
+@*<script src="~/Scripts/LeftTreeView.js"></script>*@
+@section JavaScript
+{
+    <script type="text/javascript" src="~/Scripts/js/LeftTreeView.js"></script>
+}
+    @Html.DevExpress().TreeView(
+    settings =>
+    {
+        settings.Name = "ResponsibleAreaTreeViewPanel";
+
+        settings.AllowCheckNodes = true;
+        settings.AllowSelectNode = true;
+        settings.CheckNodesRecursive = true;
+        settings.EnableAnimation = true;
+        settings.EnableHotTrack = true;
+        settings.ShowTreeLines = true;
+        settings.ShowExpandButtons = true;
+        settings.CheckNodesRecursive = true;
+        
+        //settings.Width = 300;
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "ResponsibleAreaTreeViewPartial" };
+        settings.Images.NodeImage.Width = 13;
+        settings.Styles.NodeImage.Paddings.PaddingTop = 3;
+
+        settings.ClientSideEvents.CheckedChanged = "OnResponsibleAreaChanged";
+
+        settings.PreRender = (source, e) =>
+        {
+            ASPxTreeView treeView = (ASPxTreeView)source;
+            treeView.ExpandAll();
+
+            //treeView.Nodes.FindByText("All Responsible Areas").Checked= true;
+            
+        };
+        
+    }).BindToVirtualData(TreeViewHelper.ResponsibleAreaTypes).GetHtml()
+

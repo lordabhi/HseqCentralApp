@@ -1,0 +1,13 @@
+<div class="leftPanel">
+    @* DXCOMMENT: Configure the left panel's treeview *@
+    @Html.DevExpress().TreeView(settings =>
+{
+    settings.Name = "LeftTreeView";
+}).BindToXML(HttpContext.Current.Server.MapPath("~/App_Data/SideMenu.xml"), "/menu/*").GetHtml()
+
+    @Html.Partial("_RecordTypeTreeViewPartial")
+
+    @*@Html.Action("RecordTypeTreeListPartial", "Cars")*@
+
+</div>
+

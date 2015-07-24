@@ -1,0 +1,29 @@
+﻿
+@Html.DevExpress().CallbackPanel(
+    settings =>
+    {
+        settings.Name = "MainContentCallbackPanel";
+        settings.CallbackRouteValues = new { Controller = "Navigation", Action = "MainContentCallbackPanel" };
+        settings.Width = Unit.Percentage(100);
+        settings.Height = 400;
+
+        settings.SetContent(() =>
+        {
+            //@Html.RenderPartial("GridViewPartialView");
+            @Html.RenderPartial("_MainContentTabPanel");
+            //ViewContext.Writer.Write(
+            //    "<div>" + "Test"
+                
+            //    + "</div>"
+            //    );
+        });
+
+        settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
+        //settings.ClientSideEvents.EndCallback = "OnEndCallback";
+    }
+).GetHtml()
+
+
+
+
+

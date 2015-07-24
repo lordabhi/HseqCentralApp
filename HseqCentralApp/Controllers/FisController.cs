@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using HseqCentralApp.Models;
 using HseqCentralApp.Services;
+using DevExpress.Web.Mvc;
+using HseqCentralApp.Helpers;
+using HseqCentralApp.ViewModels;
 
 namespace HseqCentralApp.Controllers
 {
@@ -301,5 +304,103 @@ namespace HseqCentralApp.Controllers
                         }
                     ).OrderBy(p => p.FisCategoryId).ThenBy(p => p.Id).ToList();
         }
+
+
+        HseqCentralApp.Models.ApplicationDbContext db1 = new HseqCentralApp.Models.ApplicationDbContext();
+
+        [ValidateInput(false)]
+        public ActionResult FisGridViewPartial()
+        {
+            //var model = db1.FisRecords;
+            var model = NavigationUtils.GetFilteredFisRecords();
+
+            List<Fis> filteredFisRecords = NavigationUtils.GetFilteredFisRecords();
+            if (filteredFisRecords != null)
+            {
+                NavigationFilter.FilteredFisRecordIds = filteredFisRecords.Select(record => record.HseqRecordID).OrderBy(HseqRecordID => HseqRecordID).ToList();
+            }
+            else
+            {
+                NavigationFilter.FilteredFisRecordIds = new List<int>();
+            }
+
+            return PartialView("_FisGridViewPartial", model.ToList());
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult FisGridViewPartialAddNew(Fis item)
+        {
+            var model = db1.FisRecords;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    model.Add(item);
+                    db1.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_FisGridViewPartial", model.ToList());
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult FisGridViewPartialUpdate(Fis item)
+        {
+            var model = db1.FisRecords;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var modelItem = model.FirstOrDefault(it => it.HseqRecordID == item.HseqRecordID);
+                    if (modelItem != null)
+                    {
+                        this.UpdateModel(modelItem);
+                        db1.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_FisGridViewPartial", model.ToList());
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult FisGridViewPartialDelete(System.Int32 HseqRecordID)
+        {
+            var model = db1.FisRecords;
+            if (HseqRecordID >= 0)
+            {
+                try
+                {
+                    var item = model.FirstOrDefault(it => it.HseqRecordID == HseqRecordID);
+                    if (item != null)
+                        model.Remove(item);
+                    db1.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            return PartialView("_FisGridViewPartial", model.ToList());
+        }
+
+        HseqCentralApp.Models.ApplicationDbContext db2 = new HseqCentralApp.Models.ApplicationDbContext();
+
+        public ActionResult _FisChartContainer()
+        {
+            var model = db2.FisRecords;
+            return PartialView("_FisChartContainer", model.ToList());
+        }
+
+
+
     }
 }

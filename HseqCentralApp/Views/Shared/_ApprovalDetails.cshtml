@@ -7,15 +7,6 @@
             @Html.ActionLink(@Html.DisplayFor(model => model.Title).ToString(), "Details", "HseqApprovalRequests", new { id = Model.DelegatableID }, null)
         </td>      
         <td>
-            @Html.DisplayFor(model => model.HseqRecord.RecordNo)
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.HseqRecord.RecordType)
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.HseqRecord.CaseNo)
-        </td>
-        <td>
             @Html.DisplayFor(model => model.DateAssignedForDisplay)
         </td>        
         <td>
@@ -37,10 +28,11 @@
             @Html.ActionLink(@Html.DisplayFor(model => model.Title).ToString(), "Details", "HseqApprovalRequests", new { id = Model.DelegatableID }, null)
         </td>*@
         <td>
-            @Html.ActionLink("Action", "Edit", "HseqApprovalRequests",
+            @Html.ActionLink("Action", "EditApproval", "Ncrs",
                 new
                 {
-                    recordId = Model.DelegatableID
+                    recordId = Model.HseqRecordID,
+                    approvalId = Model.DelegatableID
                 },
                 null)
         </td>

@@ -1,0 +1,38 @@
+@{
+	var grid = Html.DevExpress().GridView(settings => {
+        settings.Name = "ApprovalGridViewPartial";
+        settings.CallbackRouteValues = new { Controller = "HseqApprovalRequests", Action = "ApprovalGridViewPartial" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "HseqApprovalRequests", Action = "ApprovalGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "HseqApprovalRequests", Action = "ApprovalGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "HseqApprovalRequests", Action = "ApprovalGridViewPartialDelete" };
+        settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+		settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = true;
+
+		settings.KeyFieldName = "DelegatableID";
+
+		settings.SettingsPager.Visible = true;
+		settings.Settings.ShowGroupPanel = true;
+		settings.Settings.ShowFilterRow = true;
+		settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+				settings.Columns.Add("Status");
+				settings.Columns.Add("DelegatableID");
+				settings.Columns.Add("OwnerID");
+				settings.Columns.Add("AssigneeID");
+				settings.Columns.Add("DateAssigned");
+				settings.Columns.Add("Title");
+				settings.Columns.Add("Description");
+				settings.Columns.Add("DueDate");
+				settings.Columns.Add("HseqRecordID");
+			});
+		if (ViewData["EditError"] != null){
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()

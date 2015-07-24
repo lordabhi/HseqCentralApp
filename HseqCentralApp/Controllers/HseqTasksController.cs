@@ -12,6 +12,7 @@ using HseqCentralApp.Helpers;
 using HseqCentralApp.Models;
 using HseqCentralApp.Services;
 using HseqCentralApp.ViewModels;
+using DevExpress.Web.Mvc;
 
 namespace HseqCentralApp.Controllers
 {
@@ -311,6 +312,77 @@ namespace HseqCentralApp.Controllers
         // //////////////////////////////////////////
 
 
+        HseqCentralApp.Models.ApplicationDbContext db1 = new HseqCentralApp.Models.ApplicationDbContext();
 
+        [ValidateInput(false)]
+        public ActionResult TaskGridViewPartial()
+        {
+            //var model = db1.HseqTasks;
+            var model = NavigationUtils.GetFilteredTasks();
+            AllItemsVM.TaskRecords = model;
+            return PartialView("~/Views/Shared/_TaskGridViewPartial.cshtml", model.ToList());
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult TaskGridViewPartialAddNew(HseqCentralApp.Models.HseqTask item)
+        {
+            var model = db1.HseqTasks;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Insert here a code to insert the new item in your model
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("~/Views/Shared/_TaskGridViewPartial.cshtml", model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult TaskGridViewPartialUpdate(HseqCentralApp.Models.HseqTask item)
+        {
+            var model = db1.HseqTasks;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Insert here a code to update the item in your model
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("~/Views/Shared/_TaskGridViewPartial.cshtml", model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult TaskGridViewPartialDelete(System.Int32 DelegatableID)
+        {
+            var model = db1.HseqTasks;
+            if (DelegatableID >= 0)
+            {
+                try
+                {
+                    // Insert here a code to delete the item from your model
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            return PartialView("~/Views/Shared/_TaskGridViewPartial.cshtml", model);
+        }
+
+        public ActionResult _TaskChartContainer()
+        {
+            var model = db1.HseqTasks;
+            return PartialView("_TaskChartContainer", model.ToList());
+        }
     }
 }

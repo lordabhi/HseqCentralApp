@@ -1,0 +1,37 @@
+@model HeaderViewRenderMode
+
+
+@if(Model == HeaderViewRenderMode.Title) {
+<div class="templateTitle">
+    @Html.ActionLink("Project Title", "Index", "Home")
+</div>
+} else {
+    if(Model == HeaderViewRenderMode.Full) {
+<div class="headerTop">
+    @*<div class="templateTitle">
+        @Html.ActionLink("Project Title", "Index", "Home")
+    </div>*@
+
+    <div class="headerMenu">
+        <span style="font-size:25px; padding-left:100px">
+            HSEQ Central
+        </span>
+    </div>
+
+    <div class="loginControl" style="text-align:right">
+        @Html.Partial("LogOnPartialView")
+    </div>
+</div>
+    }
+
+
+
+   @*<div class="headerMenu">
+    @Html.DevExpress().Menu(settings => {
+    settings.Name = "HeaderMenu";
+    settings.ItemAutoWidth = false;
+    settings.ControlStyle.CssClass = "headerMenu";
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    }).BindToXML(HttpContext.Current.Server.MapPath("~/App_Data/TopMenu.xml"), "/items/*").GetHtml()
+</div>*@
+    }

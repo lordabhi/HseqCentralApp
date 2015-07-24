@@ -1,0 +1,79 @@
+﻿
+@Html.DevExpress().RoundPanel(settings =>
+{
+    settings.Name = "ProjectsPanel";
+    settings.HeaderText = "Projects / Jobs";
+    
+    settings.ShowHeader = true;
+    settings.AllowCollapsingByHeaderClick = true;
+    settings.ShowCollapseButton = false;
+    settings.EnableAnimation = true;
+    settings.Width = Unit.Percentage(100);
+    settings.Collapsed = true;
+    settings.ControlStyle.Font.Size = FontUnit.Medium;
+        
+    settings.SetContent(() =>
+    {
+        ViewContext.Writer.Write("Container for Projects / Jobs");
+    });
+}).GetHtml()
+
+@Html.DevExpress().RoundPanel(settings =>
+{
+    settings.Name = "RecordTypesPanel";
+    settings.HeaderText = "Record Types";
+    
+    settings.ShowHeader = true;
+    settings.AllowCollapsingByHeaderClick = true;
+    settings.ShowCollapseButton = false;
+    settings.EnableAnimation = true;
+    settings.Width = Unit.Percentage(100);
+    settings.Collapsed = false;
+    settings.ControlStyle.Font.Size = FontUnit.Medium;
+    
+    settings.SetContent(() =>
+    {
+        @Html.RenderPartial("_RecordTypeTreeViewPartial");
+        //ViewContext.Writer.Write("Round panel content");
+    });
+}).GetHtml()
+
+@Html.DevExpress().RoundPanel(settings =>
+{
+    settings.Name = "CoordinatorsPanel";
+    settings.HeaderText = "Coordinators";
+
+    settings.ShowHeader = true;
+    settings.AllowCollapsingByHeaderClick = true;
+    settings.ShowCollapseButton = false;
+    settings.EnableAnimation = true;
+    settings.Width = Unit.Percentage(100);
+    settings.Collapsed = false;
+    settings.ControlStyle.Font.Size = FontUnit.Medium;
+    
+    settings.SetContent(() =>
+    {
+        //ViewContext.Writer.Write("Container for coordinators");
+        @Html.RenderPartial("_CoordinatorTreeViewPartial");
+    });
+}).GetHtml()
+
+@Html.DevExpress().RoundPanel(settings =>
+{
+    settings.Name = "ResponsibleAreaPanel";
+    settings.HeaderText = "Responsible Area";
+
+    settings.ShowHeader = true;
+    settings.AllowCollapsingByHeaderClick = true;
+    settings.ShowCollapseButton = false;
+    settings.EnableAnimation = true;
+    settings.Width = Unit.Percentage(100);
+    settings.Collapsed = false;
+    settings.ControlStyle.Font.Size = FontUnit.Medium;
+    
+    settings.SetContent(() =>
+    {
+        //ViewContext.Writer.Write("Container for Responsible Area");
+        @Html.RenderPartial("_ResponsibleAreaTreeViewPartial");
+    });
+}).GetHtml()

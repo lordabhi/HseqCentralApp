@@ -1,0 +1,30 @@
+﻿@Html.DevExpress().Chart(settings =>
+{
+    settings.Name = "FisChartContainer";
+
+    //settings.Height = 400;
+
+    settings.AutoLayout = true;
+    settings.Width = 700;
+
+    settings.BorderOptions.Visibility = DefaultBoolean.False;
+    settings.CrosshairEnabled = DefaultBoolean.True;
+
+    Series chartSeries = new Series("Series", DevExpress.XtraCharts.ViewType.Bar);
+    chartSeries.ArgumentDataMember = "CaseNo";
+    chartSeries.ValueDataMembers[0] = "HseqRecordID";
+    settings.Series.Add(chartSeries);
+
+    settings.SeriesTemplate.LabelsVisibility = DefaultBoolean.False;
+    settings.SeriesTemplate.ArgumentScaleType = ScaleType.DateTime;
+    settings.SeriesTemplate.ArgumentDataMember = "DateCreated";
+    settings.SeriesTemplate.ValueDataMembers[0] = "HseqRecordID";
+    //settings.SeriesTemplate.ValueDataMembers[1] = "CaseNo";
+    settings.SeriesDataMember = "Title";
+    XYDiagram diagram = (XYDiagram)settings.Diagram;
+    AxisBase axisX = diagram.AxisX;
+    AxisBase axisY = diagram.AxisY;
+    diagram.AxisY.Title.Text = "Population mid-year, millions";
+
+}).Bind(Model).GetHtml()
+

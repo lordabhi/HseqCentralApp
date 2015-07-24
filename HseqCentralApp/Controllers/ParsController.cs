@@ -6,8 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using HseqCentralApp.Helpers;
 using HseqCentralApp.Models;
 using HseqCentralApp.Services;
+using HseqCentralApp.ViewModels;
 
 namespace HseqCentralApp.Controllers
 {
@@ -248,5 +250,103 @@ namespace HseqCentralApp.Controllers
             //ViewBag.QualityCoordinator = defaults.QualityCoordinator;
             //ViewBag.NcrState = defaults.NcrState;
         }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        HseqCentralApp.Models.ApplicationDbContext db1 = new HseqCentralApp.Models.ApplicationDbContext();
+
+        [ValidateInput(false)]
+        public ActionResult ParGridViewPartial()
+        {
+            //var model = db1.ParRecords;
+            var model = NavigationUtils.GetFilteredParRecords();
+
+            List<Par> filteredParRecords = NavigationUtils.GetFilteredParRecords();
+            if (filteredParRecords != null)
+            {
+                NavigationFilter.FilteredParRecordIds = filteredParRecords.Select(record => record.HseqRecordID).OrderBy(HseqRecordID => HseqRecordID).ToList();
+            }
+            else
+            {
+                NavigationFilter.FilteredParRecordIds = new List<int>();
+            }
+
+            return PartialView("_ParGridViewPartial", model.ToList());
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ParGridViewPartialAddNew(Par item)
+        {
+            var model = db1.ParRecords;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    model.Add(item);
+                    db1.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_ParGridViewPartial", model.ToList());
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ParGridViewPartialUpdate(Par item)
+        {
+            var model = db1.ParRecords;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var modelItem = model.FirstOrDefault(it => it.HseqRecordID == item.HseqRecordID);
+                    if (modelItem != null)
+                    {
+                        this.UpdateModel(modelItem);
+                        db1.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_ParGridViewPartial", model.ToList());
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ParGridViewPartialDelete(System.Int32 HseqRecordID)
+        {
+            var model = db1.ParRecords;
+            if (HseqRecordID >= 0)
+            {
+                try
+                {
+                    var item = model.FirstOrDefault(it => it.HseqRecordID == HseqRecordID);
+                    if (item != null)
+                        model.Remove(item);
+                    db1.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            return PartialView("_ParGridViewPartial", model.ToList());
+        }
+
+        //HseqCentralApp.Models.ApplicationDbContext db2 = new HseqCentralApp.Models.ApplicationDbContext();
+
+        public ActionResult _ParChartContainer()
+        {
+            var model = db1.ParRecords;
+            return PartialView("_ParChartContainer", model.ToList());
+        }
+
     }
 }

@@ -1,0 +1,49 @@
+﻿@model System.Collections.IEnumerable
+
+@Html.DevExpress().Splitter(settings =>
+{
+    settings.Name = "AllItemsSplitter";
+
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.Styles.Pane.Paddings.Padding = 0;
+    settings.AllowResize = true;
+    //settings.AutoLayout = true;
+    settings.ShowCollapseForwardButton = true;
+    settings.ShowCollapseBackwardButton = true;
+
+    settings.Styles.Separator.BackColor = System.Drawing.Color.LightGray;
+    
+    settings.Orientation = System.Web.UI.WebControls.Orientation.Vertical;
+
+    settings.Panes.Add(pane =>
+    {
+        pane.Name = "AllItemsChartContainer";
+        pane.MinSize = 200;
+        pane.MaxSize = 400;
+        pane.SetContent(() =>
+        {
+            ViewContext.Writer.Write(
+            @Html.Action("_AllItemsChartContainer", "Home"));
+        });
+    });
+
+
+    settings.Panes.Add(gridPane =>
+    {
+        gridPane.Name = "AllItemsGridContainer";
+
+        gridPane.MinSize = 400;
+        gridPane.ScrollBars = System.Web.UI.WebControls.ScrollBars.Auto;
+
+        gridPane.PaneStyle.Paddings.PaddingTop = Unit.Pixel(10);
+        gridPane.SetContent(() =>
+        {
+            //ViewContext.Writer.Write(Html.Action("_NcrButtonContainer", "Ncrs"));            
+            
+            ViewContext.Writer.Write(
+                              Html.Action("_AllItemsGridViewPartial", "Home"));
+        });
+    });
+
+
+}).GetHtml()

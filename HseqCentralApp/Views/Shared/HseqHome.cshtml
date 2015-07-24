@@ -1,0 +1,60 @@
+﻿@model System.Collections.IEnumerable
+
+@Html.DevExpress().Splitter(settings =>
+{
+    settings.Name = "MainPaneSplitter";
+    settings.Height = 700;
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.AllowResize = true;
+
+    settings.ShowCollapseForwardButton = true;
+    settings.ShowCollapseBackwardButton = true;
+
+    settings.Styles.Separator.BackColor = System.Drawing.Color.LightGray;
+
+    settings.Panes.Add(pane =>
+    {
+        pane.Name = "LeftSplitterPane";
+        pane.MaxSize = 300;
+        pane.ScrollBars = ScrollBars.Auto;
+
+        pane.SetContent(() =>
+        {
+            //ViewContext.Writer.Write("Pane 0");
+            @Html.RenderPartial("_LeftContentPanel");
+        });
+
+     });
+
+    settings.Panes.Add(gridPane =>
+    {
+        gridPane.Name = "CenterSplitterPane";
+        gridPane.ScrollBars = ScrollBars.Auto;
+
+        gridPane.SetContent(() =>
+        {
+            //@Html.RenderPartial("GridViewPartialView");
+            @Html.RenderPartial("_MainContentCallbackPanel");
+
+        });
+    });
+
+    settings.Panes.Add(pane =>
+     {
+         pane.Name = "RightSplitterPane";
+         pane.MaxSize = 250;
+         pane.ScrollBars = ScrollBars.Auto;
+         pane.SetContent(() =>
+         {
+             //ViewContext.Writer.Write("Pane 3");
+             @Html.RenderPartial("_RightContentPanel");
+
+         });
+     });
+    
+    settings.ClientSideEvents.Init = "function(s,e){OnRecordTypeChanged(s,e)}";
+
+}).GetHtml()
+
+
+

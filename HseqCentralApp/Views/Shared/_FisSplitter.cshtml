@@ -1,0 +1,50 @@
+﻿@model System.Collections.IEnumerable
+
+@Html.DevExpress().Splitter(settings =>
+{
+    settings.Name = "FisSplitter";
+
+    //settings.Height = 800;
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.Styles.Pane.Paddings.Padding = 0;
+    settings.AllowResize = true;
+
+    settings.ShowCollapseForwardButton = true;
+    settings.ShowCollapseBackwardButton = true;
+
+    settings.Styles.Separator.BackColor = System.Drawing.Color.LightGray;
+    
+    settings.Orientation = System.Web.UI.WebControls.Orientation.Vertical;
+
+    settings.Panes.Add(pane =>
+    {
+        pane.Name = "FisChartContainer";
+        pane.MinSize = 200;
+        pane.MaxSize = 400;
+
+        pane.SetContent(() =>
+        {
+            ViewContext.Writer.Write(
+                              @Html.Action("_FisChartContainer", "Fis"));
+
+        });
+                
+    });
+
+    settings.Panes.Add(gridPane =>
+    {
+        gridPane.Name = "FisGridContainer";
+
+        gridPane.MinSize = 400;
+        gridPane.ScrollBars = System.Web.UI.WebControls.ScrollBars.Auto;
+        //pane.MinSize = 400;
+
+        gridPane.SetContent(() =>
+        {
+            ViewContext.Writer.Write(
+                              Html.Action("FisGridViewPartial", "Fis"));
+        });
+    });
+
+
+}).GetHtml()

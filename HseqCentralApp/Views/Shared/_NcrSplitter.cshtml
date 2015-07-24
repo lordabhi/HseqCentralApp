@@ -1,0 +1,84 @@
+﻿@model System.Collections.IEnumerable
+
+
+
+
+
+@Html.DevExpress().Splitter(settings =>
+{
+    settings.Name = "NcrSplitter";
+
+    settings.Height = System.Web.UI.WebControls.Unit.Percentage(30);
+    settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+    settings.Styles.Pane.Paddings.Padding = 0;
+    settings.AllowResize = true;
+
+    settings.ShowCollapseForwardButton = true;
+    settings.ShowCollapseBackwardButton = true;
+
+    settings.Styles.Separator.BackColor = System.Drawing.Color.LightGray;
+    
+    settings.Orientation = System.Web.UI.WebControls.Orientation.Vertical;
+
+    settings.Panes.Add(pane =>
+    {
+        pane.Name = "NcrChartContainer";
+        pane.MinSize = 200;
+        pane.MaxSize = 300;
+
+        pane.AutoWidth = true;
+        //pane.AutoHeight = true;
+        pane.SetContent(() =>
+        {
+            ViewContext.Writer.Write(
+                              Html.Action("_NcrChartContainer", "Ncrs"));            
+
+           // ViewContext.Writer.Write("Pane 0");
+        });
+
+        
+    });
+
+
+
+    //settings.Panes.Add(gridPane =>
+    //{
+    //    gridPane.Name = "NcrButtonContainer";
+
+    //    gridPane.SetContent(() =>
+    //    {
+    //        @Html.Action("_NcrButtonContainer", "Ncrs");
+    //    });
+    //});
+
+
+    settings.Panes.Add(gridPane =>
+    {
+        gridPane.Name = "NcrGridContainer";
+
+        settings.Height = System.Web.UI.WebControls.Unit.Percentage(70);
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        gridPane.MinSize = Unit.Pixel(400);
+        
+        gridPane.ScrollBars = System.Web.UI.WebControls.ScrollBars.Auto;
+        //pane.MinSize = 400;
+
+        gridPane.PaneStyle.Paddings.PaddingTop = Unit.Pixel(10);
+        gridPane.SetContent(() =>
+        {
+            //@Html.RenderPartial("GridViewPartialView");
+            //@Html.RenderPartial("_NcrGridView");
+            
+            ViewContext.Writer.Write(
+                                        Html.Action("_NcrButtonContainer", "Ncrs"));            
+            ViewContext.Writer.Write(
+                              Html.Action("NcrGridViewPartial", "Ncrs"));
+        //});
+            //@Html.RenderPartial("_MainContentCallbackPanel");
+
+        });
+    });
+
+
+}).GetHtml()

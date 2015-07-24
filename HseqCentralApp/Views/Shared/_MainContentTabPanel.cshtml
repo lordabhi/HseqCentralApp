@@ -1,0 +1,105 @@
+﻿@*@{ TabControlFeaturesDemoOptions options = (TabControlFeaturesDemoOptions)ViewData["Options"]; }*@
+
+@{ int activeTabIndex = ViewData["activeTabIndex"] == null ? 0 : (int)ViewData["activeTabIndex"];
+
+  }
+
+@Html.DevExpress().PageControl(settings2 =>
+            {
+                settings2.Name = "MainContentTabPanel";
+                settings2.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                settings2.EnableClientSideAPI = true;
+                settings2.ActiveTabIndex = activeTabIndex;
+                                                 
+                settings2.TabPages.Add(tabPage =>
+                {
+                    tabPage.Name = "NcrPanel";
+                    tabPage.Text = "NCRS";
+                    tabPage.Index = 0;
+                    tabPage.SetContent(() =>
+                    {
+                        @Html.RenderPartial("_NcrSplitter");
+                    });
+                });
+
+                settings2.TabPages.Add(tabPage =>
+                {
+                    tabPage.Name = "CarPanel";
+                    tabPage.Text = "CARS";
+                    tabPage.Index = 1;
+                    //settings2.CallbackRouteValues = new { Controller = "Cars", Action = "CarGridViewPartial" };
+                    tabPage.SetContent(() =>
+                    {
+                        @Html.RenderPartial("_CarSplitter");
+                    });
+                });
+
+
+                settings2.TabPages.Add(tabPage =>
+                {
+                    tabPage.Name = "ParPanel";
+                    tabPage.Text = "PARS";
+                    tabPage.Index = 2;
+                    //settings2.CallbackRouteValues = new { Controller = "Cars", Action = "CarGridViewPartial" };
+                    tabPage.SetContent(() =>
+                    {
+                        @Html.RenderPartial("_ParSplitter");
+                    });
+                });                
+                
+                settings2.TabPages.Add(tabPage =>
+                {
+                    tabPage.Name = "FisPanel";
+                    tabPage.Text = "FIS";
+                    tabPage.Index = 3;
+                    //settings2.CallbackRouteValues = new { Controller = "Cars", Action = "CarGridViewPartial" };
+                    tabPage.SetContent(() =>
+                    {
+                        @Html.RenderPartial("_FisSplitter");
+                    });
+                });                
+                
+                settings2.TabPages.Add(tabPage =>
+                {
+                    tabPage.Name = "TasksPanel";
+                    tabPage.Text = "TASKS";
+                    tabPage.Index = 4;
+                    tabPage.SetContent(() =>
+                    {
+                        @Html.RenderPartial("_TaskSplitter");
+                    });
+                });                   
+                
+                settings2.TabPages.Add(tabPage =>
+                {
+                    tabPage.Name = "ApprovalsPanel";
+                    tabPage.Text = "APPROVALS";
+                    tabPage.Index = 5;
+                    tabPage.SetContent(() =>
+                    {
+                        @Html.RenderPartial("_ApprovalSplitter");
+                    });
+                });                
+                
+                
+                settings2.TabPages.Add(tabPage =>
+                {
+                    tabPage.Name = "AllItemsPanel";
+                    tabPage.Text = "ALL ITEMS";
+                    tabPage.Index = 6;
+                    tabPage.SetContent(() =>
+                    {
+                        @Html.RenderPartial("_AllItemsSplitter");
+                    });
+                });
+
+                
+            }).GetHtml()
+
+            
+
+@*}).Bind(Model).GetHtml()*@
+
+
+
+

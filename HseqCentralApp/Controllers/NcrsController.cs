@@ -52,6 +52,9 @@ namespace HseqCentralApp.Controllers
         public ActionResult Index()
         {
             var hseqRecords = db.NcrRecords.Include(n => n.HseqCaseFile).Include(n => n.DiscrepancyType);
+            ViewData["DiscrepancyTypes"] = db3.DiscrepancyTypes.ToList();
+            ViewBag.DiscrepancyTypes = db3.DiscrepancyTypes.ToList();
+
             return View(hseqRecords.ToList());
         }
 
@@ -672,5 +675,144 @@ namespace HseqCentralApp.Controllers
 
         //}
 
+        HseqCentralApp.Models.ApplicationDbContext db3 = new HseqCentralApp.Models.ApplicationDbContext();
+
+       
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult NcrGridViewAddNew(HseqCentralApp.Models.Ncr item)
+        {
+            var model = db3.NcrRecords;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    model.Add(item);
+                    db3.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_NcrGridViewPartial", model.ToList());
+        }
+
+        //[HttpPost, ValidateInput(false)]
+        //public ActionResult NcrGridViewAddNew(NcrVM ncrVM)
+        //{
+        //    var model = db3.NcrRecords;
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            //model.Add(item);
+        //            //db3.SaveChanges();
+
+        //            Ncr ncr = ncrVM.Ncr;
+
+        //            string caseNo;
+        //            HseqCaseFile hseqCaseFile;
+        //            ncr.CreatedBy = _RecordService.GetCurrentUser().FullName;
+        //            ncr = (Ncr)_RecordService.CreateCaseFile(ncr, out caseNo, out hseqCaseFile, db);
+
+        //            model.Add(ncrVM.Ncr);
+        //            db3.SaveChanges();
+
+        //            //db.NcrRecords.Add(ncrVM.Ncr);
+        //            //db.SaveChanges();
+
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            ViewData["EditError"] = e.Message;
+        //        }
+        //    }
+        //    else
+        //        ViewData["EditError"] = "Please, correct all errors.";
+        //    return PartialView("_NcrGridViewPartial", model.ToList());
+        //}
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult NcrGridViewUpdate(HseqCentralApp.Models.Ncr item)
+        {
+            var model = db3.NcrRecords;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var modelItem = model.FirstOrDefault(it => it.HseqRecordID == item.HseqRecordID);
+                    if (modelItem != null)
+                    {
+                        this.UpdateModel(modelItem);
+                        db3.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_NcrGridViewPartial", model.ToList());
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult NcrGridViewDelete(System.Int32 HseqRecordID)
+        {
+            var model = db3.NcrRecords;
+            if (HseqRecordID >= 0)
+            {
+                try
+                {
+                    var item = model.FirstOrDefault(it => it.HseqRecordID == HseqRecordID);
+                    if (item != null)
+                        model.Remove(item);
+                    db3.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            return PartialView("_NcrGridViewPartial", model.ToList());
+        }
+
+        public ActionResult _NcrChartContainer()
+        {
+            var model = db3.NcrRecords;
+            //var model = db.Customers;
+            //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
+            return PartialView("_NcrChartContainer", model.ToList());
+        }
+
+        [ValidateInput(false)]
+        public ActionResult NcrGridViewPartial()
+        {
+            var model = db3.NcrRecords;
+
+            List<Ncr> filteredNcrRecords = NavigationUtils.GetFilteredNcrRecords();
+
+            if (filteredNcrRecords != null)
+            {
+                NavigationFilter.FilteredNcrRecordIds = filteredNcrRecords.Select(record => record.HseqRecordID).OrderBy(HseqRecordID => HseqRecordID).ToList();
+                AllItemsVM.NcrRecords = filteredNcrRecords;
+            }
+            else {
+                NavigationFilter.FilteredNcrRecordIds = new List<int>();
+            }
+
+            //return PartialView("_NcrGridViewPartial", model.ToList());
+            return PartialView("_NcrGridViewPartial", filteredNcrRecords);
+        }
+
+        public ActionResult _NcrButtonContainer()
+        {
+            //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
+            return PartialView("NcrGridViewPanel");
+        }
+        
     }
 }

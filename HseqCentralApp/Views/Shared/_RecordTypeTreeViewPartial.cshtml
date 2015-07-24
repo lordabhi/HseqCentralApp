@@ -1,0 +1,77 @@
+@using HseqCentralApp.Helpers;
+
+
+
+    @*@Html.DevExpress().TreeView(settings =>
+{
+    settings.Name = "RecordTypeTreeView";
+    settings.AllowSelectNode = true;
+
+    settings.Nodes.Add(node =>
+    {
+        node.Text = "Node 0";
+        node.Nodes.Add(subNode =>
+        {
+            subNode.Text = "SubNode 0";
+            subNode.Nodes.Add("SubSubNode 0");
+            subNode.Nodes.Add("SubSubNode 0");
+        });
+        node.Nodes.Add("SubNode 1");
+    });
+    settings.Nodes.Add("Node 1");
+}).GetHtml()*@
+
+@*<script type="text/javascript">
+
+    function OnRecordTypeChanged(s, e) {
+
+        for (var i = 0; i < s.GetNodeCount() ; i++) {
+            if (s.GetNode(i).GetChecked()) {
+                alert(s.GetNode(i).GetText());
+            }
+        }
+    }
+
+    function OnBeginCallback(s, e) {
+        e.customArgs["EmployeeID"] = employeeId;
+        employeeId = null;
+    }
+    function OnEndCallback(s, e) {
+        if (employeeId != null)
+            cbpExample.PerformCallback();
+    }
+
+</script>*@
+
+@Html.DevExpress().TreeView(
+    settings =>
+    {
+        settings.Name = "RecordTypeTreeViewPanel";
+
+        settings.AllowCheckNodes = true;
+        settings.AllowSelectNode = true;
+        settings.CheckNodesRecursive = true;
+        settings.EnableAnimation = true;
+        settings.EnableHotTrack = true;
+        settings.ShowTreeLines = true;
+        settings.ShowExpandButtons = true;
+        settings.CheckNodesRecursive = true;
+
+        settings.EnableClientSideAPI = true;
+        
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "RecordTypeTreeViewPartial" };
+        settings.Images.NodeImage.Width = 13;
+        settings.Styles.NodeImage.Paddings.PaddingTop = 3;
+
+
+        settings.ClientSideEvents.CheckedChanged = "OnRecordTypeChanged";
+        
+        settings.PreRender = (source, e) =>
+        {
+            ASPxTreeView treeView = (ASPxTreeView)source;
+            treeView.ExpandAll();
+            treeView.Nodes.FindByText("NCR").Checked = true;
+
+        };
+    }).BindToVirtualData(TreeViewHelper.RecordTypes).GetHtml()
+

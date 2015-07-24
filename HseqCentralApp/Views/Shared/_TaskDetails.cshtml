@@ -1,17 +1,8 @@
 ﻿@model HseqCentralApp.Models.HseqTask
+
         <td>
             @Html.ActionLink(@Html.DisplayFor(model => model.Title).ToString(), "Details", "HseqTasks", new { id = Model.DelegatableID }, null)
         </td>
-        <td>
-            @Html.DisplayFor(model => model.HseqRecord.RecordNo)
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.HseqRecord.RecordType)
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.HseqRecord.CaseNo)
-        </td>
-
         <td>
             @Html.DisplayFor(model => model.DateAssignedForDisplay)
         </td>        
@@ -32,18 +23,11 @@
             @Html.ActionLink("View", "Details", "HseqTasks", new { id = Model.DelegatableID }, null)
         </td>*@
       <td>
-            @*@Html.ActionLink("Action", "EditTask", "Ncrs",
+            @Html.ActionLink("Action", "EditTask", "Ncrs",
                 new
                 {
                     recordId = Model.HseqRecordID,
                     taskId = Model.DelegatableID
-                },
-                null)*@
-
-          @Html.ActionLink("Action", "Edit", "HseqTasks",
-                new
-                {
-                    recordId = Model.DelegatableID
                 },
                 null)
         </td>

@@ -6,8 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using HseqCentralApp.Helpers;
 using HseqCentralApp.Models;
 using HseqCentralApp.Services;
+using HseqCentralApp.ViewModels;
 
 namespace HseqCentralApp.Controllers
 {
@@ -242,6 +244,103 @@ namespace HseqCentralApp.Controllers
             ViewBag.ReportedBy = defaults.ReportedBy;
             //ViewBag.QualityCoordinator = defaults.QualityCoordinator;
             //ViewBag.NcrState = defaults.NcrState;
+        }
+
+        HseqCentralApp.Models.ApplicationDbContext db1 = new HseqCentralApp.Models.ApplicationDbContext();
+
+        [ValidateInput(false)]
+        public ActionResult CarGridViewPartial()
+        {
+            Console.WriteLine(NavigationFilter.ResponsibleAreaIds);
+            //var model = db1.CarRecords;
+            var model = NavigationUtils.GetFilteredCarRecords();
+
+            List<Car> filteredCarRecords = NavigationUtils.GetFilteredCarRecords();
+            if (filteredCarRecords != null)
+            {
+                NavigationFilter.FilteredCarRecordIds = filteredCarRecords.Select(record => record.HseqRecordID).OrderBy(HseqRecordID => HseqRecordID).ToList();
+                AllItemsVM.CarRecords = filteredCarRecords;
+            }
+            else
+            {
+                NavigationFilter.FilteredCarRecordIds = new List<int>();
+            }
+
+            return PartialView("_CarGridViewPartial", model.ToList());
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult CarGridViewPartialAddNew(HseqCentralApp.Models.Car item)
+        {
+            var model = db1.CarRecords;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    model.Add(item);
+                    db1.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_CarGridViewPartial", model.ToList());
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult CarGridViewPartialUpdate(HseqCentralApp.Models.Car item)
+        {
+            var model = db1.CarRecords;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var modelItem = model.FirstOrDefault(it => it.HseqRecordID == item.HseqRecordID);
+                    if (modelItem != null)
+                    {
+                        this.UpdateModel(modelItem);
+                        db1.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_CarGridViewPartial", model.ToList());
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult CarGridViewPartialDelete(System.Int32 HseqRecordID)
+        {
+            var model = db1.CarRecords;
+            if (HseqRecordID >= 0)
+            {
+                try
+                {
+                    var item = model.FirstOrDefault(it => it.HseqRecordID == HseqRecordID);
+                    if (item != null)
+                        model.Remove(item);
+                    db1.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            return PartialView("_CarGridViewPartial", model.ToList());
+        }
+
+        //HseqCentralApp.Models.ApplicationDbContext db2 = new HseqCentralApp.Models.ApplicationDbContext();
+
+        public ActionResult _CarChartContainer()
+        {
+            var model = db1.CarRecords;
+            return PartialView("_CarChartContainer", model.ToList());
         }
 
     }

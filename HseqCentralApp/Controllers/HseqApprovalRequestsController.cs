@@ -363,6 +363,85 @@ namespace HseqCentralApp.Controllers
             return View(ncrVM);
 
         }
-        //////////////////////////////////////////////////////////////////////////////////////////
+        // //////////////////////////////////////////
+
+
+        HseqCentralApp.Models.ApplicationDbContext db1 = new HseqCentralApp.Models.ApplicationDbContext();
+
+        [ValidateInput(false)]
+        public ActionResult ApprovalGridViewPartial()
+        {
+            //var model = db1.HseqApprovalRequests;
+            var model = NavigationUtils.GetFilteredApprovalRequests();
+            AllItemsVM.ApprovalRecords = model;
+            return PartialView("~/Views/Shared/_ApprovalGridViewPartial.cshtml", model.ToList());
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ApprovalGridViewPartialAddNew(HseqCentralApp.Models.HseqTask item)
+        {
+            var model = db1.HseqApprovalRequests;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Insert here a code to insert the new item in your model
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("~/Views/Shared/_ApprovalGridViewPartial.cshtml", model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ApprovalGridViewPartialUpdate(HseqCentralApp.Models.HseqTask item)
+        {
+            var model = db1.HseqApprovalRequests;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Insert here a code to update the item in your model
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("~/Views/Shared/_ApprovalGridViewPartial.cshtml", model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ApprovalGridViewPartialDelete(System.Int32 DelegatableID)
+        {
+            var model = db1.HseqApprovalRequests;
+            if (DelegatableID >= 0)
+            {
+                try
+                {
+                    // Insert here a code to delete the item from your model
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            return PartialView("~/Views/Shared/_ApprovalGridViewPartial.cshtml", model);
+        }
+
+        public ActionResult _ApprovalChartContainer()
+        {
+            var model = db1.HseqApprovalRequests;
+            return PartialView("_ApprovalChartContainer", model.ToList());
+        }
+
+
+
+
+
     }
 }
