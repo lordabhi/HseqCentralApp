@@ -21,16 +21,22 @@
 		settings.Settings.ShowFilterRow = true;
 		settings.SettingsBehavior.AllowSelectByRowClick = true;
 
-				settings.Columns.Add("Status");
-				settings.Columns.Add("DelegatableID");
-				settings.Columns.Add("OwnerID");
-				settings.Columns.Add("AssigneeID");
-				settings.Columns.Add("DateAssigned");
-				settings.Columns.Add("Title");
-				settings.Columns.Add("Description");
-				settings.Columns.Add("DueDate");
-				settings.Columns.Add("HseqRecordID");
+        settings.SettingsSearchPanel.Visible = true;
+
+        settings.Columns.Add("HseqRecord.CaseNo");
+        settings.Columns.Add("HseqRecord.RecordNo");
+        settings.Columns.Add("HseqRecord.RecordType");
+        settings.Columns.Add("Title");
+        settings.Columns.Add("Description");
+        settings.Columns.Add("Status");
+        settings.Columns.Add("Owner.FullName");
+        settings.Columns.Add("Assignee.FullName");
+        settings.Columns.Add("DelegatableID").Visible = false;
+        settings.Columns.Add("DateAssigned");
+        settings.Columns.Add("DueDate");
+        
 			});
+            
 		if (ViewData["EditError"] != null){
         grid.SetEditErrorText((string)ViewData["EditError"]);
     }
