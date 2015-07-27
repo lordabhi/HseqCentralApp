@@ -42,6 +42,8 @@
         gridPane.SetContent(() =>
         {
             ViewContext.Writer.Write(
+                                       Html.Action("CarGridViewPanel", "Cars"));  
+            ViewContext.Writer.Write(
                               Html.Action("CarGridViewPartial", "Cars"));
         });
     });

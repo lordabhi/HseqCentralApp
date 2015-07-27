@@ -475,7 +475,7 @@
     <Content Include="Views\Shared\_rootLayout - Copy.cshtml" />
     <Content Include="Views\Shared\_rootLayout.cshtml" />
     <Content Include="Views\Home\Index2.cshtml" />
-    <Content Include="Views\Shared\NcrGridViewPanel.cshtml" />
+    <Content Include="Views\Shared\_NcrGridViewPanel.cshtml" />
     <Content Include="Views\Shared\_AllItemsSplitter.cshtml" />
     <Content Include="Views\Shared\_AllItemsChartContainer.cshtml" />
     <Content Include="Views\Shared\_AllItemsGridViewPartial.cshtml" />
@@ -491,6 +491,9 @@
     <Content Include="Views\Shared\_ApprovalChartContainer.cshtml" />
     <Content Include="Views\Shared\_ApprovalGridViewPartial.cshtml" />
     <Content Include="Views\Shared\_ApprovalSplitter.cshtml" />
+    <Content Include="Views\Shared\_CarGridViewPanel.cshtml" />
+    <Content Include="Views\Shared\_ParGridViewPanel.cshtml" />
+    <Content Include="Views\Shared\_FisGridViewPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

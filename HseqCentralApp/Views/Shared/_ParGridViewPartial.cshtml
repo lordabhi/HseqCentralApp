@@ -6,17 +6,20 @@
         settings.Name = "ParGridView";
         settings.CallbackRouteValues = new { Controller = "Pars", Action = "ParGridViewPartial" };
 
-				settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Pars", Action = "ParGridViewPartialAddNew" };
+		settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Pars", Action = "ParGridViewPartialAddNew" };
         settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Pars", Action = "ParGridViewPartialUpdate" };
         settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Pars", Action = "ParGridViewPartialDelete" };
         //settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
         settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
         settings.SettingsBehavior.ConfirmDelete = true;
 
-		settings.CommandColumn.Visible = true;
-        settings.CommandColumn.ShowNewButton = true;
-        settings.CommandColumn.ShowDeleteButton = true;
-        settings.CommandColumn.ShowEditButton = true;
+        //settings.CommandColumn.Visible = true;
+        //settings.CommandColumn.ShowNewButton = true;
+        //settings.CommandColumn.ShowDeleteButton = true;
+        //settings.CommandColumn.ShowEditButton = true;
+
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.SettingsSearchPanel.Visible = true;
 
 		settings.KeyFieldName = "HseqRecordID";
 

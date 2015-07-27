@@ -808,10 +808,10 @@ namespace HseqCentralApp.Controllers
             return PartialView("_NcrGridViewPartial", filteredNcrRecords);
         }
 
-        public ActionResult _NcrButtonContainer()
+        public ActionResult NcrGridViewPanel()
         {
             //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
-            return PartialView("NcrGridViewPanel");
+            return PartialView("_NcrGridViewPanel");
         }
         
     }
