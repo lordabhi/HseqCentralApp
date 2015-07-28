@@ -57,11 +57,13 @@
         gridPane.Name = "NcrGridContainer";
 
         settings.Height = System.Web.UI.WebControls.Unit.Percentage(70);
-        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        //settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 
         gridPane.MinSize = Unit.Pixel(400);
         
-        gridPane.ScrollBars = System.Web.UI.WebControls.ScrollBars.Auto;
+        gridPane.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
+        settings.AllowResize = true;
+        
         //pane.MinSize = 400;
 
         gridPane.PaneStyle.Paddings.PaddingTop = Unit.Pixel(10);

@@ -494,6 +494,7 @@
     <Content Include="Views\Shared\_CarGridViewPanel.cshtml" />
     <Content Include="Views\Shared\_ParGridViewPanel.cshtml" />
     <Content Include="Views\Shared\_FisGridViewPanel.cshtml" />
+    <Content Include="Views\Shared\_NcrEditView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

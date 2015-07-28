@@ -7,10 +7,9 @@
 @Html.DevExpress().PageControl(settings2 =>
             {
                 settings2.Name = "MainContentTabPanel";
-                settings2.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                //settings2.Width = System.Web.UI.WebControls.Unit.Percentage(100);
                 settings2.EnableClientSideAPI = true;
                 settings2.ActiveTabIndex = activeTabIndex;
-                                                 
                 settings2.TabPages.Add(tabPage =>
                 {
                     tabPage.Name = "NcrPanel";
@@ -18,7 +17,15 @@
                     tabPage.Index = 0;
                     tabPage.SetContent(() =>
                     {
-                        @Html.RenderPartial("_NcrSplitter");
+                        //if (ViewData["NcrEditor"] == null)
+                        //{
+                            @Html.RenderPartial("_NcrSplitter");
+                       // }
+                        //else if ((bool)ViewData["NcrEditor"]){
+                           // @Html.RenderPartial("_NcrEditView", ViewData["editmodel"]);
+                       // }
+                        
+                        //@Html.RenderPartial("_NcrEditView");
                     });
                 });
 

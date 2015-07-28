@@ -3,7 +3,6 @@
     settings.Name = "NcrGridViewPanel";
     //settings.FixedPosition = DevExpress.Web.PanelFixedPosition.WindowTop;
     settings.SettingsCollapsing.ExpandEffect = DevExpress.Web.PanelExpandEffect.Auto;
-
     settings.SetContent(() =>
     {
 @Html.DevExpress().Button(settings1 =>
@@ -23,6 +22,9 @@
     settings2.Text = "EDIT";
     settings2.Style["margin-right"] = "5px";
     settings2.ClientSideEvents.Click = "function(s, e) { EditRow(NcrGridView); }";
+    //settings2.ClientSideEvents.Click = "function(s, e) { OnCommandExecuted(s,e); }";
+    //settings2.RouteValues = new { Controller = "Ncr", Action = "NcrGridViewUpdate1", ParamValue1 = "NcrGridView.GetRowKey(0)" };
+    settings2.UseSubmitBehavior = false;
 }).Render();
 @Html.DevExpress().Button(settings3 =>
 {

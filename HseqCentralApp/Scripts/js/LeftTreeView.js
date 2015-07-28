@@ -108,6 +108,7 @@ function OnBeginCallback(s, e) {
 //Ncr Grid View
 function EditRow(obj) {
     var focusedRowIndex = obj.GetFocusedRowIndex();
+    //NcrGridView.GetRowValues(focusedRowIndex, 'HseqRecordID', OnGetRowValues);
     obj.StartEditRow(focusedRowIndex);
 }
 
@@ -116,3 +117,17 @@ function DeleteRow(obj) {
     obj.DeleteRow(focusedRowIndex);
 }
 
+
+function OnCommandExecuted(s, e) {
+    $.post("/Ncrs/NcrGridViewUpdate1?ParamValue1=" + NcrGridView.GetRowKey(NcrGridView.GetFocusedRowIndex()), function (data) {
+        alert(data);
+    }, function (err) {
+        alert(err);
+    });
+    MainContentCallbackPanel.PerformCallback();
+}
+
+//function OnGetRowValues(value) {
+
+//    alert(value);
+//}

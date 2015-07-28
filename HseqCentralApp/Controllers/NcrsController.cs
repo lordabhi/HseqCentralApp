@@ -735,6 +735,39 @@ namespace HseqCentralApp.Controllers
         //    return PartialView("_NcrGridViewPartial", model.ToList());
         //}
 
+        
+        //[HttpPost, ValidateInput(false)]
+        public ActionResult NcrGridViewUpdate1(string ParamValue1)
+        {
+            var model = db3.NcrRecords;
+            Ncr ncr = null;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    //var modelItem = model.FirstOrDefault(it => it.HseqRecordID == item.HseqRecordID);
+                    //if (modelItem != null)
+                    //{
+                      //  this.UpdateModel(modelItem);
+                        //db3.SaveChanges();
+                    //}
+                    ncr = db3.NcrRecords.Find(int.Parse(ParamValue1));
+                    ViewData["NcrEditor"] = true;
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+
+                ViewData["editmodel"] = model.FirstOrDefault();
+                return PartialView("_MainContentTabPanel", model);
+                //return PartialView("_NcrEditView", model.FirstOrDefault());
+
+        }
+
         [HttpPost, ValidateInput(false)]
         public ActionResult NcrGridViewUpdate(HseqCentralApp.Models.Ncr item)
         {
@@ -803,7 +836,7 @@ namespace HseqCentralApp.Controllers
             else {
                 NavigationFilter.FilteredNcrRecordIds = new List<int>();
             }
-
+            
             //return PartialView("_NcrGridViewPartial", model.ToList());
             return PartialView("_NcrGridViewPartial", filteredNcrRecords);
         }
@@ -813,6 +846,13 @@ namespace HseqCentralApp.Controllers
             //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
             return PartialView("_NcrGridViewPanel");
         }
-        
+
+
+        public ActionResult NcrEditView()
+        {
+            var model = db3.NcrRecords;
+            return PartialView("_NcrEditView", model.FirstOrDefault());
+        }
+
     }
 }
