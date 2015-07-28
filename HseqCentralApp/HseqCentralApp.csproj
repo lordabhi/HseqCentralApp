@@ -253,6 +253,7 @@
     <Compile Include="Helpers\TreeViewHelper.cs" />
     <Compile Include="Helpers\NavigationUtils.cs" />
     <Compile Include="Helpers\Utils.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\UserAccount\AccountViewModels.cs" />
     <Compile Include="Models\Enums\ApprovalResult.cs" />
     <Compile Include="Models\Enums\ApprovalStatus.cs" />
@@ -495,6 +496,7 @@
     <Content Include="Views\Shared\_ParGridViewPanel.cshtml" />
     <Content Include="Views\Shared\_FisGridViewPanel.cshtml" />
     <Content Include="Views\Shared\_NcrEditView.cshtml" />
+    <Content Include="Views\Shared\_LinkedItemsView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

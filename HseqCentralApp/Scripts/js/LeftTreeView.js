@@ -103,6 +103,8 @@ function OnBeginCallback(s, e) {
     
 }
 
+
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 //Ncr Grid View
@@ -125,6 +127,28 @@ function OnCommandExecuted(s, e) {
         alert(err);
     });
     MainContentCallbackPanel.PerformCallback();
+}
+
+    var currentActiveView;
+    var recordId;
+function ncrFocusChanged(s, e) {
+
+    //alert(s.name);
+    //LinkedItemsPanel.SetContentHtml(s.name + " - " + s.GetRowKey(NcrGridView.GetFocusedRowIndex()));
+    currentActiveView = s.name;
+    recordId = s.GetRowKey(NcrGridView.GetFocusedRowIndex());
+
+    cbpExample.PerformCallback();
+    }
+
+function OnLinkedRecordsBeginCallback(s, e) {
+    //alert(s.name);
+    e.customArgs["currentActiveView"]= currentActiveView;
+    e.customArgs["recordId"]= recordId;
+    }
+
+function OnLinkedRecordsEndCallback(s, e) {
+    //alert("End Callback");
 }
 
 //function OnGetRowValues(value) {

@@ -33,6 +33,27 @@ namespace HseqCentralApp.Controllers
             return View();
         }
 
+        public ActionResult Index2()
+        {
+            dynamic email = new Email("Example");
+            email.To = "abhishek.khaitan@waiward.com";
+            email.FunnyLink = "google.com";
+
+            try
+            {
+                //email.Send();
+            }
+            catch (Exception e)
+            {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(e);
+            }
+            //Elmah.ErrorSignal.FromCurrentContext().Raise(new Exception("test"));
+
+            //ViewBag.MIList = db.MenuItems.ToList();
+
+            return View();
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

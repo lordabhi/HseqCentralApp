@@ -1,7 +1,4 @@
-﻿@{ bool Collapsed = ViewData["Collapsed"] == null ? false : (bool)ViewData["Collapsed"];
-
-}
-
+﻿
 
 @Html.DevExpress().Label(
     settings =>
@@ -24,7 +21,7 @@
     settings.ShowCollapseButton = false;
     settings.EnableAnimation = true;
     settings.Width = Unit.Percentage(100);
-    settings.Collapsed = Collapsed;
+    //settings.Collapsed = Collapsed;
     settings.ControlStyle.Font.Size = FontUnit.Medium;
 
     settings.SetContent(() =>
@@ -33,24 +30,8 @@
     });
 }).GetHtml()
 
-@Html.DevExpress().RoundPanel(settings =>
-{
-    settings.Name = "LinkedItemsPanel";
-    settings.HeaderText = "Linked Items";
 
-    settings.ShowHeader = true;
-    settings.AllowCollapsingByHeaderClick = true;
-    settings.ShowCollapseButton = false;
-    settings.EnableAnimation = true;
-    settings.Width = Unit.Percentage(100);
-    settings.Collapsed = true;
-    settings.ControlStyle.Font.Size = FontUnit.Medium;
 
-    settings.SetContent(() =>
-    {
-        ViewContext.Writer.Write("Container for Projects / Jobs");
-    });
-}).GetHtml()
 
 @Html.DevExpress().RoundPanel(settings =>
 {
@@ -70,3 +51,5 @@
         ViewContext.Writer.Write("Container for Projects / Jobs");
     });
 }).GetHtml()
+
+@Html.Partial("_LinkedItemsView", Model as HseqCentralApp.Models.HseqRecord)

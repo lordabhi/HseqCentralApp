@@ -306,6 +306,9 @@
                     else
                         gridView.SettingsText.CommandUpdate = "Update";
                 };
+
+                settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { ncrFocusChanged(s, e); }"; 
+        
         
 			});
 		if (ViewData["EditError"] != null){

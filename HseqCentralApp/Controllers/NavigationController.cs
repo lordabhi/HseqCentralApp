@@ -130,5 +130,41 @@ namespace HseqCentralApp.Controllers
 
         }
 
+        public ActionResult LinkedItems()
+        {
+
+            string currentActiveView;
+            string recordId;
+
+            HseqRecord record = null;
+            if (DevExpressHelper.IsCallback)
+            {
+                if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]))
+                {
+                    currentActiveView = Request.Params["currentActiveView"];
+
+                }
+                if (!string.IsNullOrEmpty(Request.Params["recordId"]))
+                {
+                    recordId = Request.Params["recordId"];
+
+                    ViewData["record"] = db.NcrRecords.Find(int.Parse(recordId));
+                    record = db.NcrRecords.Find(int.Parse(recordId));
+
+                }
+            }
+            Console.WriteLine();
+            //ViewData["LinkedRecords"] = "10";
+            if (record != null)
+            {
+                ViewData["LinkedItems"] = record.LinkedRecords;
+            }
+            return PartialView("_LinkedItemsView", record);
+            //return PartialView("_RightContentPanel");
+
+        }
+        
+        
+
     }
 }
