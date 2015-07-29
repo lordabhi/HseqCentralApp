@@ -179,7 +179,7 @@ namespace HseqCentralApp.Controllers
 
                     //ViewData["record"] = db.NcrRecords.Find(int.Parse(recordId));
                     record = db.HseqRecords.Find(int.Parse(recordId));
-                    ViewData["Comments"] = record.Comments;
+                    ViewData["Comments"] = record.Comments.OrderBy(s=> s.DateCreated).Reverse();
 
                 }
 

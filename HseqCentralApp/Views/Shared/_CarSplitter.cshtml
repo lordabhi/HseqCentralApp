@@ -5,6 +5,7 @@
     settings.Name = "CarSplitter";
 
     //settings.Height = 800;
+    settings.Height = System.Web.UI.WebControls.Unit.Percentage(30);
     settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
     settings.Styles.Pane.Paddings.Padding = 0;
     settings.AllowResize = true;
@@ -20,8 +21,10 @@
     {
         pane.Name = "CarChartContainer";
         pane.MinSize = 200;
-        pane.MaxSize = 400;
+        pane.MaxSize = 300;
 
+        pane.AutoWidth = true;
+        
         pane.SetContent(() =>
         {
             ViewContext.Writer.Write(
@@ -35,10 +38,16 @@
     {
         gridPane.Name = "CarGridContainer";
 
-        gridPane.MinSize = 400;
-        gridPane.ScrollBars = System.Web.UI.WebControls.ScrollBars.Auto;
-        //pane.MinSize = 400;
+        settings.Height = System.Web.UI.WebControls.Unit.Percentage(70);
 
+        gridPane.MinSize = Unit.Pixel(400);
+
+        gridPane.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
+        //settings.AllowResize = true;
+
+
+        gridPane.PaneStyle.Paddings.PaddingTop = Unit.Pixel(10);
+        
         gridPane.SetContent(() =>
         {
             ViewContext.Writer.Write(

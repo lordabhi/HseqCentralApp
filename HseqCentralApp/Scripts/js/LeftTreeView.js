@@ -193,6 +193,16 @@ function AddNewComment(s, e) {
     CommentsPanel.PerformCallback();
 }
 
+function MainContentTabPanelTabChanged(s, e){}
+function OnMainContentTabPanelBeginCallback(s, e) { }
+function OnMainContentTabPanelEndCallback(s, e) { }
+
+function InitComment() {
+    commentAddNewMeno.SetVisible(false);
+    commentSaveNewBtn.SetVisible(false);
+}
+
+
 //function AddNewComment(s, e) {
 //        $.ajax({
 //            type: "POST",

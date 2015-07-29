@@ -10,6 +10,9 @@
                 //settings2.Width = System.Web.UI.WebControls.Unit.Percentage(100);
                 settings2.EnableClientSideAPI = true;
                 settings2.ActiveTabIndex = activeTabIndex;
+
+                //settings2.CallbackRouteValues = new { Controller = "Navigation", Action = "MainContentCallbackPanel" };
+                
                 settings2.TabPages.Add(tabPage =>
                 {
                     tabPage.Name = "NcrPanel";
@@ -100,7 +103,13 @@
                     });
                 });
 
+
+
+            //settings2.ClientSideEvents.ActiveTabChanged = "function(s, e) { MainContentTabPanelTabChanged(s, e); }"; 
                 
+            //settings2.ClientSideEvents.BeginCallback = "OnMainContentTabPanelBeginCallback";
+            //settings2.ClientSideEvents.EndCallback = "OnMainContentTabPanelEndCallback";
+                                
             }).GetHtml()
 
             

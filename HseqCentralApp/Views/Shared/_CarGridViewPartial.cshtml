@@ -6,6 +6,16 @@
         settings.Name = "CarGridView";
         settings.CallbackRouteValues = new { Controller = "Cars", Action = "CarGridViewPartial" };
 
+        settings.Width = Unit.Percentage(100);
+
+        settings.SettingsPager.PageSize = 10;
+        settings.ControlStyle.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(0);
+        settings.ControlStyle.Border.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+        settings.ControlStyle.BorderBottom.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(1);
+
+        settings.Styles.Cell.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(0);
+
+        
 		settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Cars", Action = "CarGridViewPartialAddNew" };
         settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Cars", Action = "CarGridViewPartialUpdate" };
         settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Cars", Action = "CarGridViewPartialDelete" };

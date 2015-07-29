@@ -40,45 +40,26 @@
     });
 
 
-
-    //settings.Panes.Add(gridPane =>
-    //{
-    //    gridPane.Name = "NcrButtonContainer";
-
-    //    gridPane.SetContent(() =>
-    //    {
-    //        @Html.Action("_NcrButtonContainer", "Ncrs");
-    //    });
-    //});
-
-
     settings.Panes.Add(gridPane =>
     {
         gridPane.Name = "NcrGridContainer";
 
         settings.Height = System.Web.UI.WebControls.Unit.Percentage(70);
-        //settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 
         gridPane.MinSize = Unit.Pixel(400);
         
         gridPane.ScrollBars = System.Web.UI.WebControls.ScrollBars.Vertical;
         settings.AllowResize = true;
         
-        //pane.MinSize = 400;
 
         gridPane.PaneStyle.Paddings.PaddingTop = Unit.Pixel(10);
         gridPane.SetContent(() =>
         {
-            //@Html.RenderPartial("GridViewPartialView");
-            //@Html.RenderPartial("_NcrGridView");
             
             ViewContext.Writer.Write(
                                         Html.Action("NcrGridViewPanel", "Ncrs"));            
             ViewContext.Writer.Write(
                               Html.Action("NcrGridViewPartial", "Ncrs"));
-        //});
-            //@Html.RenderPartial("_MainContentCallbackPanel");
-
         });
     });
 

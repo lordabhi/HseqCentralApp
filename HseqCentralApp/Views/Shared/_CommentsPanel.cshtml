@@ -12,7 +12,7 @@
         settings.Height = Unit.Percentage(100);
         settings.Collapsed = false;
         settings.ControlStyle.Font.Size = FontUnit.Medium;
-
+        
         settings.CallbackRouteValues = new { Controller = "Navigation", Action = "Comments" };
 
         //settings.SetContent(() =>
@@ -56,19 +56,25 @@
 
         settings.SetContent(() =>
         {
+            
             @Html.DevExpress().Memo(settings1 =>
             {
                 settings1.Name = "commentAddNewMeno";
                 settings1.Text = "";
                 settings1.Width = Unit.Percentage(100);
+                //settings1.Properties.EnableClientSideAPI = true;
+                    
             }).GetHtml();
 
-            @Html.DevExpress().Button(settings3 =>
+                        
+            @Html.DevExpress().Button(settings4 =>
             {
-                settings3.Name = "commentAddNewBtn";
-                settings3.Text = "Add";
+                settings4.Name = "commentSaveNewBtn";
+                settings4.Text = "Save";
+                settings4.RenderMode = ButtonRenderMode.Link;
                 //settings3.UseSubmitBehavior = true;
-                settings3.ClientSideEvents.Click = "AddNewComment";
+                settings4.ClientSideEvents.Click = "AddNewComment";
+                //settings3.Properties.EnableClientSideAPI = true;
             }).GetHtml();
 
             if (ViewData["Comments"] != null)
@@ -98,7 +104,8 @@
 
                 ViewContext.Writer.Write("No Comment Exists");
             }
-        });        
+        });
+        settings.ClientSideEvents.Init = "InitComment";
         settings.ClientSideEvents.BeginCallback = "OnCommentsBeginCallback";
         settings.ClientSideEvents.EndCallback = "OnCommentsEndCallback";
     }
