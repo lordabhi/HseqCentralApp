@@ -231,6 +231,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BusinessAreasController.cs" />
     <Compile Include="Controllers\CarsController.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\DispositionTypesController.cs" />
     <Compile Include="Controllers\FisCategoriesController.cs" />
     <Compile Include="Controllers\FisCodesController.cs" />
@@ -253,7 +254,24 @@
     <Compile Include="Helpers\TreeViewHelper.cs" />
     <Compile Include="Helpers\NavigationUtils.cs" />
     <Compile Include="Helpers\Utils.cs" />
+    <Compile Include="Migrations\201507282140488_InitialCreate.cs" />
+    <Compile Include="Migrations\201507282140488_InitialCreate.Designer.cs">
+      <DependentUpon>201507282140488_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507282141019_InitialCreate1.cs" />
+    <Compile Include="Migrations\201507282141019_InitialCreate1.Designer.cs">
+      <DependentUpon>201507282141019_InitialCreate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507292046229_InitialCreate2.cs" />
+    <Compile Include="Migrations\201507292046229_InitialCreate2.Designer.cs">
+      <DependentUpon>201507292046229_InitialCreate2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507292047061_InitialCreate3.cs" />
+    <Compile Include="Migrations\201507292047061_InitialCreate3.Designer.cs">
+      <DependentUpon>201507292047061_InitialCreate3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\UserAccount\AccountViewModels.cs" />
     <Compile Include="Models\Enums\ApprovalResult.cs" />
     <Compile Include="Models\Enums\ApprovalStatus.cs" />
@@ -496,7 +514,15 @@
     <Content Include="Views\Shared\_ParGridViewPanel.cshtml" />
     <Content Include="Views\Shared\_FisGridViewPanel.cshtml" />
     <Content Include="Views\Shared\_NcrEditView.cshtml" />
-    <Content Include="Views\Shared\_LinkedItemsView.cshtml" />
+    <Content Include="Views\Shared\_LinkedItemsPanel.cshtml" />
+    <Content Include="Views\Comments\Create.cshtml" />
+    <Content Include="Views\Comments\Delete.cshtml" />
+    <Content Include="Views\Comments\Details.cshtml" />
+    <Content Include="Views\Comments\Edit.cshtml" />
+    <Content Include="Views\Comments\Index.cshtml" />
+    <Content Include="Views\Shared\_CommentsPanelPartial.cshtml" />
+    <Content Include="Views\Shared\_CommentsPanel.cshtml" />
+    <Content Include="Views\Shared\_CommentDataViewPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -512,6 +538,20 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201507282140488_InitialCreate.resx">
+      <DependentUpon>201507282140488_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507282141019_InitialCreate1.resx">
+      <DependentUpon>201507282141019_InitialCreate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507292046229_InitialCreate2.resx">
+      <DependentUpon>201507292046229_InitialCreate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507292047061_InitialCreate3.resx">
+      <DependentUpon>201507292047061_InitialCreate3.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

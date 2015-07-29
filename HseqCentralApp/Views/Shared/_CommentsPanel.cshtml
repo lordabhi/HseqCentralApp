@@ -1,0 +1,105 @@
+﻿@Html.DevExpress().RoundPanel(
+    settings =>
+    {
+        settings.Name = "CommentsPanel";
+
+        settings.HeaderText = "Comments";
+        settings.ShowHeader = true;
+        settings.AllowCollapsingByHeaderClick = true;
+        settings.ShowCollapseButton = false;
+        settings.EnableAnimation = true;
+        settings.Width = Unit.Percentage(100);
+        settings.Height = Unit.Percentage(100);
+        settings.Collapsed = false;
+        settings.ControlStyle.Font.Size = FontUnit.Medium;
+
+        settings.CallbackRouteValues = new { Controller = "Navigation", Action = "Comments" };
+
+        //settings.SetContent(() =>
+        //{
+
+        //    {
+        //        @Html.DevExpress().GridView(g =>
+        //        {
+        //            g.Name = "CommentsGridView";
+        //            g.CallbackRouteValues = new { Controller = "Comments", Action = "CommentsPanelPartial" };
+
+        //            g.SettingsEditing.AddNewRowRouteValues = new { Controller = "Comments", Action = "CommentsPanelAddNew" };
+        //            g.SettingsEditing.UpdateRowRouteValues = new { Controller = "Comments", Action = "CommentsPanelPartialUpdate" };
+        //            g.SettingsEditing.DeleteRowRouteValues = new { Controller = "Comments", Action = "CommentsPanelPartialDelete" };
+        //            g.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+        //            g.SettingsBehavior.ConfirmDelete = true;
+        //            g.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+
+        //            g.CommandColumn.Visible = true;
+        //            g.CommandColumn.ShowNewButton = true;
+        //            g.CommandColumn.ShowDeleteButton = true;
+        //            g.CommandColumn.ShowEditButton = true;
+
+        //            g.SettingsText.GroupPanel = " ";
+        //            g.Settings.ShowColumnHeaders = false;
+
+        //            g.KeyFieldName = "CommentID";
+
+        //            g.SettingsPager.Visible = true;
+        //            g.Settings.ShowGroupPanel = false;
+        //            g.Settings.ShowFilterRow = false;
+        //            g.SettingsBehavior.AllowSelectByRowClick = true;
+
+        //            g.Columns.Add("Content");
+        //            g.Columns.Add("OwnerID");
+        //            g.Columns.Add("DateCreated");
+
+        //        }).Bind(Model).GetHtml();
+        //    }
+        //});
+
+        settings.SetContent(() =>
+        {
+            @Html.DevExpress().Memo(settings1 =>
+            {
+                settings1.Name = "commentAddNewMeno";
+                settings1.Text = "";
+                settings1.Width = Unit.Percentage(100);
+            }).GetHtml();
+
+            @Html.DevExpress().Button(settings3 =>
+            {
+                settings3.Name = "commentAddNewBtn";
+                settings3.Text = "Add";
+                //settings3.UseSubmitBehavior = true;
+                settings3.ClientSideEvents.Click = "AddNewComment";
+            }).GetHtml();
+
+            if (ViewData["Comments"] != null)
+            {
+                @Html.DevExpress().ListBox(settings2 =>
+                {
+                    settings2.Name = "CommentsListBox";
+                    settings2.Width = Unit.Percentage(100);
+                    //settings2.Height = 75;
+                    settings2.CallbackRouteValues = new { Controller = "Navigation", Action = "Comments" };
+                    settings2.Properties.EnableClientSideAPI = true;
+
+                    settings2.Properties.TextField = "Content";
+                    settings2.Properties.ValueField = "CommentID";
+
+                    settings2.Style["border"] = "none";
+
+
+                    //settings2.Properties.ValueType = typeof(Int32);
+                    //settings2.SelectedIndex = 0;
+
+
+                }).BindList(ViewData["Comments"]).GetHtml();
+            }
+            else
+            {
+
+                ViewContext.Writer.Write("No Comment Exists");
+            }
+        });        
+        settings.ClientSideEvents.BeginCallback = "OnCommentsBeginCallback";
+        settings.ClientSideEvents.EndCallback = "OnCommentsEndCallback";
+    }
+).GetHtml()

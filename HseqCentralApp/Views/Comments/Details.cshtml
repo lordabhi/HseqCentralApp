@@ -1,0 +1,66 @@
+﻿@model HseqCentralApp.Models.Comment
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Comment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Delegatable.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Delegatable.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HseqRecord.CaseNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HseqRecord.CaseNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AssociatedType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AssociatedType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CommentID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

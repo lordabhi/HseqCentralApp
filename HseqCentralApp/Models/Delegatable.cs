@@ -46,6 +46,8 @@ namespace HseqCentralApp.Models
         public int? HseqRecordID { get; set; }
 
         public virtual HseqRecord HseqRecord { get; set; }
+        
+        public virtual ICollection<Comment> Comments { get; set; }
 
         public string DateAssignedForDisplay
         {

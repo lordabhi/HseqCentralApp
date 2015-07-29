@@ -142,16 +142,10 @@
                     dateEditProperties.DisplayFormatString = "D";
                 });        
         
-        
-        
 				settings.Columns.Add("LastUpdatedBy");
 				settings.Columns.Add("DateCreatedForDisplay").Visible = false;
 
-                settings.InitNewRow = (s, e) =>
-                {
-                    e.NewValues["CaseNo"] = "15-10020";
-                };
-        
+                settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { allItemsFocusChanged(s, e);}";         
 			});
 		if (ViewData["EditError"] != null){
         grid.SetEditErrorText((string)ViewData["EditError"]);

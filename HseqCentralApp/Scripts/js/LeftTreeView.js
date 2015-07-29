@@ -129,29 +129,83 @@ function OnCommandExecuted(s, e) {
     MainContentCallbackPanel.PerformCallback();
 }
 
-    var currentActiveView;
-    var recordId;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ var currentActiveView;
+ var recordId;
+
 function ncrFocusChanged(s, e) {
 
-    //alert(s.name);
     //LinkedItemsPanel.SetContentHtml(s.name + " - " + s.GetRowKey(NcrGridView.GetFocusedRowIndex()));
-    currentActiveView = s.name;
-    recordId = s.GetRowKey(NcrGridView.GetFocusedRowIndex());
-
-    cbpExample.PerformCallback();
-    }
-
-function OnLinkedRecordsBeginCallback(s, e) {
-    //alert(s.name);
-    e.customArgs["currentActiveView"]= currentActiveView;
-    e.customArgs["recordId"]= recordId;
-    }
-
-function OnLinkedRecordsEndCallback(s, e) {
-    //alert("End Callback");
+    gridViewItemFocusChanged(s, e);
 }
 
-//function OnGetRowValues(value) {
+function carFocusChanged(s, e) {
+    gridViewItemFocusChanged(s, e);
+}
 
-//    alert(value);
-//}
+function parFocusChanged(s, e) {
+    gridViewItemFocusChanged(s, e);
+}
+
+function fisFocusChanged(s, e) {
+    gridViewItemFocusChanged(s, e);
+}
+
+function allItemsFocusChanged(s, e) {
+    gridViewItemFocusChanged(s, e);
+}
+
+function gridViewItemFocusChanged(obj_s, obj_e) {
+    currentActiveView = obj_s.name;
+    recordId = obj_s.GetRowKey(obj_s.GetFocusedRowIndex());
+    LinkedRecordsPanel.PerformCallback();
+    CommentsPanel.PerformCallback();
+}
+
+
+function OnLinkedRecordsBeginCallback(s, e) {
+    e.customArgs["currentActiveView"]= currentActiveView;
+    e.customArgs["recordId"]= recordId;
+}
+
+
+
+
+function OnLinkedRecordsEndCallback(s, e) {
+}
+
+function OnCommentsBeginCallback(s, e) {
+    e.customArgs["currentActiveView"]= currentActiveView;
+    e.customArgs["recordId"]= recordId;
+
+     e.customArgs["newcomment"] = commentAddNewMeno.lastChangedValue;
+         
+}
+
+function OnCommentsEndCallback(s, e) { 
+    commentAddNewMeno.lastChangedValue = "";
+}
+
+function AddNewComment(s, e) {
+
+    console.log(commentAddNewMeno.lastChangedValue);
+
+    CommentsPanel.PerformCallback();
+}
+
+//function AddNewComment(s, e) {
+//        $.ajax({
+//            type: "POST",
+//            url: '@Url.Action("AddNewComment", "Controllers/Navigation")',
+//                        data: { selectedMenuItemName: s.name },
+//            beforeSend: function() {
+//                //loadingPanel.Show();
+//            },
+//            success: function(response) {
+//               // $("#container").html(response);
+//                //loadingPanel.Hide();
+//            }
+//        });
+//    }
+
+

@@ -116,7 +116,8 @@
 
         settings.Columns.Add("LastUpdatedBy");
         settings.Columns.Add("DateCreatedForDisplay").Visible = false;
-        
+
+        settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { carFocusChanged(s, e); }"; 
     });
 		if (ViewData["EditError"] != null){
         grid.SetEditErrorText((string)ViewData["EditError"]);

@@ -22,3 +22,9 @@ select,
 textarea {
     /*max-width: 280px;*/
 }
+
+.dxdvItem_Metropolis, .dxdvFlowItem_Metropolis {
+
+    height: 0px;
+}
+

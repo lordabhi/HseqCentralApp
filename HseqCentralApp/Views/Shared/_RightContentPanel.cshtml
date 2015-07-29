@@ -52,4 +52,8 @@
     });
 }).GetHtml()
 
-@Html.Partial("_LinkedItemsView", Model as HseqCentralApp.Models.HseqRecord)
+@Html.Partial("_LinkedItemsPanel")
+
+@Html.Partial("_CommentsPanel")
+
+@*@Html.Action("CommentsPanelPartial", "Comments")*@

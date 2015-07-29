@@ -98,6 +98,7 @@ namespace HseqCentralApp.Models
 
         public virtual ICollection<Delegatable> Delegatables { get; set; }
 
+        public virtual ICollection<Comment> Comments { get; set; }
 
         /////////////////////////////////////////////////////
 

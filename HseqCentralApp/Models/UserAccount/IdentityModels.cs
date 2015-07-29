@@ -197,6 +197,10 @@ namespace HseqCentralApp.Models
                 .WithMany();
         }
 
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.Comment> Comments { get; set; }
+
+        public System.Data.Entity.DbSet<HseqCentralApp.Models.Delegatable> Delegatables { get; set; }
+
         //public System.Data.Entity.DbSet<HseqCentralApp.Models.User> Users { get; set; }
 
 

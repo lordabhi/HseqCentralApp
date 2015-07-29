@@ -148,23 +148,71 @@ namespace HseqCentralApp.Controllers
                 {
                     recordId = Request.Params["recordId"];
 
-                    ViewData["record"] = db.NcrRecords.Find(int.Parse(recordId));
-                    record = db.NcrRecords.Find(int.Parse(recordId));
-
+                    //ViewData["record"] = db.NcrRecords.Find(int.Parse(recordId));
+                    record = db.HseqRecords.Find(int.Parse(recordId));
+                    ViewData["LinkedItems"] = record.LinkedRecords;
                 }
             }
-            Console.WriteLine();
-            //ViewData["LinkedRecords"] = "10";
-            if (record != null)
-            {
-                ViewData["LinkedItems"] = record.LinkedRecords;
-            }
-            return PartialView("_LinkedItemsView", record);
+
+            return PartialView("_LinkedItemsPanel");
             //return PartialView("_RightContentPanel");
 
         }
-        
-        
+
+        public ActionResult Comments()
+        {
+
+            string currentActiveView;
+            string recordId = null;
+
+            HseqRecord record = null;
+            if (DevExpressHelper.IsCallback)
+            {
+                if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]))
+                {
+                    currentActiveView = Request.Params["currentActiveView"];
+
+                }
+                if (!string.IsNullOrEmpty(Request.Params["recordId"]))
+                {
+                    recordId = Request.Params["recordId"];
+
+                    //ViewData["record"] = db.NcrRecords.Find(int.Parse(recordId));
+                    record = db.HseqRecords.Find(int.Parse(recordId));
+                    ViewData["Comments"] = record.Comments;
+
+                }
+
+                if (!string.IsNullOrEmpty(Request.Params["newcomment"]))
+                {
+                    string newcomment = Request.Params["newcomment"];
+
+                    Comment comment = new Comment() { 
+                        Content = newcomment, 
+                        DateCreated = DateTime.Now,
+                        CommentSource = CommentSource.Record,
+                        HseqRecordID = int.Parse(recordId), 
+                        OwnerID = Utils.GetCurrentApplicationUser().HseqUserID
+                    };
+
+                    db.Comments.Add(comment);
+                    db.SaveChanges();
+                }
+
+
+            }
+            return PartialView("_CommentsPanel", db.Comments.ToList());
+        }
+
+         [HttpPost]
+        public ActionResult AddNewComment(string selectedMenuItemName)
+        {
+
+
+
+            return PartialView("_CommentsPanel", db.Comments.ToList());
+        }
+
 
     }
 }

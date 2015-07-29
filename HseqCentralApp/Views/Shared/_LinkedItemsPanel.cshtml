@@ -1,0 +1,53 @@
+﻿@Html.DevExpress().RoundPanel(
+    settings =>
+    {
+        settings.Name = "LinkedRecordsPanel";
+
+        settings.HeaderText = "Linked Items";
+        settings.ShowHeader = true;
+        settings.AllowCollapsingByHeaderClick = true;
+        settings.ShowCollapseButton = false;
+        settings.EnableAnimation = true;
+        settings.Width = Unit.Percentage(100);
+        settings.Collapsed = false;
+        settings.ControlStyle.Font.Size = FontUnit.Medium;
+
+        settings.CallbackRouteValues = new { Controller = "Navigation", Action = "LinkedItems" };
+        //settings.Height = 100;
+
+        settings.SetContent(() =>
+        {
+
+
+            
+            
+            if (ViewData["LinkedItems"] != null)
+            {
+                @Html.DevExpress().ListBox(settings2 =>
+                {
+                    settings2.Name = "LinkedRecordListBox";
+                    settings2.Width = Unit.Percentage(100);
+                    settings2.Height = 75;
+                    settings2.CallbackRouteValues = new { Controller = "Navigation", Action = "LinkedItems" };
+                    settings2.Properties.EnableClientSideAPI = true;
+
+                    settings2.Properties.TextField = "CaseNo";
+                    settings2.Properties.ValueField = "HseqRecordID";
+
+                    settings2.Style["border"] = "none";
+                    //settings2.Properties.ValueType = typeof(Int32);
+                    //settings2.SelectedIndex = 0;
+                    
+
+                }).BindList(ViewData["LinkedItems"]).GetHtml();
+            }
+            else {
+
+                ViewContext.Writer.Write("No Linked Records Exists");
+            }
+        });
+
+        settings.ClientSideEvents.BeginCallback = "OnLinkedRecordsBeginCallback";
+        settings.ClientSideEvents.EndCallback = "OnLinkedRecordsEndCallback";
+    }
+).GetHtml()
