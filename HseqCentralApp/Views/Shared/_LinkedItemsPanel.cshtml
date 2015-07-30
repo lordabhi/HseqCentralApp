@@ -1,4 +1,6 @@
-﻿@Html.DevExpress().RoundPanel(
+﻿@model IEnumerable<HseqCentralApp.Models.HseqRecord>
+
+@Html.DevExpress().RoundPanel(
     settings =>
     {
         settings.Name = "LinkedRecordsPanel";

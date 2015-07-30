@@ -9,13 +9,8 @@
 
         settings.SetContent(() =>
         {
-            //@Html.RenderPartial("GridViewPartialView");
             @Html.RenderPartial("_MainContentTabPanel");
-            //ViewContext.Writer.Write(
-            //    "<div>" + "Test"
-                
-            //    + "</div>"
-            //    );
+
         });
 
         settings.ClientSideEvents.BeginCallback = "OnBeginCallback";

@@ -1,0 +1,23 @@
+﻿@Html.DevExpress().CallbackPanel(
+    settings =>
+    {
+        settings.Name = "RightContentCallbackPanel";
+        settings.CallbackRouteValues = new { Controller = "Navigation", Action = "RightContentCallbackPanel" };
+        settings.Width = Unit.Percentage(100);
+        settings.Height = 400;
+
+        settings.SetContent(() =>
+        {
+            @Html.RenderPartial("_RightContentPanel");
+
+        });
+
+        settings.ClientSideEvents.BeginCallback = "OnRightContentPanelBeginCallback";
+        //settings.ClientSideEvents.EndCallback = "OnEndCallback";
+    }
+).GetHtml()
+
+
+
+
+

@@ -27,6 +27,7 @@ namespace HseqCentralApp.Controllers
             return View();
         }
 
+
         public ActionResult MainContentCallbackPanel()
           
 
@@ -79,18 +80,19 @@ namespace HseqCentralApp.Controllers
 
             }
 
-            Console.WriteLine(NavigationFilter.RecordTypes);
-            Console.WriteLine(NavigationFilter.ResponsibleAreaIds);
-            Console.WriteLine(NavigationFilter.CoordinatorIds);
+        //   Console.WriteLine(NavigationFilter.RecordTypes);
+        //   Console.WriteLine(NavigationFilter.ResponsibleAreaIds);
+        //   Console.WriteLine(NavigationFilter.CoordinatorIds);
 
             return PartialView("_MainContentCallbackPanel");
         }
 
+        ////////////////////////////////////////
+        
+        /// </summary>
         private void setActiveTab()
         {
-            
-
-            if (!String.IsNullOrEmpty(Request.Params["currentActiveTabIndex"]))
+          if (!String.IsNullOrEmpty(Request.Params["currentActiveTabIndex"]))
             {
             
                 int currentActiveTabIndex = int.Parse(Request.Params["currentActiveTabIndex"]);
@@ -130,6 +132,22 @@ namespace HseqCentralApp.Controllers
 
         }
 
+        ////////////////////////////////////////
+
+        
+
+        public ActionResult RightContentCallbackPanel()
+        {
+            if (DevExpressHelper.IsCallback)
+            {
+
+            }
+            return PartialView("_RightContentCallbackPanel");
+        }
+
+
+        ////////////////////////////////////////
+        
         public ActionResult LinkedItems()
         {
 
@@ -159,9 +177,10 @@ namespace HseqCentralApp.Controllers
 
             return PartialView("_LinkedItemsPanel", linkedRecords);
             //return PartialView("_RightContentPanel");
-
         }
 
+        ////////////////////////////////////////
+        
         public ActionResult Comments()
         {
 
@@ -240,6 +259,9 @@ namespace HseqCentralApp.Controllers
             }
             return PartialView("_CommentsPanel", filteredComments);
         }
+
+       
+
 
         // [HttpPost]
         //public ActionResult AddNewComment(string selectedMenuItemName)

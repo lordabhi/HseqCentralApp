@@ -200,12 +200,6 @@ function AddNewComment(s, e) {
     CommentsPanel.PerformCallback();
 }
 
-function MainContentTabPanelTabChanged(s, e) {
-
-}
-
-function OnMainContentTabPanelBeginCallback(s, e) {}
-function OnMainContentTabPanelEndCallback(s, e) { }
 
 function InitComment() {
     commentAddNewMeno.SetVisible(false);
@@ -229,3 +223,55 @@ function InitComment() {
 //    }
 
 
+MVCxClientGlobalEvents.AddControlsInitializedEventHandler(function (s, e) {
+            if (e.isCallback === true) {
+                //console.log(s);
+                //console.log(e);
+            }
+        });
+
+function OnRightContentPanelBeginCallback(s, e) { 
+    e.customArgs["currentActiveTabIndex"]= MainContentTabPanel.GetActiveTabIndex();
+}
+
+function MainContentTabPanelTabChanged(s, e) {
+    //RightContentCallbackPanel.PerformCallback();
+    console.log(s.GetActiveTabIndex());
+
+    if (s.GetActiveTabIndex() === 0) {
+        currentActiveView = NcrGridView.name;
+        recordId = NcrGridView.GetRowKey(NcrGridView.GetFocusedRowIndex());
+        }
+     else if (s.GetActiveTabIndex() === 1) {
+        currentActiveView = CarGridView.name;
+        recordId = CarGridView.GetRowKey(CarGridView.GetFocusedRowIndex());
+        }
+     else if (s.GetActiveTabIndex() === 2) {
+        currentActiveView = ParGridView.name;
+        recordId = ParGridView.GetRowKey(ParGridView.GetFocusedRowIndex());
+        }
+     else if (s.GetActiveTabIndex() === 3) {
+        currentActiveView = FisGridView.name;
+        recordId = FisGridView.GetRowKey(FisGridView.GetFocusedRowIndex());
+        }
+     else if (s.GetActiveTabIndex() === 4) {
+        currentActiveView = TaskGridViewPartial.name;
+        recordId = TaskGridViewPartial.GetRowKey(TaskGridViewPartial.GetFocusedRowIndex());
+        }
+     else if (s.GetActiveTabIndex() === 5) {
+        currentActiveView = ApprovalGridViewPartial.name;
+        recordId = ApprovalGridViewPartial.GetRowKey(ApprovalGridViewPartial.GetFocusedRowIndex());
+        }
+     else if (s.GetActiveTabIndex() === 6) {
+        currentActiveView = AllItemsGridView.name;
+        recordId = AllItemsGridView.GetRowKey(AllItemsGridView.GetFocusedRowIndex());
+        }
+
+        console.log(currentActiveView + " - " +recordId);
+
+        CommentsPanel.PerformCallback();
+        LinkedRecordsPanel.PerformCallback();
+}
+
+   function OnMainContentTabPanelBeginCallback(s, e) {}
+function OnMainContentTabPanelEndCallback(s, e) { }
