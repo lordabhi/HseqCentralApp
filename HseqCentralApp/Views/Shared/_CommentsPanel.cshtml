@@ -1,4 +1,6 @@
-﻿@Html.DevExpress().RoundPanel(
+﻿@using HseqCentralApp.Helpers;
+
+@Html.DevExpress().RoundPanel(
     settings =>
     {
         settings.Name = "CommentsPanel";
@@ -9,7 +11,7 @@
         settings.ShowCollapseButton = false;
         settings.EnableAnimation = true;
         settings.Width = Unit.Percentage(100);
-        settings.Height = Unit.Percentage(100);
+        settings.Height = Unit.Pixel(400);
         settings.Collapsed = false;
         settings.ControlStyle.Font.Size = FontUnit.Medium;
         
@@ -77,33 +79,58 @@
                 //settings3.Properties.EnableClientSideAPI = true;
             }).GetHtml();
 
-            if (ViewData["Comments"] != null)
+
+            @Html.DevExpress().DataView(settings3 =>
             {
-                @Html.DevExpress().ListBox(settings2 =>
+                settings3.Name = "CommentDataView";
+                settings3.CallbackRouteValues = new { Controller = "Navigation", Action = "Comments" };
+                settings3.Height = 0;
+                settings3.SettingsTableLayout.ColumnCount = 1;
+                settings3.AllowPaging = false;
+                settings3.ControlStyle.ItemSpacing = Unit.Pixel(0);
+                settings3.ControlStyle.Spacing = Unit.Pixel(0);
+
+                settings3.SetItemTemplateContent(c =>
                 {
-                    settings2.Name = "CommentsListBox";
-                    settings2.Width = Unit.Percentage(100);
-                    //settings2.Height = 75;
-                    settings2.CallbackRouteValues = new { Controller = "Navigation", Action = "Comments" };
-                    settings2.Properties.EnableClientSideAPI = true;
+                    ViewContext.Writer.Write(
+                    "<div style=\"background-color: lightgoldenrodyellow\">" 
+                        + DataBinder.Eval(c.DataItem, "Content").ToString() + "</label><br/><br/><label>"
+                        + "<div style=\"font-size: 10px;font-style:italic\">"     
+                        + DataBinder.Eval(c.DataItem, "DateCreated").ToString()
+                        + "<br/>"
+                        + Utils.GetApplicationUserById((int)DataBinder.Eval(c.DataItem, "OwnerId")).FullName
+                        + "</div></div>" );
+                });
+            }).Bind(Model).GetHtml();
+            
+            
+            //if (ViewData["Comments"] != null)
+            //{
+            //    @Html.DevExpress().ListBox(settings2 =>
+            //    {
+            //        settings2.Name = "CommentsListBox";
+            //        settings2.Width = Unit.Percentage(100);
+            //        //settings2.Height = 75;
+            //        settings2.CallbackRouteValues = new { Controller = "Navigation", Action = "Comments" };
+            //        settings2.Properties.EnableClientSideAPI = true;
 
-                    settings2.Properties.TextField = "Content";
-                    settings2.Properties.ValueField = "CommentID";
+            //        settings2.Properties.TextField = "Content";
+            //        settings2.Properties.ValueField = "CommentID";
 
-                    settings2.Style["border"] = "none";
-
-
-                    //settings2.Properties.ValueType = typeof(Int32);
-                    //settings2.SelectedIndex = 0;
+            //        settings2.Style["border"] = "none";
 
 
-                }).BindList(ViewData["Comments"]).GetHtml();
-            }
-            else
-            {
+            //        //settings2.Properties.ValueType = typeof(Int32);
+            //        //settings2.SelectedIndex = 0;
 
-                ViewContext.Writer.Write("No Comment Exists");
-            }
+
+            //    }).BindList(ViewData["Comments"]).GetHtml();
+            //}
+            //else
+            //{
+
+            //    ViewContext.Writer.Write("No Comment Exists");
+            //}
         });
         settings.ClientSideEvents.Init = "InitComment";
         settings.ClientSideEvents.BeginCallback = "OnCommentsBeginCallback";

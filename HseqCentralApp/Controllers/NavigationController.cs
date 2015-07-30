@@ -136,6 +136,8 @@ namespace HseqCentralApp.Controllers
             string currentActiveView;
             string recordId;
 
+            List<HseqRecord> linkedRecords = new List<HseqRecord>();
+            
             HseqRecord record = null;
             if (DevExpressHelper.IsCallback)
             {
@@ -150,11 +152,12 @@ namespace HseqCentralApp.Controllers
 
                     //ViewData["record"] = db.NcrRecords.Find(int.Parse(recordId));
                     record = db.HseqRecords.Find(int.Parse(recordId));
+                    linkedRecords = record.LinkedRecords.ToList();
                     ViewData["LinkedItems"] = record.LinkedRecords;
                 }
             }
 
-            return PartialView("_LinkedItemsPanel");
+            return PartialView("_LinkedItemsPanel", linkedRecords);
             //return PartialView("_RightContentPanel");
 
         }
@@ -164,54 +167,85 @@ namespace HseqCentralApp.Controllers
 
             string currentActiveView;
             string recordId = null;
+            dynamic recordType = null;
 
-            HseqRecord record = null;
+            List<Comment> filteredComments = new List<Comment>();
+
+            
             if (DevExpressHelper.IsCallback)
             {
                 if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]))
                 {
                     currentActiveView = Request.Params["currentActiveView"];
 
+                    if ((currentActiveView.Contains("Task"))
+                        || (currentActiveView.Contains("Approval")))
+                    {
+                        recordType = CommentSource.Delegatable;
+                    }
+                    else {
+                        recordType = CommentSource.Record;
+                    }
                 }
                 if (!string.IsNullOrEmpty(Request.Params["recordId"]))
                 {
                     recordId = Request.Params["recordId"];
+ 
+                    dynamic record = null;
+ 
+                    if (recordType == CommentSource.Record) {
+                        record = db.HseqRecords.Find(int.Parse(recordId));
+                        filteredComments = ((HseqRecord)record).Comments.OrderBy(s => s.DateCreated).Reverse().ToList();
+                        //ViewData["Comments"] = filteredComments;
+                    }
+                    else if (recordType == CommentSource.Delegatable)
+                    {
+                        record = db.Delegatables.Find(int.Parse(recordId));
+                        filteredComments = ((Delegatable)record).Comments.OrderBy(s => s.DateCreated).Reverse().ToList();
+                        //ViewData["Comments"] = filteredComments;
 
-                    //ViewData["record"] = db.NcrRecords.Find(int.Parse(recordId));
-                    record = db.HseqRecords.Find(int.Parse(recordId));
-                    ViewData["Comments"] = record.Comments.OrderBy(s=> s.DateCreated).Reverse();
+                    }
+                    if (!string.IsNullOrEmpty(Request.Params["newcomment"]))
+                    {
+                        string newcomment = Request.Params["newcomment"];
 
+                        Comment comment = new Comment()
+                        {
+                            Content = newcomment,
+                            DateCreated = DateTime.Now,
+                            CommentSource = recordType,
+                            OwnerID = Utils.GetCurrentApplicationUser().HseqUserID
+                        };
+
+                        if (recordType == CommentSource.Record) { 
+                            comment.HseqRecordID = int.Parse(recordId);
+                        }
+                        else if (recordType == CommentSource.Delegatable)
+                        {
+                            comment.DelegatableID = int.Parse(recordId);
+                        }
+
+                        db.Comments.Add(comment);
+                        db.SaveChanges();
+                        
+                        if (recordType == CommentSource.Record)
+                        {
+                            filteredComments = ((HseqRecord)record).Comments.OrderBy(s => s.DateCreated).Reverse().ToList();
+                        }
+                        else if (recordType == CommentSource.Delegatable) {
+                            filteredComments = ((Delegatable)record).Comments.OrderBy(s => s.DateCreated).Reverse().ToList();
+                        }
+                    }
                 }
-
-                if (!string.IsNullOrEmpty(Request.Params["newcomment"]))
-                {
-                    string newcomment = Request.Params["newcomment"];
-
-                    Comment comment = new Comment() { 
-                        Content = newcomment, 
-                        DateCreated = DateTime.Now,
-                        CommentSource = CommentSource.Record,
-                        HseqRecordID = int.Parse(recordId), 
-                        OwnerID = Utils.GetCurrentApplicationUser().HseqUserID
-                    };
-
-                    db.Comments.Add(comment);
-                    db.SaveChanges();
-                }
-
-
             }
-            return PartialView("_CommentsPanel", db.Comments.ToList());
+            return PartialView("_CommentsPanel", filteredComments);
         }
 
-         [HttpPost]
-        public ActionResult AddNewComment(string selectedMenuItemName)
-        {
-
-
-
-            return PartialView("_CommentsPanel", db.Comments.ToList());
-        }
+        // [HttpPost]
+        //public ActionResult AddNewComment(string selectedMenuItemName)
+        //{
+        //    return PartialView("_CommentsPanel", db.Comments.ToList());
+        //}
 
 
     }

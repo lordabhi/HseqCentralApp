@@ -18,6 +18,7 @@ namespace HseqCentralApp.Models
         public virtual HseqUser Owner { get; set; }
 
         [Display(Name = "TimeStamp")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime DateCreated { get; set; }
 
         //public string AssociatedType { get; set; }

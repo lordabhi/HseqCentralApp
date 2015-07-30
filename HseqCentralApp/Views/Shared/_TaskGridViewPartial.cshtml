@@ -21,6 +21,7 @@
 		settings.Settings.ShowFilterRow = true;
 		settings.SettingsBehavior.AllowSelectByRowClick = true;
 
+        settings.SettingsBehavior.AllowFocusedRow = true;
         settings.SettingsSearchPanel.Visible = true;
 
             settings.Columns.Add("HseqRecord.CaseNo");
@@ -34,7 +35,9 @@
 		    settings.Columns.Add("DelegatableID").Visible = false;
 		    settings.Columns.Add("DateAssigned");
 		    settings.Columns.Add("DueDate");
-            
+
+            settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { taskFocusChanged(s, e); }"; 
+        
 			});
             
 		if (ViewData["EditError"] != null){

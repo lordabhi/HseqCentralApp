@@ -72,13 +72,11 @@ function OnRecordTypeChanged(s, e) {
             }
         }
 
-        console.log(recordTypeCheckState);
-        console.log(responsibleAreaCheckState);
-        console.log(coordinatorsCheckState);
+        //console.log(recordTypeCheckState);
+        //console.log(responsibleAreaCheckState);
+        //console.log(coordinatorsCheckState);
 
-        console.log("Entering PerformCallback")
         MainContentCallbackPanel.PerformCallback();
-        console.log("Exiting PerformCallback")
     }
 
 
@@ -155,9 +153,18 @@ function allItemsFocusChanged(s, e) {
     gridViewItemFocusChanged(s, e);
 }
 
+function taskFocusChanged(s, e) {
+    gridViewItemFocusChanged(s, e);
+}
+
+function approvalFocusChanged(s, e) {
+    gridViewItemFocusChanged(s, e);
+}
+        
 function gridViewItemFocusChanged(obj_s, obj_e) {
     currentActiveView = obj_s.name;
     recordId = obj_s.GetRowKey(obj_s.GetFocusedRowIndex());
+    //MainContentCallbackPanel.PerformCallback();
     LinkedRecordsPanel.PerformCallback();
     CommentsPanel.PerformCallback();
 }
@@ -193,8 +200,11 @@ function AddNewComment(s, e) {
     CommentsPanel.PerformCallback();
 }
 
-function MainContentTabPanelTabChanged(s, e){}
-function OnMainContentTabPanelBeginCallback(s, e) { }
+function MainContentTabPanelTabChanged(s, e) {
+
+}
+
+function OnMainContentTabPanelBeginCallback(s, e) {}
 function OnMainContentTabPanelEndCallback(s, e) { }
 
 function InitComment() {

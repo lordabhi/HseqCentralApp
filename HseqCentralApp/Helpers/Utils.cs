@@ -34,6 +34,14 @@ namespace HseqCentralApp.Helpers
             return hseqUser;
         }
 
+        public static HseqUser GetApplicationUserById(int id)
+        {
+
+            ApplicationUser currentUser = GetCurrentUser();
+            HseqUser hseqUser = db.HseqUsers.Where(a => a.HseqUserID == id).First();
+            return hseqUser;
+        }
+
         public static HseqUser GetCurrentApplicationUser(ApplicationDbContext db)
         {
 

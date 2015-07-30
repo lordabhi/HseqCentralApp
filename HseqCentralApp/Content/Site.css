@@ -25,6 +25,7 @@ textarea {
 
 .dxdvItem_Metropolis, .dxdvFlowItem_Metropolis {
 
-    height: 0px;
+    height: 0px !important; 
+    padding: 2px 2px 2px 4px !important;
 }
 

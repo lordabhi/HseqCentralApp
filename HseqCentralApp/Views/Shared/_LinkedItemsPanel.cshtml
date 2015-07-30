@@ -18,33 +18,52 @@
         settings.SetContent(() =>
         {
 
-
-            
-            
-            if (ViewData["LinkedItems"] != null)
+            @Html.DevExpress().DataView(settings3 =>
             {
-                @Html.DevExpress().ListBox(settings2 =>
+                settings3.Name = "LinkedItemsDataView";
+                settings3.CallbackRouteValues = new { Controller = "Navigation", Action = "Comments" };
+                settings3.Height = 0;
+                settings3.SettingsTableLayout.ColumnCount = 1;
+                settings3.AllowPaging = false;
+                settings3.ControlStyle.ItemSpacing = Unit.Pixel(0);
+                settings3.ControlStyle.Spacing = Unit.Pixel(0);
+
+                settings3.SetItemTemplateContent(c =>
                 {
-                    settings2.Name = "LinkedRecordListBox";
-                    settings2.Width = Unit.Percentage(100);
-                    settings2.Height = 75;
-                    settings2.CallbackRouteValues = new { Controller = "Navigation", Action = "LinkedItems" };
-                    settings2.Properties.EnableClientSideAPI = true;
+                    ViewContext.Writer.Write(
+                    "<div style=\"background-color: lightgoldenrodyellow\">"
+                        + DataBinder.Eval(c.DataItem, "RecordType").ToString() + "</label><label>"
+                        + "<div style=\"font-size: 10px;font-style:italic\">"
+                        + DataBinder.Eval(c.DataItem, "RecordNo").ToString()
+                        + "</div></div>");
+                });
+            }).Bind(Model).GetHtml();            
+            
+            
+            
+            //if (ViewData["LinkedItems"] != null)
+            //{
+            //    @Html.DevExpress().ListBox(settings2 =>
+            //    {
+            //        settings2.Name = "LinkedRecordListBox";
+            //        settings2.Width = Unit.Percentage(100);
+            //        settings2.Height = 75;
+            //        settings2.CallbackRouteValues = new { Controller = "Navigation", Action = "LinkedItems" };
+            //        settings2.Properties.EnableClientSideAPI = true;
 
-                    settings2.Properties.TextField = "CaseNo";
-                    settings2.Properties.ValueField = "HseqRecordID";
+            //        settings2.Properties.TextField = "CaseNo";
+            //        settings2.Properties.ValueField = "HseqRecordID";
 
-                    settings2.Style["border"] = "none";
-                    //settings2.Properties.ValueType = typeof(Int32);
-                    //settings2.SelectedIndex = 0;
-                    
+            //        settings2.Style["border"] = "none";
+            //        //settings2.Properties.ValueType = typeof(Int32);
+            //        //settings2.SelectedIndex = 0;
 
-                }).BindList(ViewData["LinkedItems"]).GetHtml();
-            }
-            else {
+            //    }).BindList(ViewData["LinkedItems"]).GetHtml();
+            //}
+            //else {
 
-                ViewContext.Writer.Write("No Linked Records Exists");
-            }
+            //    ViewContext.Writer.Write("No Linked Records Exists");
+            //}
         });
 
         settings.ClientSideEvents.BeginCallback = "OnLinkedRecordsBeginCallback";
