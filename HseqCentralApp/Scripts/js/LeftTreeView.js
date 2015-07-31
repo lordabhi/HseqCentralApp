@@ -8,76 +8,75 @@ var recordTypeCheckState = null;
 var responsibleAreaCheckState = null;
 var coordinatorsCheckState = null;
 
-
 function OnRecordTypeChanged(s, e) {
         leftHandNavigationFilterChanged(s,e);
     }
 
-    function OnResponsibleAreaChanged(s, e) {
-        leftHandNavigationFilterChanged(s, e);
-    }
+function OnResponsibleAreaChanged(s, e) {
+    leftHandNavigationFilterChanged(s, e);
+}
     
-    function OnCoordinatorChanged(s, e) {
-        leftHandNavigationFilterChanged(s, e);
-    }
+function OnCoordinatorChanged(s, e) {
+    leftHandNavigationFilterChanged(s, e);
+}
 
-    function InitDisplay() {
-        leftHandNavigationFilterChanged(null, null);
+function InitDisplay() {
+    leftHandNavigationFilterChanged(null, null);
+}
 
-    }
+function leftHandNavigationFilterChanged(s, e) {
 
-    function leftHandNavigationFilterChanged(s, e) {
+    var parentNodeIndex = 0;
 
-        var parentNodeIndex = 0;
+    console.log("leftHandNavigationFilterChanged      " + s.name);
 
-        console.log("leftHandNavigationFilterChanged      " + s.name);
+    //Record Type Checked Nodes
 
-        //Record Type Checked Nodes
+    recordTypeCheckState = RecordTypeTreeViewPanel.GetNodeState(RecordTypeTreeViewPanel.GetNode(parentNodeIndex));
 
-        recordTypeCheckState = RecordTypeTreeViewPanel.GetNodeState(RecordTypeTreeViewPanel.GetNode(parentNodeIndex));
-
-        recordTypeCheckedNodes = new Array();
+    recordTypeCheckedNodes = new Array();
 
 //        console.log("Parent Node Checked Status: " + RecordTypeTreeViewPanel.GetNode(parentNodeIndex).GetChecked());
 
-        for (var i = 0; i < RecordTypeTreeViewPanel.GetNode(parentNodeIndex).GetNodeCount() ; i++) {
+    for (var i = 0; i < RecordTypeTreeViewPanel.GetNode(parentNodeIndex).GetNodeCount() ; i++) {
 
-            if (RecordTypeTreeViewPanel.GetNode(parentNodeIndex).GetNode(i).GetChecked()) {
-                //recordTypeCheckedNodes.push(RecordTypeTreeViewPanel.GetNode(i).GetText());
-                recordTypeCheckedNodes.push(RecordTypeTreeViewPanel.GetNode(parentNodeIndex).GetNode(i).name);
-            }
+        if (RecordTypeTreeViewPanel.GetNode(parentNodeIndex).GetNode(i).GetChecked()) {
+            //recordTypeCheckedNodes.push(RecordTypeTreeViewPanel.GetNode(i).GetText());
+            recordTypeCheckedNodes.push(RecordTypeTreeViewPanel.GetNode(parentNodeIndex).GetNode(i).name);
         }
-
-        //Responsible Area Checked Nodes
-
-        responsibleAreaCheckState = ResponsibleAreaTreeViewPanel.GetNodeState(ResponsibleAreaTreeViewPanel.GetNode(parentNodeIndex));
-
-        responsibleAreaCheckedNodes = new Array();
-        for (var i = 0; i < ResponsibleAreaTreeViewPanel.GetNode(parentNodeIndex).GetNodeCount() ; i++) {
-            if (ResponsibleAreaTreeViewPanel.GetNode(parentNodeIndex).GetNode(i).GetChecked()) {
-                //responsibleAreaCheckedNodes.push(ResponsibleAreaTreeViewPanel.GetNode(i).GetText());
-                responsibleAreaCheckedNodes.push(ResponsibleAreaTreeViewPanel.GetNode(parentNodeIndex).GetNode(i).name);
-            }
-        }
-
-        //Coordinators Checked Node
-
-        coordinatorsCheckState = CoordinatorTreeViewPanel.GetNodeState(CoordinatorTreeViewPanel.GetNode(parentNodeIndex));
-
-        coordinatorsCheckedNodes = new Array();
-        for (var i = 0; i < CoordinatorTreeViewPanel.GetNode(parentNodeIndex).GetNodeCount() ; i++) {
-            if (CoordinatorTreeViewPanel.GetNode(parentNodeIndex).GetNode(i).GetChecked()) {
-                //coordinatorsCheckedNodes.push(CoordinatorTreeViewPanel.GetNode(i).GetText());
-                coordinatorsCheckedNodes.push(CoordinatorTreeViewPanel.GetNode(parentNodeIndex).GetNode(i).name);
-            }
-        }
-
-        //console.log(recordTypeCheckState);
-        //console.log(responsibleAreaCheckState);
-        //console.log(coordinatorsCheckState);
-
-        MainContentCallbackPanel.PerformCallback();
     }
+
+    //Responsible Area Checked Nodes
+
+    responsibleAreaCheckState = ResponsibleAreaTreeViewPanel.GetNodeState(ResponsibleAreaTreeViewPanel.GetNode(parentNodeIndex));
+
+    responsibleAreaCheckedNodes = new Array();
+    for (var i = 0; i < ResponsibleAreaTreeViewPanel.GetNode(parentNodeIndex).GetNodeCount() ; i++) {
+        if (ResponsibleAreaTreeViewPanel.GetNode(parentNodeIndex).GetNode(i).GetChecked()) {
+            //responsibleAreaCheckedNodes.push(ResponsibleAreaTreeViewPanel.GetNode(i).GetText());
+            responsibleAreaCheckedNodes.push(ResponsibleAreaTreeViewPanel.GetNode(parentNodeIndex).GetNode(i).name);
+        }
+    }
+
+    //Coordinators Checked Node
+
+    coordinatorsCheckState = CoordinatorTreeViewPanel.GetNodeState(CoordinatorTreeViewPanel.GetNode(parentNodeIndex));
+
+    coordinatorsCheckedNodes = new Array();
+    for (var i = 0; i < CoordinatorTreeViewPanel.GetNode(parentNodeIndex).GetNodeCount() ; i++) {
+        if (CoordinatorTreeViewPanel.GetNode(parentNodeIndex).GetNode(i).GetChecked()) {
+            //coordinatorsCheckedNodes.push(CoordinatorTreeViewPanel.GetNode(i).GetText());
+            coordinatorsCheckedNodes.push(CoordinatorTreeViewPanel.GetNode(parentNodeIndex).GetNode(i).name);
+        }
+    }
+
+    //console.log(recordTypeCheckState);
+    //console.log(responsibleAreaCheckState);
+    //console.log(coordinatorsCheckState);
+
+    MainContentCallbackPanel.PerformCallback();
+
+}
 
 
 function OnBeginCallback(s, e) {
@@ -85,7 +84,6 @@ function OnBeginCallback(s, e) {
     e.customArgs["recordTypeCheckState"] = recordTypeCheckState;
     e.customArgs["responsibleAreaCheckState"] = responsibleAreaCheckState;
     e.customArgs["coordinatorsCheckState"] = coordinatorsCheckState;
-
 
     if (recordTypeCheckedNodes !== null) {
         e.customArgs["recordTypeCheckedNodes"] = recordTypeCheckedNodes.join(",");
@@ -98,10 +96,14 @@ function OnBeginCallback(s, e) {
     }
 
     e.customArgs["currentActiveTabIndex"] = MainContentTabPanel.GetActiveTabIndex();
-    
+
+//////////////////////////////////
+
+   e.customArgs["currentActiveView"]= currentActiveView;
+   e.customArgs["recordId"]= recordId;
+   e.customArgs["newcomment"]= commentAddNewMeno.lastChangedValue;
+
 }
-
-
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -169,23 +171,24 @@ function gridViewItemFocusChanged(obj_s, obj_e) {
     CommentsPanel.PerformCallback();
 }
 
-
 function OnLinkedRecordsBeginCallback(s, e) {
+
+    computeCurrentRecord();
+
     e.customArgs["currentActiveView"]= currentActiveView;
     e.customArgs["recordId"]= recordId;
 }
-
-
-
 
 function OnLinkedRecordsEndCallback(s, e) {
 }
 
 function OnCommentsBeginCallback(s, e) {
+
+    computeCurrentRecord();
+
     e.customArgs["currentActiveView"]= currentActiveView;
     e.customArgs["recordId"]= recordId;
-
-     e.customArgs["newcomment"] = commentAddNewMeno.lastChangedValue;
+    e.customArgs["newcomment"] = commentAddNewMeno.lastChangedValue;
          
 }
 
@@ -200,11 +203,75 @@ function AddNewComment(s, e) {
     CommentsPanel.PerformCallback();
 }
 
-
 function InitComment() {
     commentAddNewMeno.SetVisible(false);
     commentSaveNewBtn.SetVisible(false);
 }
+
+function OnRightContentPanelBeginCallback(s, e) { 
+    e.customArgs["currentActiveTabIndex"]= MainContentTabPanel.GetActiveTabIndex();
+}
+
+function MainContentTabPanelTabChanged(s, e) {
+    //RightContentCallbackPanel.PerformCallback();
+    console.log(s.GetActiveTabIndex());
+
+    computeCurrentRecord();
+
+    console.log(currentActiveView + " - " +recordId);
+
+    CommentsPanel.PerformCallback();
+    LinkedRecordsPanel.PerformCallback();
+}
+
+function OnMainContentTabPanelBeginCallback(s, e) {}
+
+function OnMainContentTabPanelEndCallback(s, e) { }
+
+function computeCurrentRecord(){
+    
+    if (MainContentTabPanel.GetActiveTabIndex() === 0) {
+        currentActiveView = NcrGridView.name;
+        recordId = NcrGridView.GetRowKey(NcrGridView.GetFocusedRowIndex());
+        }
+        else if (MainContentTabPanel.GetActiveTabIndex() === 1) {
+        currentActiveView = CarGridView.name;
+        recordId = CarGridView.GetRowKey(CarGridView.GetFocusedRowIndex());
+        }
+        else if (MainContentTabPanel.GetActiveTabIndex() === 2) {
+        currentActiveView = ParGridView.name;
+        recordId = ParGridView.GetRowKey(ParGridView.GetFocusedRowIndex());
+        }
+        else if (MainContentTabPanel.GetActiveTabIndex() === 3) {
+        currentActiveView = FisGridView.name;
+        recordId = FisGridView.GetRowKey(FisGridView.GetFocusedRowIndex());
+        }
+        else if(MainContentTabPanel.GetActiveTabIndex() === 4) {
+        currentActiveView = TaskGridViewPartial.name;
+        recordId = TaskGridViewPartial.GetRowKey(TaskGridViewPartial.GetFocusedRowIndex());
+        }
+        else if (MainContentTabPanel.GetActiveTabIndex() === 5) {
+        currentActiveView = ApprovalGridViewPartial.name;
+        recordId = ApprovalGridViewPartial.GetRowKey(ApprovalGridViewPartial.GetFocusedRowIndex());
+        }
+        else if (MainContentTabPanel.GetActiveTabIndex() === 6) {
+        currentActiveView = AllItemsGridView.name;
+        recordId = AllItemsGridView.GetRowKey(AllItemsGridView.GetFocusedRowIndex());
+    }
+    
+    var results = [{ currentActiveView: currentActiveView, recordId : recordId}];
+
+    //alert(list[1].currentActiveView);
+
+    return results;
+}
+
+MVCxClientGlobalEvents.AddControlsInitializedEventHandler(function (s, e) {
+    if (e.isCallback === true) {
+        //console.log(s);
+    //console.log(e);
+    }
+});
 
 
 //function AddNewComment(s, e) {
@@ -223,55 +290,3 @@ function InitComment() {
 //    }
 
 
-MVCxClientGlobalEvents.AddControlsInitializedEventHandler(function (s, e) {
-            if (e.isCallback === true) {
-                //console.log(s);
-                //console.log(e);
-            }
-        });
-
-function OnRightContentPanelBeginCallback(s, e) { 
-    e.customArgs["currentActiveTabIndex"]= MainContentTabPanel.GetActiveTabIndex();
-}
-
-function MainContentTabPanelTabChanged(s, e) {
-    //RightContentCallbackPanel.PerformCallback();
-    console.log(s.GetActiveTabIndex());
-
-    if (s.GetActiveTabIndex() === 0) {
-        currentActiveView = NcrGridView.name;
-        recordId = NcrGridView.GetRowKey(NcrGridView.GetFocusedRowIndex());
-        }
-     else if (s.GetActiveTabIndex() === 1) {
-        currentActiveView = CarGridView.name;
-        recordId = CarGridView.GetRowKey(CarGridView.GetFocusedRowIndex());
-        }
-     else if (s.GetActiveTabIndex() === 2) {
-        currentActiveView = ParGridView.name;
-        recordId = ParGridView.GetRowKey(ParGridView.GetFocusedRowIndex());
-        }
-     else if (s.GetActiveTabIndex() === 3) {
-        currentActiveView = FisGridView.name;
-        recordId = FisGridView.GetRowKey(FisGridView.GetFocusedRowIndex());
-        }
-     else if (s.GetActiveTabIndex() === 4) {
-        currentActiveView = TaskGridViewPartial.name;
-        recordId = TaskGridViewPartial.GetRowKey(TaskGridViewPartial.GetFocusedRowIndex());
-        }
-     else if (s.GetActiveTabIndex() === 5) {
-        currentActiveView = ApprovalGridViewPartial.name;
-        recordId = ApprovalGridViewPartial.GetRowKey(ApprovalGridViewPartial.GetFocusedRowIndex());
-        }
-     else if (s.GetActiveTabIndex() === 6) {
-        currentActiveView = AllItemsGridView.name;
-        recordId = AllItemsGridView.GetRowKey(AllItemsGridView.GetFocusedRowIndex());
-        }
-
-        console.log(currentActiveView + " - " +recordId);
-
-        CommentsPanel.PerformCallback();
-        LinkedRecordsPanel.PerformCallback();
-}
-
-   function OnMainContentTabPanelBeginCallback(s, e) {}
-function OnMainContentTabPanelEndCallback(s, e) { }
