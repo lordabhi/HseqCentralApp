@@ -13,6 +13,28 @@
 
 @Html.DevExpress().RoundPanel(settings =>
 {
+    settings.Name = "ActionPanel";
+    settings.HeaderText = "Action Panel";
+
+    settings.ShowHeader = true;
+    settings.AllowCollapsingByHeaderClick = true;
+    settings.ShowCollapseButton = false;
+    settings.EnableAnimation = true;
+    settings.Width = Unit.Percentage(100);
+    //settings.Collapsed = Collapsed;
+    settings.ControlStyle.Font.Size = FontUnit.Medium;
+
+    settings.SetContent(() =>
+    {
+        @Html.RenderPartial("ExportPanel");
+        @Html.RenderPartial("_NcrGridViewPanel");
+        //ViewContext.Writer.Write("Container for Attachments");
+    });
+}).GetHtml()
+
+
+@Html.DevExpress().RoundPanel(settings =>
+{
     settings.Name = "AttachmentsPanel";
     settings.HeaderText = "Attachments";
 
@@ -26,7 +48,7 @@
 
     settings.SetContent(() =>
     {
-        ViewContext.Writer.Write("Container for Projects / Jobs");
+        ViewContext.Writer.Write("Container for Attachments");
     });
 }).GetHtml()
 

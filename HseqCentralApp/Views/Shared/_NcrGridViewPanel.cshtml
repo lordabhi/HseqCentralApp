@@ -13,9 +13,9 @@
     settings1.Width = Unit.Pixel(50);
     settings1.Height = Unit.Pixel(20);
     settings1.Style["margin-right"] = "5px";
-    
-    
-    settings1.ClientSideEvents.Click = "function(s, e) { NcrGridView.AddNewRow(); }";
+
+
+    settings1.ClientSideEvents.Click = "function(s, e) {GridNewRow(s,e); }";
     }).Render();
         
 @Html.DevExpress().Button(settings2 =>
@@ -23,7 +23,7 @@
     settings2.Name = "ncr_btn_Save";
     settings2.Text = "EDIT";
     settings2.Style["margin-right"] = "5px";
-    settings2.ClientSideEvents.Click = "function(s, e) { EditRow(NcrGridView); }";
+    settings2.ClientSideEvents.Click = "function(s, e) { GridEditRow(s,e); }";
     //settings2.ClientSideEvents.Click = "function(s, e) { OnCommandExecuted(s,e); }";
     //settings2.RouteValues = new { Controller = "Ncr", Action = "NcrGridViewUpdate1", ParamValue1 = "NcrGridView.GetRowKey(0)" };
     settings2.UseSubmitBehavior = false;
@@ -41,7 +41,7 @@
     settings3.Width = Unit.Pixel(70);
     settings3.Height = Unit.Pixel(20);
 
-    settings3.ClientSideEvents.Click = "function(s, e) { DeleteRow(NcrGridView); }";
+    settings3.ClientSideEvents.Click = "function(s, e) { GridDeleteRow(s,e); }";
 }).Render();
 
     });

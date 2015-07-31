@@ -1,0 +1,60 @@
+﻿@using (Html.BeginForm("ExportTo", "Navigation"))
+{
+
+    <table>
+        <tr>
+            <td>
+                @Html.DevExpress().Button(btn =>
+           {
+               btn.Name = "btnExportToCSV";
+               btn.Attributes["OutputFormatAttribute"] = "CSV";
+               btn.Text = "CSV";
+               btn.UseSubmitBehavior = true;
+               btn.ClientSideEvents.Click = "OnClick";
+           }).GetHtml()
+            </td>
+            <td>
+                @Html.DevExpress().Button(btn =>
+           {
+               btn.Name = "btnExportToPDF";
+               btn.Attributes["OutputFormatAttribute"] = "PDF";
+               btn.Attributes["recordid"] = "1";
+               btn.Text = "PDF";
+               btn.UseSubmitBehavior = true;
+               btn.ClientSideEvents.Click = "OnClick";
+           }).GetHtml()
+            </td>
+            <td>
+                @Html.DevExpress().Button(btn =>
+           {
+               btn.Name = "btnExportToRTF";
+               btn.Attributes["OutputFormatAttribute"] = "RTF";
+               btn.Text = "RTF";
+               btn.UseSubmitBehavior = true;
+               btn.ClientSideEvents.Click = "OnClick";
+           }).GetHtml()
+            </td>
+            <td>
+                @Html.DevExpress().Button(btn =>
+           {
+               btn.Name = "btnExportToXLS";
+               btn.Attributes["OutputFormatAttribute"] = "XLS";
+               btn.Text = "XLS";
+               btn.UseSubmitBehavior = true;
+               btn.ClientSideEvents.Click = "OnClick";
+           }).GetHtml()
+            </td>
+            <td>
+                @Html.DevExpress().Button(btn =>
+           {
+               btn.Name = "btnExportToXLSX";
+               btn.Attributes["OutputFormatAttribute"] = "XLSX";
+               btn.Text = "XLSX";
+               btn.UseSubmitBehavior = true;
+               btn.ClientSideEvents.Click = "OnClick";
+           }).GetHtml()
+            </td>
+        </tr>
+    </table>
+
+}

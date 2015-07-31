@@ -260,8 +260,28 @@ namespace HseqCentralApp.Controllers
             return PartialView("_CommentsPanel", filteredComments);
         }
 
-       
 
+        public ActionResult ExportTo(string OutputFormat)
+        {
+            //var model = Session["TypedListModel"];
+            var model = db.NcrRecords.ToList();
+
+            switch (OutputFormat.ToUpper())
+            {
+                case "CSV":
+                    return GridViewExtension.ExportToCsv(GridViewHelper.ExportGridViewSettings, model);
+                case "PDF":
+                    return GridViewExtension.ExportToPdf(GridViewHelper.ExportGridViewSettings, model);
+                case "RTF":
+                    return GridViewExtension.ExportToRtf(GridViewHelper.ExportGridViewSettings, model);
+                case "XLS":
+                    return GridViewExtension.ExportToXls(GridViewHelper.ExportGridViewSettings, model);
+                case "XLSX":
+                    return GridViewExtension.ExportToXlsx(GridViewHelper.ExportGridViewSettings, model);
+                default:
+                    return RedirectToAction("Index");
+            }
+        }
 
         // [HttpPost]
         //public ActionResult AddNewComment(string selectedMenuItemName)
@@ -270,5 +290,39 @@ namespace HseqCentralApp.Controllers
         //}
 
 
+    }
+}
+
+public static class GridViewHelper
+{
+    private static GridViewSettings exportGridViewSettings;
+
+    public static GridViewSettings ExportGridViewSettings
+    {
+        get
+        {
+            if (exportGridViewSettings == null)
+                exportGridViewSettings = CreateExportGridViewSettings();
+            return exportGridViewSettings;
+        }
+    }
+
+    private static GridViewSettings CreateExportGridViewSettings()
+    {
+        GridViewSettings settings = new GridViewSettings();
+
+        settings.Name = "gvTypedListDataBinding";
+        settings.CallbackRouteValues = new { Controller = "Ncrs", Action = "NcrGridViewPartial" };
+
+        settings.KeyFieldName = "HseqRecordID";
+        settings.Settings.ShowFilterRow = true;
+
+        settings.Columns.Add("CaseNo");
+        settings.Columns.Add("RecordNo");
+        settings.Columns.Add("RecordType");
+        settings.Columns.Add("Title");
+        settings.Columns.Add("Description");
+
+        return settings;
     }
 }

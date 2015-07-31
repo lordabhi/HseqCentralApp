@@ -105,32 +105,10 @@ function OnBeginCallback(s, e) {
 
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////
-
-//Ncr Grid View
-function EditRow(obj) {
-    var focusedRowIndex = obj.GetFocusedRowIndex();
-    //NcrGridView.GetRowValues(focusedRowIndex, 'HseqRecordID', OnGetRowValues);
-    obj.StartEditRow(focusedRowIndex);
-}
-
-function DeleteRow(obj) {
-    var focusedRowIndex = obj.GetFocusedRowIndex();
-    obj.DeleteRow(focusedRowIndex);
-}
-
-
-function OnCommandExecuted(s, e) {
-    $.post("/Ncrs/NcrGridViewUpdate1?ParamValue1=" + NcrGridView.GetRowKey(NcrGridView.GetFocusedRowIndex()), function (data) {
-        alert(data);
-    }, function (err) {
-        alert(err);
-    });
-    MainContentCallbackPanel.PerformCallback();
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- var currentActiveView;
+var currentActiveView;
+var currentActiveViewObj;
  var recordId;
 
 function ncrFocusChanged(s, e) {
@@ -231,35 +209,42 @@ function OnMainContentTabPanelEndCallback(s, e) { }
 function computeCurrentRecord(){
     
     if (MainContentTabPanel.GetActiveTabIndex() === 0) {
+        currentActiveViewObj = NcrGridView;
         currentActiveView = NcrGridView.name;
         recordId = NcrGridView.GetRowKey(NcrGridView.GetFocusedRowIndex());
         }
         else if (MainContentTabPanel.GetActiveTabIndex() === 1) {
+        currentActiveViewObj = CarGridView;
         currentActiveView = CarGridView.name;
         recordId = CarGridView.GetRowKey(CarGridView.GetFocusedRowIndex());
         }
         else if (MainContentTabPanel.GetActiveTabIndex() === 2) {
+        currentActiveViewObj = ParGridView;
         currentActiveView = ParGridView.name;
         recordId = ParGridView.GetRowKey(ParGridView.GetFocusedRowIndex());
         }
         else if (MainContentTabPanel.GetActiveTabIndex() === 3) {
+        currentActiveViewObj = FisGridView;
         currentActiveView = FisGridView.name;
         recordId = FisGridView.GetRowKey(FisGridView.GetFocusedRowIndex());
         }
         else if(MainContentTabPanel.GetActiveTabIndex() === 4) {
+        currentActiveViewObj = TaskGridViewPartial;
         currentActiveView = TaskGridViewPartial.name;
         recordId = TaskGridViewPartial.GetRowKey(TaskGridViewPartial.GetFocusedRowIndex());
         }
         else if (MainContentTabPanel.GetActiveTabIndex() === 5) {
+        currentActiveViewObj = ApprovalGridViewPartial;
         currentActiveView = ApprovalGridViewPartial.name;
         recordId = ApprovalGridViewPartial.GetRowKey(ApprovalGridViewPartial.GetFocusedRowIndex());
         }
-        else if (MainContentTabPanel.GetActiveTabIndex() === 6) {
+    else if (MainContentTabPanel.GetActiveTabIndex() === 6) {
+        currentActiveViewObj = AllItemsGridView;
         currentActiveView = AllItemsGridView.name;
         recordId = AllItemsGridView.GetRowKey(AllItemsGridView.GetFocusedRowIndex());
     }
     
-    var results = [{ currentActiveView: currentActiveView, recordId : recordId}];
+    var results =[{currentActiveViewObj: currentActiveViewObj, currentActiveView: currentActiveView, recordId: recordId}];
 
     //alert(list[1].currentActiveView);
 
@@ -289,4 +274,60 @@ MVCxClientGlobalEvents.AddControlsInitializedEventHandler(function (s, e) {
 //        });
 //    }
 
+function OnCommandExecuted(s, e) {
+    $.post("/Ncrs/NcrGridViewUpdate1?ParamValue1=" +NcrGridView.GetRowKey(NcrGridView.GetFocusedRowIndex()), function (data) {
+        alert(data);
+    }, function (err) {
+        alert(err);
+});
+    MainContentCallbackPanel.PerformCallback();
+}
 
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+//Ncr Grid View
+function EditRow(obj) {
+    var focusedRowIndex = obj.GetFocusedRowIndex();
+//NcrGridView.GetRowValues(focusedRowIndex, 'HseqRecordID', OnGetRowValues);
+    obj.StartEditRow(focusedRowIndex);
+}
+
+function DeleteRow(obj) {
+    var focusedRowIndex = obj.GetFocusedRowIndex();
+    obj.DeleteRow(focusedRowIndex);
+}
+
+
+//Ncr Grid View
+
+function GridNewRow(s, e) {
+
+    var results = computeCurrentRecord();
+    console.log(results);
+    var activeViewObj = results[0].currentActiveViewObj;
+    activeViewObj.AddNewRow();
+    }
+
+function GridEditRow(s,e) {
+    var results = computeCurrentRecord();
+    var activeViewObj = results[0].currentActiveViewObj;
+    var focusedRowIndex = activeViewObj.GetFocusedRowIndex();
+    activeViewObj.StartEditRow(focusedRowIndex);
+}
+
+function GridDeleteRow(s,e) {
+    var results = computeCurrentRecord();
+    var activeViewObj = results[0].currentActiveViewObj;
+
+    var focusedRowIndex = activeViewObj.GetFocusedRowIndex();
+    activeViewObj.DeleteRow(focusedRowIndex);
+}
+
+function OnClick(s, e) {
+        var actionParams = $("form").attr("action").split("?OutputFormat=");
+        actionParams[1] = s.GetMainElement().getAttribute("OutputFormatAttribute");
+
+        $("form").attr( { action:actionParams.join("?OutputFormat=")} );
+    }
