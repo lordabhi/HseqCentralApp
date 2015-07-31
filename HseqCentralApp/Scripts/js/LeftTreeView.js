@@ -88,7 +88,7 @@ function OnBeginCallback(s, e) {
     if (recordTypeCheckedNodes !== null) {
         e.customArgs["recordTypeCheckedNodes"] = recordTypeCheckedNodes.join(",");
     }
-    if (responsibleAreaCheckedNodes!==null) {
+    if (responsibleAreaCheckedNodes !== null) {
         e.customArgs["responsibleAreaCheckedNodes"] = responsibleAreaCheckedNodes.join(",");
     }
     if (responsibleAreaCheckedNodes !== null) {
@@ -97,12 +97,17 @@ function OnBeginCallback(s, e) {
 
     e.customArgs["currentActiveTabIndex"] = MainContentTabPanel.GetActiveTabIndex();
 
-//////////////////////////////////
+    //////////////////////////////////
 
-   e.customArgs["currentActiveView"]= currentActiveView;
-   e.customArgs["recordId"]= recordId;
-   e.customArgs["newcomment"]= commentAddNewMeno.lastChangedValue;
+    e.customArgs["currentActiveView"] = currentActiveView;
+    e.customArgs["recordId"] = recordId;
+    e.customArgs["newcomment"] = commentAddNewMeno.lastChangedValue;
 
+    if (editbtnclicked) {
+
+        e.customArgs["edit"] = true;
+    }
+    editbtnclicked = false;
 }
 
 
@@ -274,15 +279,15 @@ MVCxClientGlobalEvents.AddControlsInitializedEventHandler(function (s, e) {
 //        });
 //    }
 
-function OnCommandExecuted(s, e) {
-    $.post("/Ncrs/NcrGridViewUpdate1?ParamValue1=" +NcrGridView.GetRowKey(NcrGridView.GetFocusedRowIndex()), function (data) {
-        alert(data);
-    }, function (err) {
-        alert(err);
-});
-    MainContentCallbackPanel.PerformCallback();
-}
 
+//function OnCommandExecuted(s, e) {
+//    $.post("/Ncrs/NcrGridViewUpdate1?ParamValue1=" +NcrGridView.GetRowKey(NcrGridView.GetFocusedRowIndex()), function (data) {
+//        alert(data);
+//    }, function (err) {
+//        alert(err);
+//    });
+//    MainContentCallbackPanel.PerformCallback();
+//    }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -310,11 +315,22 @@ function GridNewRow(s, e) {
     activeViewObj.AddNewRow();
     }
 
+var editbtnclicked = false;
+
 function GridEditRow(s,e) {
     var results = computeCurrentRecord();
     var activeViewObj = results[0].currentActiveViewObj;
+
+    console.log(s.name);
+
     var focusedRowIndex = activeViewObj.GetFocusedRowIndex();
-    activeViewObj.StartEditRow(focusedRowIndex);
+
+    editbtnclicked = true;
+    
+
+        //activeViewObj.StartEditRow(focusedRowIndex);
+
+    MainContentCallbackPanel.PerformCallback();
 }
 
 function GridDeleteRow(s,e) {
@@ -330,4 +346,5 @@ function OnClick(s, e) {
         actionParams[1] = s.GetMainElement().getAttribute("OutputFormatAttribute");
 
         $("form").attr( { action:actionParams.join("?OutputFormat=")} );
-    }
+}
+

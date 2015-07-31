@@ -1,5 +1,6 @@
 ﻿@model System.Collections.IEnumerable
 
+
 @Html.DevExpress().Splitter(settings =>
 {
     settings.Name = "MainPaneSplitter";
@@ -33,8 +34,8 @@
 
         gridPane.SetContent(() =>
         {
-            //@Html.RenderPartial("GridViewPartialView");
             @Html.RenderPartial("_MainContentCallbackPanel");
+            //@Html.RenderPartial("_MainContentCallbackPanel");
 
         });
     });

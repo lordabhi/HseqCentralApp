@@ -525,6 +525,7 @@
     <Content Include="Views\Shared\_CommentDataViewPartial.cshtml" />
     <Content Include="Views\Shared\_RightContentCallbackPanel.cshtml" />
     <Content Include="Views\Shared\ExportPanel.cshtml" />
+    <Content Include="Views\Shared\_EditView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

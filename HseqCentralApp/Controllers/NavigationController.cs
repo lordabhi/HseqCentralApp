@@ -80,12 +80,23 @@ namespace HseqCentralApp.Controllers
 
             }
 
-        //   Console.WriteLine(NavigationFilter.RecordTypes);
+            if (!string.IsNullOrEmpty(Request.Params["edit"]))
+            {
+                ViewData["currentview"] = "_EditView";
+                //return PartialView(ViewData["currentview"]);
+            }
+            else {
+                ViewData["currentview"] = "_MainContentTabPanel";
+            }
+            
+         //   Console.WriteLine(NavigationFilter.RecordTypes);
         //   Console.WriteLine(NavigationFilter.ResponsibleAreaIds);
         //   Console.WriteLine(NavigationFilter.CoordinatorIds);
+            
 
             return PartialView("_MainContentCallbackPanel");
         }
+
 
         ////////////////////////////////////////
         

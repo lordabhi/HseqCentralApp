@@ -1,4 +1,6 @@
-﻿
+﻿@{ string mainviewpanel = ViewData["currentview"] == null ? "_MainContentTabPanel" : (string)ViewData["currentview"];
+
+}
 @Html.DevExpress().CallbackPanel(
     settings =>
     {
@@ -9,7 +11,9 @@
 
         settings.SetContent(() =>
         {
-            @Html.RenderPartial("_MainContentTabPanel");
+            @Html.RenderPartial(mainviewpanel);
+            
+           // @Html.RenderPartial("_MainContentTabPanel");
 
         });
 
