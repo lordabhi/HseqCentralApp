@@ -14,10 +14,15 @@
 
         settings.SetContent(() =>
         {
-            if (mainviewpanel.Contains("Edit"))
+            if (mainviewpanel.Contains("NcrEdit"))
             {
                 @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Ncr)ViewData["record"]);
             }
+            else if (mainviewpanel.Contains("CarEdit"))
+            {
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Car)ViewData["record"]);
+            }
+                
             else
             {
                 @Html.RenderPartial(mainviewpanel);

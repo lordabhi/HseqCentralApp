@@ -84,7 +84,7 @@ namespace HseqCentralApp.Controllers
 
             if (!string.IsNullOrEmpty(Request.Params["edit"]))
             {
-                ViewData["currentview"] = "_NcrEditView";
+                
                 
 
                 if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]) && !string.IsNullOrEmpty(Request.Params["recordId"]))
@@ -96,6 +96,14 @@ namespace HseqCentralApp.Controllers
 
                         Ncr record = db.NcrRecords.Find(recordId);
                         ViewData["record"] = record;
+                        ViewData["currentview"] = "_NcrEditView";
+                    }
+                    else if (currentActiveView.Contains("Car"))
+                    {
+
+                        Car record = db.CarRecords.Find(recordId);
+                        ViewData["record"] = record;
+                        ViewData["currentview"] = "_CarEditView";
                     }
                 }
 
@@ -157,6 +165,32 @@ namespace HseqCentralApp.Controllers
                 ViewData["EditError"] = "Please, correct all errors.";
             //return PartialView("_NcrGridViewPartial", model.ToList());
          //   ModelState.Clear();
+            return PartialView("_MainContentCallbackPanel");
+
+        }
+
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult CarGridViewUpdate(HseqCentralApp.Models.Car item)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (item != null)
+                    {
+                        db.Entry(item).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
             return PartialView("_MainContentCallbackPanel");
 
         }

@@ -1,11 +1,11 @@
-﻿@model HseqCentralApp.Models.Ncr
+﻿@model HseqCentralApp.Models.Car
 
 @using HseqCentralApp.Helpers;
 @using HseqCentralApp.Models;
 
-@*@using (Html.BeginForm("NcrGridViewUpdate", "Navigation"))*@
+@*@using (Html.BeginForm("CarGridViewUpdate", "Navigation"))*@
 
-@using (Ajax.BeginForm("NcrGridViewUpdate", "Navigation", 
+@using (Ajax.BeginForm("CarGridViewUpdate", "Navigation", 
     new AjaxOptions { 
         HttpMethod = "Post", 
         UpdateTargetId = "CenterSplitterPane",
@@ -69,104 +69,6 @@
     });
     
 
-    groupItem.Items.Add(m => m.NcrSource, i =>
-    {
-        //i.HelpText = "Leave a little bit of information<br/>about yourself";
-        i.NestedExtension().ComboBox(s =>
-        {
-            s.Properties.TextField = "NcrSource";
-            s.Properties.ValueField = "NcrSource";
-            s.Properties.ValueType = typeof(string);
-
-            s.Properties.Items.AddRange(typeof(NcrSource).GetEnumValues());
-            s.Properties.DropDownStyle = DropDownStyle.DropDown;
-        });
-    });
-
-    groupItem.Items.Add(m => m.NcrState, i =>
-    {
-         i.NestedExtension().ComboBox(s =>
-        {
-        s.Properties.TextField = "NcrState";
-        s.Properties.ValueField = "NcrState";
-        s.Properties.ValueType = typeof(string);
-
-        s.Properties.Items.AddRange(typeof(NcrState).GetEnumValues());
-        s.Properties.DropDownStyle = DropDownStyle.DropDown;
-        });
-    });
-
-    groupItem.Items.Add(m => m.DiscrepancyTypeID, i =>
-    {
-        i.NestedExtension().ComboBox(s =>
-        {
-            s.Properties.TextField = "Name";
-            s.Properties.ValueField = "DiscrepancyTypeID";
-            s.Properties.DataSource = Utils.DiscrepancyTypes();
-            s.Properties.ValueType = typeof(string);
-            s.Properties.DropDownStyle = DropDownStyle.DropDown;
-        });
-    });    
-    
-    
-    groupItem.Items.Add(m => m.DispositionTypeID, i =>
-    {
-        i.NestedExtension().ComboBox(s =>
-        {
-            s.Properties.TextField = "Name";
-            s.Properties.ValueField = "DispositionTypeID";
-            s.Properties.DataSource = Utils.DispositionTypes();
-            s.Properties.ValueType = typeof(string);
-            s.Properties.DropDownStyle = DropDownStyle.DropDown;
-        });
-    });
-
-
-    groupItem.Items.Add(m => m.DispositionNote, i =>
-    {
-        i.NestedExtension().Memo(s =>
-        {
-            
-        });
-    });
-    
-    groupItem.Items.Add(m => m.DetectedInAreaID, i =>
-    {
-        i.NestedExtension().ComboBox(s =>
-        {
-            s.Properties.TextField = "Name";
-            s.Properties.ValueField = "BusinessAreaID";
-            s.Properties.DataSource = Utils.BusinessAreas();
-            s.Properties.ValueType = typeof(string);
-            s.Properties.DropDownStyle = DropDownStyle.DropDown;
-        });
-    });
-
-    groupItem.Items.Add(m => m.ResponsibleAreaID, i =>
-    {
-        i.NestedExtension().ComboBox(s =>
-        {
-            s.Properties.TextField = "Name";
-            s.Properties.ValueField = "BusinessAreaID";
-            s.Properties.DataSource = Utils.BusinessAreas();
-            s.Properties.ValueType = typeof(string);
-            s.Properties.DropDownStyle = DropDownStyle.DropDown;
-        });
-    });
-
-    groupItem.Items.Add(m => m.CauseDesc, i =>
-    {
-        i.NestedExtension().Memo(s =>
-        {
-
-        });
-    });
-    
-    groupItem.Items.Add(m => m.ResponsibleParty, item =>
-    {
-       // item.HelpText = "Help text for ResponsibleParty";
-    });
-    
     
     groupItem.Items.Add(m => m.HseqRecordID, item =>
     {
@@ -238,34 +140,6 @@
     //    item.Visible = false;
     //});
 
-    //settings.Items.Add(i =>
-    //{
-    //    i.ShowCaption = DefaultBoolean.False;
-    //    i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
-    //    i.Width = 150;
-    //    i.NestedExtension().Button(s =>
-    //    {
-    //        s.Name = "ncrUpdateButton";
-    //        s.Text = "Update";
-    //        s.UseSubmitBehavior = true;
-
-    //        //s.ClientSideEvents.Click = "function(s, e){ NcrGridView.UpdateEdit(); }";
-    //    });
-    //});
-
-    //settings.Items.Add(i =>
-    //{
-    //    i.ShowCaption = DefaultBoolean.False;
-    //    i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
-    //    i.Width = 150;
-    //    i.NestedExtension().Button(s =>
-    //    {
-    //        s.Name = "ncrCancelButton";
-    //        s.Text = "Cancel";
-    //        s.UseSubmitBehavior = true;
-    //        //s.ClientSideEvents.Click = "ncrEditCancel";
-    //    });
-    //});
    ///////////////////////////////////////////////////////////////////////////////
 
     settings.Items.Add(i =>
@@ -277,14 +151,14 @@
         Html.DevExpress().Button(
             s =>
             {
-                s.Name = "ncrUpdateButton";
+                s.Name = "carUpdateButton";
                 s.Text = "Update";
                 s.UseSubmitBehavior = true;
             }).Render();
         Html.DevExpress().Button(
             s =>
             {
-                s.Name = "ncrCancelButton";
+                s.Name = "carCancelButton";
                 s.Text = "Cancel";
                 s.UseSubmitBehavior = true;
                 s.Style[HtmlTextWriterStyle.MarginLeft] = "5px";

@@ -526,6 +526,7 @@
     <Content Include="Views\Shared\_RightContentCallbackPanel.cshtml" />
     <Content Include="Views\Shared\ExportPanel.cshtml" />
     <Content Include="Views\Shared\_EditView.cshtml" />
+    <Content Include="Views\Shared\_CarEditView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
