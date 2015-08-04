@@ -15,6 +15,9 @@
         OnComplete = "PostOnComplete" 
     }))
     {
+        
+    @Html.HiddenFor(m => m.HseqRecordID)
+    
 @Html.DevExpress().FormLayout(settings =>
 {
     settings.Name = "FormLayout";
@@ -230,10 +233,10 @@
     {
        // item.HelpText = "Help text for LastUpdatedBy";
     });
-    groupItem.Items.Add(m => m.Delegatables, item =>
-    {
-        item.Visible = false;
-    });
+    //groupItem.Items.Add(m => m.Delegatables, item =>
+    //{
+    //    item.Visible = false;
+    //});
 
     settings.Items.Add(i =>
     {

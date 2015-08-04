@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -83,7 +85,20 @@ namespace HseqCentralApp.Controllers
             if (!string.IsNullOrEmpty(Request.Params["edit"]))
             {
                 ViewData["currentview"] = "_NcrEditView";
-                ViewData["record"] = db.NcrRecords.First();
+                
+
+                if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]) && !string.IsNullOrEmpty(Request.Params["recordId"]))
+                {
+                    string currentActiveView = Request.Params["currentActiveView"];
+                    int recordId = int.Parse(Request.Params["recordId"]);
+
+                    if (currentActiveView.Contains("Ncr")) {
+
+                        Ncr record = db.NcrRecords.Find(recordId);
+                        ViewData["record"] = record;
+                    }
+                }
+
                 //return PartialView(ViewData["currentview"]);
             }
             else {
@@ -98,7 +113,8 @@ namespace HseqCentralApp.Controllers
             return PartialView("_MainContentCallbackPanel");
         }
 
-       // [HttpPost, ValidateInput(false)]
+        [HttpPost, ValidateInput(false)]
+       // [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult NcrGridViewUpdate(HseqCentralApp.Models.Ncr item)
         {
          //   var model = db3.NcrRecords;
@@ -109,9 +125,28 @@ namespace HseqCentralApp.Controllers
            //         var modelItem = model.FirstOrDefault(it => it.HseqRecordID == item.HseqRecordID);
                     if (item != null)
                     {
-                        this.UpdateModel(item);
+                        //this.UpdateModel(item);
+                        //db.SaveChanges();
+                        db.Entry(item).State = EntityState.Modified;
                         db.SaveChanges();
+
                     }
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    // Retrieve the error messages as a list of strings.
+                    var errorMessages = ex.EntityValidationErrors
+                            .SelectMany(x => x.ValidationErrors)
+                            .Select(x => x.ErrorMessage);
+
+                    // Join the list to a single string.
+                    var fullErrorMessage = string.Join("; ", errorMessages);
+
+                    // Combine the original exception message with the new one.
+                    var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+
+                    // Throw a new DbEntityValidationException with the improved exception message.
+                    throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
                 }
                 catch (Exception e)
                 {
@@ -121,6 +156,7 @@ namespace HseqCentralApp.Controllers
             else
                 ViewData["EditError"] = "Please, correct all errors.";
             //return PartialView("_NcrGridViewPartial", model.ToList());
+         //   ModelState.Clear();
             return PartialView("_MainContentCallbackPanel");
 
         }

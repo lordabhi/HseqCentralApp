@@ -849,11 +849,11 @@ namespace HseqCentralApp.Controllers
         }
 
 
-        public ActionResult NcrEditView()
-        {
-            var model = db3.NcrRecords;
-            return PartialView("_NcrEditView", model.FirstOrDefault());
-        }
+        //public ActionResult NcrEditView()
+        //{
+        //    var model = db3.NcrRecords;
+        //    return PartialView("_NcrEditView", model.FirstOrDefault());
+        //}
 
     }
 }
