@@ -238,20 +238,82 @@
     //    item.Visible = false;
     //});
 
+    //settings.Items.Add(i =>
+    //{
+    //    i.ShowCaption = DefaultBoolean.False;
+    //    i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+    //    i.Width = 150;
+    //    i.NestedExtension().Button(s =>
+    //    {
+    //        s.Name = "ncrUpdateButton";
+    //        s.Text = "Update";
+    //        s.UseSubmitBehavior = true;
+
+    //        //s.ClientSideEvents.Click = "function(s, e){ NcrGridView.UpdateEdit(); }";
+    //    });
+    //});
+
+    //settings.Items.Add(i =>
+    //{
+    //    i.ShowCaption = DefaultBoolean.False;
+    //    i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+    //    i.Width = 150;
+    //    i.NestedExtension().Button(s =>
+    //    {
+    //        s.Name = "ncrCancelButton";
+    //        s.Text = "Cancel";
+    //        s.UseSubmitBehavior = true;
+    //        //s.ClientSideEvents.Click = "ncrEditCancel";
+    //    });
+    //});
+   ///////////////////////////////////////////////////////////////////////////////
+
     settings.Items.Add(i =>
     {
         i.ShowCaption = DefaultBoolean.False;
-        i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
-        i.Width = 150;
-        i.NestedExtension().Button(s =>
-        {
-            s.Name = "applyButton";
-            s.Text = "Update Record";
-            s.UseSubmitBehavior = true;
+    }).SetNestedContent(() =>
+    {
+        ViewContext.Writer.Write("<div style='float:right'>");
+        Html.DevExpress().Button(
+            s =>
+            {
+                s.Name = "ncrUpdateButton";
+                s.Text = "Update";
+                s.UseSubmitBehavior = true;
+            }).Render();
+        Html.DevExpress().Button(
+            s =>
+            {
+                s.Name = "ncrCancelButton";
+                s.Text = "Cancel";
+                s.UseSubmitBehavior = true;
+                s.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+            }).Render();
+        ViewContext.Writer.Write("</div>");
+    });    
 
-            //s.ClientSideEvents.Click = "function(s, e){ NcrGridView.UpdateEdit(); }";
-        });
-    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
 }).Bind(Model).GetHtml()
 
 }

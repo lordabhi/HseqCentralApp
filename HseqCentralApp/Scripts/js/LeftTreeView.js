@@ -373,3 +373,21 @@ function PostSuccess(response) {
 function PostOnComplete() {};
 
 
+function ncrEditCancel() {
+        $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
+
+};
+
+$(function() {
+    $('ncrCancelButton').click(function() {
+        $.ajax({
+            //url: $(this).data('url'),
+            type: 'GET',
+            cache: false,
+            success: function(result) {
+                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
+            }
+        });
+        return false;
+    });
+});
