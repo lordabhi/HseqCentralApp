@@ -16,9 +16,9 @@
         });
     }).GetHtml()*@
 
-    <div class="contentPane">
-        @RenderBody()
-    </div>
+    <div class="contentPane" id="MainContentPane">
+    @RenderBody()
+</div>
 
     @*@Html.DevExpress().Panel(settings => {
         settings.Name = "RightPane";

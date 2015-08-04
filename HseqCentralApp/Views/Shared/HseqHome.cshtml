@@ -1,6 +1,6 @@
 ﻿@model System.Collections.IEnumerable
 
-
+@*<div id="MainPaneSplitterContainer">*@
 @Html.DevExpress().Splitter(settings =>
 {
     settings.Name = "MainPaneSplitter";
@@ -27,6 +27,7 @@
 
      });
 
+    
     settings.Panes.Add(gridPane =>
     {
         gridPane.Name = "CenterSplitterPane";
@@ -34,9 +35,11 @@
 
         gridPane.SetContent(() =>
         {
+             ViewContext.Writer.Write(
+                    "<div id=\"MainPaneSplitterContainer\">");
             @Html.RenderPartial("_MainContentCallbackPanel");
             //@Html.RenderPartial("_MainContentCallbackPanel");
-
+            ViewContext.Writer.Write("</div>");
         });
     });
 
@@ -57,5 +60,5 @@
 
 }).GetHtml()
 
-
+@*</div>*@
 

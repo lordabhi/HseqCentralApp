@@ -791,6 +791,7 @@ namespace HseqCentralApp.Controllers
             else
                 ViewData["EditError"] = "Please, correct all errors.";
             return PartialView("_NcrGridViewPartial", model.ToList());
+
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult NcrGridViewDelete(System.Int32 HseqRecordID)

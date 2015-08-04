@@ -82,7 +82,8 @@ namespace HseqCentralApp.Controllers
 
             if (!string.IsNullOrEmpty(Request.Params["edit"]))
             {
-                ViewData["currentview"] = "_EditView";
+                ViewData["currentview"] = "_NcrEditView";
+                ViewData["record"] = db.NcrRecords.First();
                 //return PartialView(ViewData["currentview"]);
             }
             else {
@@ -97,6 +98,32 @@ namespace HseqCentralApp.Controllers
             return PartialView("_MainContentCallbackPanel");
         }
 
+       // [HttpPost, ValidateInput(false)]
+        public ActionResult NcrGridViewUpdate(HseqCentralApp.Models.Ncr item)
+        {
+         //   var model = db3.NcrRecords;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+           //         var modelItem = model.FirstOrDefault(it => it.HseqRecordID == item.HseqRecordID);
+                    if (item != null)
+                    {
+                        this.UpdateModel(item);
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            //return PartialView("_NcrGridViewPartial", model.ToList());
+            return PartialView("_MainContentCallbackPanel");
+
+        }
 
         ////////////////////////////////////////
         

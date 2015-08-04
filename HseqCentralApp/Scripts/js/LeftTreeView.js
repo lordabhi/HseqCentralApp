@@ -348,3 +348,28 @@ function OnClick(s, e) {
         $("form").attr( { action:actionParams.join("?OutputFormat=")} );
 }
 
+
+//function OnNcrEditClick(s, e) {
+//    $.ajax({
+//        type: "POST",
+//        url: "@Url.Action("NcrGridViewUpdate","Navigation")",
+//        success: function(response) {
+//            $("#container").html(response);
+//        }
+//    });
+//}
+
+
+function PostFailure() {};
+
+function PostSuccess(response) {
+
+    // $(MainPaneSplitter_1_CC).html(response);
+        $(MainPaneSplitterContainer).html(response);
+        //$(MainContentPane).html(response);
+        
+};
+
+function PostOnComplete() {};
+
+

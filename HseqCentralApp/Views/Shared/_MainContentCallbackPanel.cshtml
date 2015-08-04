@@ -1,7 +1,10 @@
-﻿@{ string mainviewpanel = ViewData["currentview"] == null ? "_MainContentTabPanel" : (string)ViewData["currentview"];
+﻿@model HseqCentralApp.Models.Ncr
+
+@{ string mainviewpanel = ViewData["currentview"] == null ? "_MainContentTabPanel" : (string)ViewData["currentview"];
 
 }
-@Html.DevExpress().CallbackPanel(
+
+    @Html.DevExpress().CallbackPanel(
     settings =>
     {
         settings.Name = "MainContentCallbackPanel";
@@ -11,9 +14,16 @@
 
         settings.SetContent(() =>
         {
-            @Html.RenderPartial(mainviewpanel);
-            
-           // @Html.RenderPartial("_MainContentTabPanel");
+            if (mainviewpanel.Contains("Edit"))
+            {
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Ncr)ViewData["record"]);
+            }
+            else
+            {
+                @Html.RenderPartial(mainviewpanel);
+            }
+
+            // @Html.RenderPartial("_MainContentTabPanel");
 
         });
 
