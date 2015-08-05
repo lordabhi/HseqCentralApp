@@ -22,7 +22,14 @@
             {
                 @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Car)ViewData["record"]);
             }
-                
+            else if (mainviewpanel.Contains("ParEdit"))
+            {
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Par)ViewData["record"]);
+            }
+            else if (mainviewpanel.Contains("FisEdit"))
+            {
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Fis)ViewData["record"]);
+            }                                
             else
             {
                 @Html.RenderPartial(mainviewpanel);

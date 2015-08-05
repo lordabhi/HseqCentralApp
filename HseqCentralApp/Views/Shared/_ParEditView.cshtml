@@ -1,11 +1,11 @@
-﻿@model HseqCentralApp.Models.Car
+﻿@model HseqCentralApp.Models.Par
 
 @using HseqCentralApp.Helpers;
 @using HseqCentralApp.Models;
 
-@*@using (Html.BeginForm("CarGridViewUpdate", "Navigation"))*@
+@*@using (Html.BeginForm("ParGridViewUpdate", "Navigation"))*@
 
-@using (Ajax.BeginForm("CarGridViewUpdate", "Navigation", 
+@using (Ajax.BeginForm("ParGridViewUpdate", "Navigation", 
     new AjaxOptions { 
         HttpMethod = "Post", 
         UpdateTargetId = "CenterSplitterPane",
@@ -151,7 +151,7 @@
         Html.DevExpress().Button(
             s =>
             {
-                s.Name = "carUpdateButton";
+                s.Name = "parUpdateButton";
                 s.Text = "Update";
                 s.UseSubmitBehavior = true;
             }).Render();

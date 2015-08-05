@@ -339,7 +339,8 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult _CarChartContainer()
         {
-            var model = db1.CarRecords;
+            //var model = db1.CarRecords;
+            var model = NavigationUtils.GetFilteredCarRecords();
             return PartialView("_CarChartContainer", model.ToList());
         }
 

@@ -379,7 +379,7 @@ function PostOnComplete() {};
 //};
 
 $(function() {
-    $('ncrCancelButton').click(function() {
+    $('editCancelButton').click(function() {
         $.ajax({
             //url: $(this).data('url'),
             type: 'GET',
@@ -400,6 +400,34 @@ $(function() {
             type: 'GET',
             cache: false,
             success: function(result) {
+                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
+            }
+        });
+        return false;
+    });
+});
+
+$(function () {
+    $('parCancelButton').click(function () {
+        $.ajax({
+            //url: $(this).data('url'),
+            type: 'GET',
+            cache: false,
+            success: function (result) {
+                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
+            }
+        });
+        return false;
+    });
+});
+
+$(function () {
+    $('fisCancelButton').click(function () {
+        $.ajax({
+            //url: $(this).data('url'),
+            type: 'GET',
+            cache: false,
+            success: function (result) {
                 $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
             }
         });

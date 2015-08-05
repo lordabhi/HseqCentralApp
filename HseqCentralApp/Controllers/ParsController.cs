@@ -344,7 +344,8 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult _ParChartContainer()
         {
-            var model = db1.ParRecords;
+            //var model = db1.ParRecords;
+            var model = NavigationUtils.GetFilteredParRecords();
             return PartialView("_ParChartContainer", model.ToList());
         }
 

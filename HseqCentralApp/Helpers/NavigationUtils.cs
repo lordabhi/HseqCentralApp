@@ -21,18 +21,28 @@ namespace HseqCentralApp.Helpers
             IEnumerable<Ncr> ncrRecordsResponsibleArea = null;
             IEnumerable<Ncr> ncrRecordsCoordinators = null;
 
+            List<Ncr> filteredNcrRecordsList = new List<Ncr>();
+
             bool ncrType = false;
 
             if (!String.IsNullOrEmpty(NavigationFilter.RecordTypeCheckState) && NavigationFilter.RecordTypeCheckState == CHECKED_STATE_INDETERMINATE)
             {
-                if (NavigationFilter.RecordTypes != null) {
+                if (NavigationFilter.RecordTypes != null)
+                {
 
-                    if (NavigationFilter.RecordTypes.Contains("NCR")) {
-                        ncrType = true;   
+                    if (NavigationFilter.RecordTypes.Contains("NCR"))
+                    {
+                        ncrType = true;
                     }
-                
+                    else
+                    {
+                        return filteredNcrRecordsList;
+
+                    }
+
                 }
             }
+           
 
             if (ncrType)
             {
@@ -45,6 +55,7 @@ namespace HseqCentralApp.Helpers
                                      //&& NavigationFilter.ResponsibleAreaIds.Contains(ncr.ResponsibleAreaID.Value)
                                      where NavigationFilter.ResponsibleAreaIds.Contains(ncr.ResponsibleAreaID.Value)
                                      select ncr;
+                        
                     }
                 }
 
@@ -73,10 +84,6 @@ namespace HseqCentralApp.Helpers
                 {
                     return ncrRecordsCoordinators.ToList();
                 }
-            }
-            else {
-
-                return null;
             }
             
             return db.NcrRecords.ToList();

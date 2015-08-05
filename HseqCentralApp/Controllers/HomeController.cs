@@ -99,7 +99,8 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult _AllItemsChartContainer()
         {
-            var model = db3.HseqRecords;
+            //var model = db3.HseqRecords;
+            var model = NavigationUtils.GetFilteredAllItems();
             return PartialView("_AllItemsChartContainer", model.ToList());
         }
 

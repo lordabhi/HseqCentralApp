@@ -396,7 +396,8 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult _FisChartContainer()
         {
-            var model = db2.FisRecords;
+            //var model = db2.FisRecords;
+            var model = NavigationUtils.GetFilteredFisRecords();
             return PartialView("_FisChartContainer", model.ToList());
         }
 

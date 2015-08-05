@@ -60,7 +60,6 @@ namespace HseqCentralApp.Controllers
               
                     setActiveTab();
                 }
-               
 
                 //Responsible Area Type
                 if (!string.IsNullOrEmpty(Request.Params["responsibleAreaCheckedNodes"]))
@@ -68,7 +67,6 @@ namespace HseqCentralApp.Controllers
                     string responsibleAreaNodes = Request.Params["responsibleAreaCheckedNodes"];
 
                     NavigationFilter.ResponsibleAreaIds = Array.ConvertAll(responsibleAreaNodes.Split(','), int.Parse);
-
                 }
 
                 if (!string.IsNullOrEmpty(Request.Params["coordinatorsCheckedNodes"]))
@@ -84,9 +82,6 @@ namespace HseqCentralApp.Controllers
 
             if (!string.IsNullOrEmpty(Request.Params["edit"]))
             {
-                
-                
-
                 if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]) && !string.IsNullOrEmpty(Request.Params["recordId"]))
                 {
                     string currentActiveView = Request.Params["currentActiveView"];
@@ -105,9 +100,21 @@ namespace HseqCentralApp.Controllers
                         ViewData["record"] = record;
                         ViewData["currentview"] = "_CarEditView";
                     }
-                }
+                    else if (currentActiveView.Contains("Par"))
+                    {
 
-                //return PartialView(ViewData["currentview"]);
+                        Par record = db.ParRecords.Find(recordId);
+                        ViewData["record"] = record;
+                        ViewData["currentview"] = "_ParEditView";
+                    }
+                    else if (currentActiveView.Contains("Fis"))
+                    {
+
+                        Fis record = db.FisRecords.Find(recordId);
+                        ViewData["record"] = record;
+                        ViewData["currentview"] = "_FisEditView";
+                    }
+                }
             }
             else {
                 ViewData["currentview"] = "_MainContentTabPanel";
@@ -117,7 +124,6 @@ namespace HseqCentralApp.Controllers
         //   Console.WriteLine(NavigationFilter.ResponsibleAreaIds);
         //   Console.WriteLine(NavigationFilter.CoordinatorIds);
             
-
             return PartialView("_MainContentCallbackPanel");
         }
 
@@ -193,6 +199,52 @@ namespace HseqCentralApp.Controllers
                 ViewData["EditError"] = "Please, correct all errors.";
             return PartialView("_MainContentCallbackPanel");
 
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ParGridViewUpdate(HseqCentralApp.Models.Par item)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (item != null)
+                    {
+                        db.Entry(item).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_MainContentCallbackPanel");
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult FisGridViewUpdate(HseqCentralApp.Models.Fis item)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (item != null)
+                    {
+                        db.Entry(item).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+            return PartialView("_MainContentCallbackPanel");
         }
 
         ////////////////////////////////////////

@@ -816,10 +816,11 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult _NcrChartContainer()
         {
-            var model = db3.NcrRecords;
+            //var model = db3.NcrRecords;
             //var model = db.Customers;
             //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
-            return PartialView("_NcrChartContainer", model.ToList());
+            List<Ncr> filteredNcrRecords = NavigationUtils.GetFilteredNcrRecords();
+            return PartialView("_NcrChartContainer", filteredNcrRecords);
         }
 
         [ValidateInput(false)]
