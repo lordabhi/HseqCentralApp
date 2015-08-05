@@ -106,7 +106,12 @@ function OnBeginCallback(s, e) {
     if (editbtnclicked) {
 
         e.customArgs["edit"] = true;
+    } else if (newbtnclicked) {
+
+        e.customArgs["new"] = true;
     }
+
+    newbtnclicked = false;
     editbtnclicked = false;
 }
 
@@ -312,10 +317,18 @@ function GridNewRow(s, e) {
     var results = computeCurrentRecord();
     console.log(results);
     var activeViewObj = results[0].currentActiveViewObj;
-    activeViewObj.AddNewRow();
+
+    //    activeViewObj.AddNewRow();
+
+    console.log(s.name);
+
+    var focusedRowIndex = activeViewObj.GetFocusedRowIndex();
+    newbtnclicked = true;
+    MainContentCallbackPanel.PerformCallback();
     }
 
 var editbtnclicked = false;
+var newbtnclicked = false;
 
 function GridEditRow(s,e) {
     var results = computeCurrentRecord();

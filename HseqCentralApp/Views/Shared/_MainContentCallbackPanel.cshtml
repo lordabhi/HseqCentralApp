@@ -29,7 +29,27 @@
             else if (mainviewpanel.Contains("FisEdit"))
             {
                 @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Fis)ViewData["record"]);
-            }                                
+            }
+
+
+            else if (mainviewpanel.Contains("NcrNew"))
+            {
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Ncr)ViewData["record"]);
+            }
+            else if (mainviewpanel.Contains("CarNew"))
+            {
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Car)ViewData["record"]);
+            }
+            else if (mainviewpanel.Contains("ParNew"))
+            {
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Par)ViewData["record"]);
+            }
+            else if (mainviewpanel.Contains("FisNew"))
+            {
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Fis)ViewData["record"]);
+            }
+
+
             else
             {
                 @Html.RenderPartial(mainviewpanel);

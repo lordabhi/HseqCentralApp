@@ -8,12 +8,14 @@ using System.Web.Mvc;
 using DevExpress.Web.Mvc;
 using HseqCentralApp.Helpers;
 using HseqCentralApp.Models;
+using HseqCentralApp.Services;
 
 namespace HseqCentralApp.Controllers
 {
     public class NavigationController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        RecordService _RecordService;
 
         public static readonly int NCR_TAB_INDEX = 0;
         public static readonly int CAR_TAB_INDEX = 1;
@@ -23,6 +25,16 @@ namespace HseqCentralApp.Controllers
         public static readonly int APPROVAL_TAB_INDEX = 5;
         public static readonly int ALL_ITEM_TAB_INDEX = 6;
 
+        public NavigationController() 
+        {
+            _RecordService = new RecordService();
+        }
+
+        public NavigationController(RecordService service) 
+        {
+            _RecordService = service;
+        }
+
         // GET: Navigation
         public ActionResult Index()
         {
@@ -31,9 +43,9 @@ namespace HseqCentralApp.Controllers
 
 
         public ActionResult MainContentCallbackPanel()
-          
 
-            // DXCOMMENT: Pass a data model for GridView in the PartialView method's second parameter
+
+        // DXCOMMENT: Pass a data model for GridView in the PartialView method's second parameter
         {
             if (DevExpressHelper.IsCallback)
             {
@@ -57,7 +69,7 @@ namespace HseqCentralApp.Controllers
                     string recordTypeNodes = Request.Params["recordTypeCheckedNodes"];
 
                     NavigationFilter.RecordTypes = recordTypeNodes.Split(',');
-              
+
                     setActiveTab();
                 }
 
@@ -76,10 +88,10 @@ namespace HseqCentralApp.Controllers
                     NavigationFilter.CoordinatorIds = Array.ConvertAll(responsibleAreaNodes.Split(','), int.Parse);
 
                 }
-                ViewData["Collapsed"] = false;
 
-            }
+                //ViewData["Collapsed"] = false;
 
+            //edit
             if (!string.IsNullOrEmpty(Request.Params["edit"]))
             {
                 if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]) && !string.IsNullOrEmpty(Request.Params["recordId"]))
@@ -116,10 +128,72 @@ namespace HseqCentralApp.Controllers
                     }
                 }
             }
-            else {
+
+            //new
+            else if (!string.IsNullOrEmpty(Request.Params["new"]))
+            {
+                if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]))
+                {
+                    string currentActiveView = Request.Params["currentActiveView"];
+
+                    if (currentActiveView.Contains("Ncr"))
+                    {
+                            Ncr ncr = new Ncr();
+                            ncr.CaseNo = _RecordService.GetNextCaseNumber(db);
+                            ncr.RecordNo = ncr.CaseNo;
+                            ncr.CreatedBy = _RecordService.GetCurrentApplicationUser().FullName;
+                            ncr.DateCreated = DateTime.Now;
+                            ncr.RecordType = RecordType.NCR;
+                            ncr.NcrSource = NcrSource.Internal;
+                            ncr.NcrState = NcrState.New;
+
+                            ViewData["record"] = ncr;
+                            ViewData["currentview"] = "_NcrNewView";
+                        }
+                    else if (currentActiveView.Contains("Car"))
+                    {
+                            Car car = new Car();
+                            car.CaseNo = _RecordService.GetNextCaseNumber(db);
+                            car.RecordNo = car.CaseNo;
+                            car.CreatedBy = _RecordService.GetCurrentApplicationUser().FullName;
+                            car.DateCreated = DateTime.Now;
+                            car.RecordType = RecordType.CAR;
+
+                            ViewData["record"] = car;
+                            ViewData["currentview"] = "_CarNewView";
+                    }
+                    else if (currentActiveView.Contains("Par"))
+                    {
+                            Par par = new Par();
+                            par.CaseNo = _RecordService.GetNextCaseNumber(db);
+                            par.RecordNo = par.CaseNo;
+                            par.CreatedBy = _RecordService.GetCurrentApplicationUser().FullName;
+                            par.DateCreated = DateTime.Now;
+                            par.RecordType = RecordType.PAR;
+
+                            ViewData["record"] = par;
+                            ViewData["currentview"] = "_ParNewView";
+                        }
+                    else if (currentActiveView.Contains("Fis"))
+                    {
+                            Fis fis = new Fis();
+                            fis.CaseNo = _RecordService.GetNextCaseNumber(db);
+                            fis.RecordNo = fis.CaseNo;
+                            fis.CreatedBy = _RecordService.GetCurrentApplicationUser().FullName;
+                            fis.DateCreated = DateTime.Now;
+                            fis.RecordType = RecordType.FIS;
+
+                            ViewData["record"] = fis;
+                            ViewData["currentview"] = "_FisNewView";
+                        }
+                    }
+            }
+            //////////////////////////////////////////////////
+            else
+            {
                 ViewData["currentview"] = "_MainContentTabPanel";
             }
-            
+        }
          //   Console.WriteLine(NavigationFilter.RecordTypes);
         //   Console.WriteLine(NavigationFilter.ResponsibleAreaIds);
         //   Console.WriteLine(NavigationFilter.CoordinatorIds);
@@ -200,6 +274,98 @@ namespace HseqCentralApp.Controllers
             return PartialView("_MainContentCallbackPanel");
 
         }
+
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult NcrGridViewNew(Ncr ncr)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (ncr != null)
+                    {
+
+                        //string caseNo;
+                        HseqCaseFile hseqCaseFile;
+                        ncr.CreatedBy = _RecordService.GetCurrentUser().FullName;
+                        //car = (Ncr)_RecordService.CreateCaseFile(car, out caseNo, out hseqCaseFile, db);
+
+                        db.HseqRecords.Add(ncr);
+                        db.SaveChanges();
+
+                        //create the folder in Alfresco and return the alfresconoderef
+                        //Dummy for now
+
+                        //int alfresconoderef = caseNo;
+                        //hseqCaseFile.AlfrescoNoderef = caseNo;
+
+                        //car.AlfrescoNoderef = caseNo;
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                    return PartialView("_NcrNewView", ncr);
+                }
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                Console.WriteLine(errors);
+                ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_NcrNewView", ncr);
+            }
+
+            return PartialView("_MainContentCallbackPanel");
+
+        }
+
+
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult CarGridViewNew(HseqCentralApp.Models.Car car)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (car != null)
+                    {
+
+                        string caseNo;
+                        HseqCaseFile hseqCaseFile;
+                        car.CreatedBy = _RecordService.GetCurrentUser().FullName;
+                        car = (Car)_RecordService.CreateCaseFile(car, out caseNo, out hseqCaseFile, db);
+
+                        db.HseqRecords.Add(car);
+                        db.SaveChanges();
+
+                        //create the folder in Alfresco and return the alfresconoderef
+                        //Dummy for now
+
+                        //int alfresconoderef = caseNo;
+                        //hseqCaseFile.AlfrescoNoderef = caseNo;
+
+                        //car.AlfrescoNoderef = caseNo;
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                    return PartialView("_CarNewView",car);
+                }
+            }
+            else {
+                ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_CarNewView",car);
+            }
+            
+            return PartialView("_MainContentCallbackPanel");
+
+        }
+
+        
 
         [HttpPost, ValidateInput(false)]
         public ActionResult ParGridViewUpdate(HseqCentralApp.Models.Par item)

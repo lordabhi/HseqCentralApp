@@ -1,0 +1,171 @@
+﻿@model HseqCentralApp.Models.Par
+
+@using HseqCentralApp.Helpers;
+@using HseqCentralApp.Models;
+
+@*@using (Html.BeginForm("ParGridViewUpdate", "Navigation"))*@
+
+@using (Ajax.BeginForm("ParGridViewUpdate", "Navigation", 
+    new AjaxOptions { 
+        HttpMethod = "Post", 
+        UpdateTargetId = "CenterSplitterPane",
+        InsertionMode = System.Web.Mvc.Ajax.InsertionMode.Replace,
+        OnFailure = "PostFailure", 
+        OnSuccess = "PostSuccess", 
+        OnComplete = "PostOnComplete" 
+    }))
+    {
+        
+    @Html.HiddenFor(m => m.HseqRecordID)
+    
+@Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "FormLayout";
+
+    var groupItem = settings.Items.AddGroupItem(groupSettings =>
+    {
+        groupSettings.ShowCaption = DefaultBoolean.False;
+        groupSettings.GroupBoxDecoration = GroupBoxDecoration.Default;
+    });
+
+    groupItem.SettingsItems.ShowCaption = DefaultBoolean.True;
+    groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
+
+    groupItem.SettingsItemHelpTexts.Position = HelpTextPosition.Auto;
+
+    groupItem.ColCount = 2;
+
+    groupItem.Items.Add(m => m.CaseNo, item =>
+    {
+        // item.HelpText = "Help text for CaseNo";
+    });
+    groupItem.Items.Add(m => m.RecordNo, item =>
+    {
+        // item.HelpText = "Help text for RecordNo";
+    });
+    groupItem.Items.Add(m => m.Title, item =>
+    {
+        // item.HelpText = "Help text for Title";
+    });
+    groupItem.Items.Add(m => m.Description, i =>
+    {
+        i.NestedExtension().Memo(s =>
+        {
+
+        });
+    });
+
+    groupItem.Items.Add(m => m.RecordType, i =>
+    {
+        i.NestedExtension().ComboBox(s =>
+        {
+            s.Properties.Items.AddRange(typeof(RecordType).GetEnumValues());
+            s.Properties.TextField = "Name";
+            s.Properties.ValueField = "RecordType";
+
+            s.Properties.ValueType = typeof(string);
+            s.Properties.DropDownStyle = DropDownStyle.DropDown;
+        });
+    });
+    
+
+    
+    groupItem.Items.Add(m => m.HseqRecordID, item =>
+    {
+        item.Visible = false;
+    });
+    groupItem.Items.Add(m => m.AlfrescoNoderef, item =>
+    {
+        item.Visible = false;
+    });
+
+    
+    groupItem.Items.Add(m => m.EnteredBy, item =>
+    {
+       // item.HelpText = "Help text for EnteredBy";
+    });
+    groupItem.Items.Add(m => m.ReportedBy, item =>
+    {
+       // item.HelpText = "Help text for ReportedBy";
+    });
+
+    groupItem.Items.Add(m => m.CoordinatorID, i =>
+    {
+        i.NestedExtension().ComboBox(s =>
+        {
+            s.Properties.TextField = "FullName";
+            s.Properties.ValueField = "HseqUserID";
+            s.Properties.DataSource = Utils.AppUsers();
+            s.Properties.ValueType = typeof(string);
+            s.Properties.DropDownStyle = DropDownStyle.DropDown;
+        });
+    });
+    
+   
+    groupItem.Items.Add(m => m.LinkedRecordsID, item =>
+    {
+        item.Visible = false;
+    });
+
+    groupItem.Items.Add(m => m.HseqCaseFileID, item =>
+    {
+        item.Visible = false;
+    });
+    groupItem.Items.Add(m => m.JobNumber, item =>
+    {
+       // item.HelpText = "Help text for JobNumber";
+    });
+    groupItem.Items.Add(m => m.DrawingNumber, item =>
+    {
+       // item.HelpText = "Help text for DrawingNumber";
+    });
+    groupItem.Items.Add(m => m.DateCreated, item =>
+    {
+       // item.HelpText = "Help text for DateCreated";
+    });
+    groupItem.Items.Add(m => m.DateLastUpdated, item =>
+    {
+       // item.HelpText = "Help text for DateLastUpdated";
+    });
+    groupItem.Items.Add(m => m.CreatedBy, item =>
+    {
+       // item.HelpText = "Help text for CreatedBy";
+    });
+    groupItem.Items.Add(m => m.LastUpdatedBy, item =>
+    {
+       // item.HelpText = "Help text for LastUpdatedBy";
+    });
+    //groupItem.Items.Add(m => m.Delegatables, item =>
+    //{
+    //    item.Visible = false;
+    //});
+
+   ///////////////////////////////////////////////////////////////////////////////
+
+    settings.Items.Add(i =>
+    {
+        i.ShowCaption = DefaultBoolean.False;
+    }).SetNestedContent(() =>
+    {
+        ViewContext.Writer.Write("<div style='float:right'>");
+        Html.DevExpress().Button(
+            s =>
+            {
+                s.Name = "parUpdateButton";
+                s.Text = "Update";
+                s.UseSubmitBehavior = true;
+            }).Render();
+        Html.DevExpress().Button(
+            s =>
+            {
+                s.Name = "editCancelButton";
+                s.Text = "Cancel";
+                s.UseSubmitBehavior = true;
+                s.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+            }).Render();
+        ViewContext.Writer.Write("</div>");
+    });    
+
+}).Bind(Model).GetHtml()
+
+}
