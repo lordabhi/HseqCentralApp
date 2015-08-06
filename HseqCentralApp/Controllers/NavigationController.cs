@@ -200,6 +200,12 @@ namespace HseqCentralApp.Controllers
             return PartialView("_MainContentCallbackPanel");
         }
 
+
+        public ActionResult CancelEdit()
+        {
+            return PartialView("_MainContentCallbackPanel");
+        }
+
         [HttpPost, ValidateInput(false)]
        // [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult NcrGridViewUpdate(HseqCentralApp.Models.Ncr item)

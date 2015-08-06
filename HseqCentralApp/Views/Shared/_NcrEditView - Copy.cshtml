@@ -287,7 +287,7 @@
             {
                 s.Name = "editCancelButton";
                 s.Text = "Cancel";
-                s.UseSubmitBehavior = true;
+                s.ClientSideEvents.Click = "function(s, e){RecordCancelEdit()}";
                 s.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
             }).Render();
         ViewContext.Writer.Write("</div>");

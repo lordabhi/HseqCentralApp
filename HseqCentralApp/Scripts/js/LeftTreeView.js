@@ -391,59 +391,73 @@ function PostOnComplete() {};
 
 //};
 
-$(function() {
-    $('editCancelButton').click(function() {
+function RecordCancelEdit(s, e) {
         $.ajax({
-            //url: $(this).data('url'),
-            type: 'GET',
-            cache: false,
-            success: function(result) {
-                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
-            }
-        });
+            url: ('Navigation/CancelEdit'),
+                type: 'POST',
+                    cache: false,
+                success: function(result) {
+                    $(MainPaneSplitterContainer).html($(result));
+                    }
+                    });
         return false;
-    });
-});
+}
+
+//$(function() {
+//    $('editCancelButton').click(function() {
+//        $.ajax({
+//            //url: $(this).data('url'),
+//            type: 'GET',
+//            cache: false,
+//            success: function(result) {
+//                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
+//            }
+//        });
+//        return false;
+//    });
+//});
 
 
-$(function() {
-    $('carCancelButton').click(function() {
-        $.ajax({
-            //url: $(this).data('url'),
-            type: 'GET',
-            cache: false,
-            success: function(result) {
-                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
-            }
-        });
-        return false;
-    });
-});
+//$(function() {
+//    $('carCancelButton').click(function() {
+//        $.ajax({
+//            //url: $(this).data('url'),
+//            type: 'GET',
+//            cache: false,
+//            success: function(result) {
+//                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
+//            }
+//        });
+//        return false;
+//    });
+//});
 
-$(function () {
-    $('parCancelButton').click(function () {
-        $.ajax({
-            //url: $(this).data('url'),
-            type: 'GET',
-            cache: false,
-            success: function (result) {
-                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
-            }
-        });
-        return false;
-    });
-});
+//$(function () {
+//    $('parCancelButton').click(function () {
+//        $.ajax({
+//            //url: $(this).data('url'),
+//            type: 'GET',
+//            cache: false,
+//            success: function (result) {
+//                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
+//            }
+//        });
+//        return false;
+//    });
+//});
 
-$(function () {
-    $('fisCancelButton').click(function () {
-        $.ajax({
-            //url: $(this).data('url'),
-            type: 'GET',
-            cache: false,
-            success: function (result) {
-                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
-            }
-        });
-        return false;
-    });
-});
+//$(function () {
+//    $('fisCancelButton1').click(function () {
+//        $.ajax({
+//            //url: $(this).data('url'),
+//            type: 'GET',
+//            cache: false,
+//            success: function (result) {
+//                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
+//            }
+//        });
+//        return false;
+//    });
+//});
+
+
