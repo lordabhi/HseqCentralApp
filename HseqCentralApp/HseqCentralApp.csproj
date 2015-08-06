@@ -536,6 +536,7 @@
     <Content Include="Views\Shared\_FisNewView.cshtml" />
     <Content Include="Views\Shared\_NcrNewView.cshtml" />
     <Content Include="Views\Shared\_NcrEditView - Copy.cshtml" />
+    <Content Include="Views\Shared\_TaskEditView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

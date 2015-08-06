@@ -98,34 +98,45 @@ namespace HseqCentralApp.Controllers
                     string currentActiveView = Request.Params["currentActiveView"];
                     int recordId = int.Parse(Request.Params["recordId"]);
 
-                    if (currentActiveView.Contains("Ncr")) {
+                        if (currentActiveView.Contains("Task"))
+                        {
+                            HseqTask record = db.HseqTasks.Find(recordId);
+                            ViewData["record"] = record;
+                            ViewData["currentview"] = "_TaskEditView";
+                        }
+                        else if (currentActiveView.Contains("Approval"))
+                        {
+                            HseqApprovalRequest record = db.HseqApprovalRequests.Find(recordId);
+                            ViewData["record"] = record;
+                            ViewData["currentview"] = "_ApprovalEditView";
+                        }
 
-                        Ncr record = db.NcrRecords.Find(recordId);
-                        ViewData["record"] = record;
-                        ViewData["currentview"] = "_NcrEditView";
-                    }
-                    else if (currentActiveView.Contains("Car"))
-                    {
+                        ////////////////////////////////////////
 
-                        Car record = db.CarRecords.Find(recordId);
-                        ViewData["record"] = record;
-                        ViewData["currentview"] = "_CarEditView";
+                        else if (currentActiveView.Contains("Ncr")) {
+                            Ncr record = db.NcrRecords.Find(recordId);
+                            ViewData["record"] = record;
+                            ViewData["currentview"] = "_NcrEditView";
+                        }
+                        else if (currentActiveView.Contains("Car"))
+                        {
+                            Car record = db.CarRecords.Find(recordId);
+                            ViewData["record"] = record;
+                            ViewData["currentview"] = "_CarEditView";
+                        }
+                        else if (currentActiveView.Contains("Par"))
+                        {
+                            Par record = db.ParRecords.Find(recordId);
+                            ViewData["record"] = record;
+                            ViewData["currentview"] = "_ParEditView";
+                        }
+                        else if (currentActiveView.Contains("Fis"))
+                        {
+                            Fis record = db.FisRecords.Find(recordId);
+                            ViewData["record"] = record;
+                            ViewData["currentview"] = "_FisEditView";
+                        }
                     }
-                    else if (currentActiveView.Contains("Par"))
-                    {
-
-                        Par record = db.ParRecords.Find(recordId);
-                        ViewData["record"] = record;
-                        ViewData["currentview"] = "_ParEditView";
-                    }
-                    else if (currentActiveView.Contains("Fis"))
-                    {
-
-                        Fis record = db.FisRecords.Find(recordId);
-                        ViewData["record"] = record;
-                        ViewData["currentview"] = "_FisEditView";
-                    }
-                }
             }
 
             //new
@@ -205,6 +216,34 @@ namespace HseqCentralApp.Controllers
         {
             return PartialView("_MainContentCallbackPanel");
         }
+        
+        [HttpPost, ValidateInput(false)]
+        public ActionResult TaskGridViewUpdate(HseqTask item)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (item != null)
+                    {
+                        db.Entry(item).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_TaskEditView", item);
+            }
+            return PartialView("_MainContentCallbackPanel");
+        }
+
 
         [HttpPost, ValidateInput(false)]
        // [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]

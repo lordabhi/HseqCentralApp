@@ -30,6 +30,10 @@
             {
                 @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Fis)ViewData["record"]);
             }
+            else if (mainviewpanel.Contains("TaskEdit"))
+            {
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.HseqTask)ViewData["record"]);
+            }
 
 
             else if (mainviewpanel.Contains("NcrNew"))
