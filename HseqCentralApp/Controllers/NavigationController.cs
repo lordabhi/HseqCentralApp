@@ -270,7 +270,7 @@ namespace HseqCentralApp.Controllers
             }
             else {
                 ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_CarNewView", item);
+                return PartialView("_CarEditView", item);
             }
             
             return PartialView("_MainContentCallbackPanel");
@@ -414,7 +414,7 @@ namespace HseqCentralApp.Controllers
             else
             {
                 ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_ParNewView", item);
+                return PartialView("_ParEditView", item);
             }
                 
             return PartialView("_MainContentCallbackPanel");

@@ -41,7 +41,6 @@
 
     groupItem.ColCount = 2;
 
-
     groupItem.Items.Add(m => m.Title, item =>
     {
         item.ColSpan = 2;
@@ -49,6 +48,9 @@
         item.NestedExtension().TextBox(s =>
         {
             s.Width = Unit.Percentage(100);
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
         });
     });
 
@@ -59,6 +61,8 @@
         {
             s.Width = Unit.Percentage(100);
             s.Height = Unit.Pixel(100);
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
 
         });
     });
@@ -68,6 +72,8 @@
         item.NestedExtension().TextBox(s =>
         {
             s.ClientEnabled = false;
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
 
         });
         item.Visible = false;
@@ -78,6 +84,9 @@
         item.NestedExtension().TextBox(s =>
         {
             s.ClientEnabled = false;
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
         });
         item.Visible = false;
     });
@@ -86,22 +95,32 @@
     {
         item.NestedExtension().TextBox(s =>
         {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
         });
-
-
         // item.HelpText = "Help text for JobNumber";
     });
+
     groupItem.Items.Add(m => m.DrawingNumber, item =>
     {
-        // item.HelpText = "Help text for DrawingNumber";
-    });
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
 
+        });
+    });
 
     groupItem.Items.Add(m => m.ReportedBy, item =>
     {
-        // item.HelpText = "Help text for ReportedBy";
-    });
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
 
+        });
+    });
 
     groupItem.Items.Add(m => m.CoordinatorID, i =>
     {
@@ -113,24 +132,44 @@
             s.Properties.ValueType = typeof(string);
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
             s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
+
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
         });
     });
 
     groupItem.Items.Add(m => m.HseqRecordID, item =>
     {
         item.Visible = false;
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
     });
+
     groupItem.Items.Add(m => m.AlfrescoNoderef, item =>
     {
         item.Visible = false;
-    });
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
 
+        });
+    });
 
     groupItem.Items.Add(m => m.EnteredBy, item =>
     {
-        // item.HelpText = "Help text for EnteredBy";
-    });
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
 
+        });
+    });
 
     groupItem.Items.Add(m => m.LinkedRecordsID, item =>
     {
@@ -152,6 +191,7 @@
         item.Visible = false;
 
     });
+
     groupItem.Items.Add(m => m.DateLastUpdated, item =>
     {
         item.NestedExtension().DateEdit(s =>
@@ -160,6 +200,7 @@
         });
         item.Visible = false;
     });
+
     groupItem.Items.Add(m => m.CreatedBy, item =>
     {
         item.NestedExtension().TextBox(s =>
@@ -168,6 +209,7 @@
         });
         item.Visible = false;
     });
+
     groupItem.Items.Add(m => m.LastUpdatedBy, item =>
     {
         item.NestedExtension().TextBox(s =>
@@ -176,7 +218,6 @@
         });
         item.Visible = false;
     });
-
     ///////////////////////////////////////////////////////////////////////////////
 
     settings.Items.Add(i =>

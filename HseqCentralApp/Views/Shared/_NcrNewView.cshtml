@@ -5,6 +5,11 @@
 
 @*@using (Html.BeginForm("NcrGridViewUpdate", "Navigation"))*@
 
+@*@{
+    Html.EnableClientValidation();
+    Html.EnableUnobtrusiveJavaScript();
+}*@
+
 @using (Ajax.BeginForm("NcrGridViewNew", "Navigation", 
     new AjaxOptions { 
         HttpMethod = "Post", 
@@ -26,33 +31,6 @@
 {
     settings.Name = "FormLayout";
     settings.Width = Unit.Percentage(100);
-    //settings.Items.AddGroupItem(groupSettings =>
-    //{
-
-    //    groupSettings.Caption = "New NCR: " + Model.CaseNo;
-
-    //    groupSettings.ShowCaption = DefaultBoolean.True;
-    //    groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
-
-    //    groupSettings.Items.Add(m => m.Title, item =>
-    //    {
-    //        item.NestedExtensionSettings.Width = Unit.Percentage(100);
-    //        item.NestedExtension().TextBox(s =>
-    //        {
-    //        });
-    //    });
-
-    //    groupSettings.Items.Add(m => m.Description, i =>
-    //    {
-    //        i.NestedExtension().Memo(s =>
-    //        {
-    //            s.Width = Unit.Percentage(100);
-    //            s.Height = Unit.Pixel(100);
-
-    //        });
-    //    });
-
-    //});
 
     var groupItem = settings.Items.AddGroupItem(groupSettings =>
     {
@@ -62,8 +40,6 @@
         groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
 
     });
-
-    //groupItem.SettingsItems.ShowCaption = DefaultBoolean.True;
 
     groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
 
@@ -79,6 +55,8 @@
         item.NestedExtension().TextBox(s =>
         {
             s.Width = Unit.Percentage(100);
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
         });
     });
 
@@ -89,6 +67,8 @@
         {
             s.Width = Unit.Percentage(100);
             s.Height = Unit.Pixel(100);
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
 
         });
     });
@@ -113,9 +93,6 @@
         item.Visible = false;
     });
 
-
-
-
     //groupItem.Items.Add(m => m.RecordType, i =>
     //{
     //    i.NestedExtension().ComboBox(s =>
@@ -136,16 +113,20 @@
     {
         item.NestedExtension().TextBox(s =>
         {
-            //s.Width = Unit.Percentage(100);
-            //s.ClientEnabled = false;
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
         });
-
-
         // item.HelpText = "Help text for JobNumber";
     });
+
     groupItem.Items.Add(m => m.DrawingNumber, item =>
     {
-        // item.HelpText = "Help text for DrawingNumber";
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+        });
+
     });
 
     groupItem.Items.Add(m => m.NcrSource, i =>
@@ -160,6 +141,10 @@
             s.Properties.Items.AddRange(typeof(NcrSource).GetEnumValues());
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
             s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
+
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
         });
     });
 
@@ -174,6 +159,10 @@
             s.Properties.Items.AddRange(typeof(NcrState).GetEnumValues());
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
             s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
+
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
         });
     });
 
@@ -187,6 +176,10 @@
             s.Properties.ValueType = typeof(string);
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
             s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
+
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
         });
     });
 
@@ -207,6 +200,10 @@
             s.Properties.ValueType = typeof(string);
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
             s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
+
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
         });
     });
 
@@ -219,12 +216,20 @@
             s.Properties.DataSource = Utils.BusinessAreas();
             s.Properties.ValueType = typeof(string);
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
+
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
         });
     });
 
     groupItem.Items.Add(m => m.ResponsibleParty, item =>
     {
-        // item.HelpText = "Help text for ResponsibleParty";
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+        });
     });
 
     groupItem.Items.Add(m => m.CoordinatorID, i =>
@@ -237,6 +242,9 @@
             s.Properties.ValueType = typeof(string);
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
             s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
+
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
         });
     });
 
@@ -252,7 +260,11 @@
 
     groupItem.Items.Add(m => m.EnteredBy, item =>
     {
-        // item.HelpText = "Help text for EnteredBy";
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+        });
     });
 
     groupItem.Items.Add(m => m.DispositionTypeID, i =>
@@ -264,6 +276,10 @@
             s.Properties.DataSource = Utils.DispositionTypes();
             s.Properties.ValueType = typeof(string);
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
+
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
         });
     });
 
@@ -321,6 +337,10 @@
         {
             s.Width = Unit.Percentage(100);
             s.Height = Unit.Pixel(75);
+
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
         });
     });
 
@@ -331,6 +351,10 @@
         {
             s.Width = Unit.Percentage(100);
             s.Height = Unit.Pixel(75);
+
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
         });
     });
 

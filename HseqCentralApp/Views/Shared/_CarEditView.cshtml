@@ -24,185 +24,229 @@
 
 
     @Html.DevExpress().FormLayout(settings =>
+{
+    settings.Name = "FormLayout";
+    settings.Width = Unit.Percentage(100);
+
+    var groupItem = settings.Items.AddGroupItem(groupSettings =>
     {
-        settings.Name = "FormLayout";
-        settings.Width = Unit.Percentage(100);
+        groupSettings.Caption = "Edit CAR: " + Model.CaseNo;
 
-        var groupItem = settings.Items.AddGroupItem(groupSettings =>
+        groupSettings.ShowCaption = DefaultBoolean.True;
+        groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+
+    });
+
+    groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
+
+    groupItem.SettingsItemHelpTexts.Position = HelpTextPosition.Auto;
+
+    groupItem.ColCount = 2;
+
+    groupItem.Items.Add(m => m.Title, item =>
+    {
+        item.ColSpan = 2;
+        item.NestedExtensionSettings.Width = Unit.Percentage(100);
+        item.NestedExtension().TextBox(s =>
         {
-            groupSettings.Caption = "Edit CAR: " + Model.CaseNo;
-
-            groupSettings.ShowCaption = DefaultBoolean.True;
-            groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+            s.Width = Unit.Percentage(100);
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
 
         });
+    });
 
-        groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
-
-        groupItem.SettingsItemHelpTexts.Position = HelpTextPosition.Auto;
-
-        groupItem.ColCount = 2;
-
-        groupItem.Items.Add(m => m.Title, item =>
+    groupItem.Items.Add(m => m.Description, i =>
+    {
+        i.ColSpan = 2;
+        i.NestedExtension().Memo(s =>
         {
-            item.ColSpan = 2;
-            item.NestedExtensionSettings.Width = Unit.Percentage(100);
-            item.NestedExtension().TextBox(s =>
+            s.Width = Unit.Percentage(100);
+            s.Height = Unit.Pixel(100);
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+    });
+
+    groupItem.Items.Add(m => m.CaseNo, item =>
+    {
+        item.NestedExtension().TextBox(s =>
+        {
+            s.ClientEnabled = false;
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+        item.Visible = false;
+    });
+
+    groupItem.Items.Add(m => m.RecordNo, item =>
+    {
+        item.NestedExtension().TextBox(s =>
+        {
+            s.ClientEnabled = false;
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+        item.Visible = false;
+    });
+
+    groupItem.Items.Add(m => m.JobNumber, item =>
+    {
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+        // item.HelpText = "Help text for JobNumber";
+    });
+
+    groupItem.Items.Add(m => m.DrawingNumber, item =>
+    {
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+    });
+
+    groupItem.Items.Add(m => m.ReportedBy, item =>
+    {
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+    });
+
+    groupItem.Items.Add(m => m.CoordinatorID, i =>
+    {
+        i.NestedExtension().ComboBox(s =>
+        {
+            s.Properties.TextField = "FullName";
+            s.Properties.ValueField = "HseqUserID";
+            s.Properties.DataSource = Utils.AppUsers();
+            s.Properties.ValueType = typeof(string);
+            s.Properties.DropDownStyle = DropDownStyle.DropDown;
+            s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
+
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+    });
+
+    groupItem.Items.Add(m => m.HseqRecordID, item =>
+    {
+        item.Visible = false;
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+    });
+
+    groupItem.Items.Add(m => m.AlfrescoNoderef, item =>
+    {
+        item.Visible = false;
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+    });
+
+    groupItem.Items.Add(m => m.EnteredBy, item =>
+    {
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+    });
+
+    groupItem.Items.Add(m => m.LinkedRecordsID, item =>
+    {
+        item.Visible = false;
+    });
+
+    groupItem.Items.Add(m => m.HseqCaseFileID, item =>
+    {
+        item.Visible = false;
+    });
+
+    groupItem.Items.Add(m => m.DateCreated, item =>
+    {
+        item.NestedExtension().DateEdit(s =>
+        {
+            s.ClientEnabled = false;
+        });
+
+        item.Visible = false;
+
+    });
+
+    groupItem.Items.Add(m => m.DateLastUpdated, item =>
+    {
+        item.NestedExtension().DateEdit(s =>
+        {
+            s.ClientEnabled = false;
+        });
+        item.Visible = false;
+    });
+
+    groupItem.Items.Add(m => m.CreatedBy, item =>
+    {
+        item.NestedExtension().TextBox(s =>
+        {
+            s.ClientEnabled = false;
+        });
+        item.Visible = false;
+    });
+
+    groupItem.Items.Add(m => m.LastUpdatedBy, item =>
+    {
+        item.NestedExtension().TextBox(s =>
+        {
+            s.ClientEnabled = false;
+        });
+        item.Visible = false;
+    });
+
+    ///////////////////////////////////////////////////////////////////////////////
+
+    settings.Items.Add(i =>
+    {
+        i.ShowCaption = DefaultBoolean.False;
+    }).SetNestedContent(() =>
+    {
+        ViewContext.Writer.Write("<div style='float:right'>");
+        Html.DevExpress().Button(
+            s =>
             {
-                s.Width = Unit.Percentage(100);
-            });
-        });
-
-        groupItem.Items.Add(m => m.Description, i =>
-        {
-            i.ColSpan = 2;
-            i.NestedExtension().Memo(s =>
+                s.Name = "carUpdateButton";
+                s.Text = "Update";
+                s.UseSubmitBehavior = true;
+            }).Render();
+        Html.DevExpress().Button(
+            s =>
             {
-                s.Width = Unit.Percentage(100);
-                s.Height = Unit.Pixel(100);
+                s.Name = "editCancelButton";
+                s.Text = "Cancel";
+                s.UseSubmitBehavior = true;
+                s.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+            }).Render();
+        ViewContext.Writer.Write("</div>");
+    });
 
-            });
-        });
-
-        groupItem.Items.Add(m => m.CaseNo, item =>
-        {
-            item.NestedExtension().TextBox(s =>
-            {
-                s.ClientEnabled = false;
-
-            });
-            item.Visible = false;
-        });
-
-        groupItem.Items.Add(m => m.RecordNo, item =>
-        {
-            item.NestedExtension().TextBox(s =>
-            {
-                s.ClientEnabled = false;
-            });
-            item.Visible = false;
-        });
-
-        groupItem.Items.Add(m => m.JobNumber, item =>
-        {
-            item.NestedExtension().TextBox(s =>
-            {
-            });
-            // item.HelpText = "Help text for JobNumber";
-        });
-
-        groupItem.Items.Add(m => m.DrawingNumber, item =>
-        {
-            // item.HelpText = "Help text for DrawingNumber";
-        });
-
-        groupItem.Items.Add(m => m.ReportedBy, item =>
-        {
-            // item.HelpText = "Help text for ReportedBy";
-        });
-
-        groupItem.Items.Add(m => m.CoordinatorID, i =>
-        {
-            i.NestedExtension().ComboBox(s =>
-            {
-                s.Properties.TextField = "FullName";
-                s.Properties.ValueField = "HseqUserID";
-                s.Properties.DataSource = Utils.AppUsers();
-                s.Properties.ValueType = typeof(string);
-                s.Properties.DropDownStyle = DropDownStyle.DropDown;
-                s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
-            });
-        });
-
-        groupItem.Items.Add(m => m.HseqRecordID, item =>
-        {
-            item.Visible = false;
-        });
-
-        groupItem.Items.Add(m => m.AlfrescoNoderef, item =>
-        {
-            item.Visible = false;
-        });
-
-        groupItem.Items.Add(m => m.EnteredBy, item =>
-        {
-            // item.HelpText = "Help text for EnteredBy";
-        });
-
-        groupItem.Items.Add(m => m.LinkedRecordsID, item =>
-        {
-            item.Visible = false;
-        });
-
-        groupItem.Items.Add(m => m.HseqCaseFileID, item =>
-        {
-            item.Visible = false;
-        });
-
-        groupItem.Items.Add(m => m.DateCreated, item =>
-        {
-            item.NestedExtension().DateEdit(s =>
-            {
-                s.ClientEnabled = false;
-            });
-
-            item.Visible = false;
-
-        });
-
-        groupItem.Items.Add(m => m.DateLastUpdated, item =>
-        {
-            item.NestedExtension().DateEdit(s =>
-            {
-                s.ClientEnabled = false;
-            });
-            item.Visible = false;
-        });
-
-        groupItem.Items.Add(m => m.CreatedBy, item =>
-        {
-            item.NestedExtension().TextBox(s =>
-            {
-                s.ClientEnabled = false;
-            });
-            item.Visible = false;
-        });
-
-        groupItem.Items.Add(m => m.LastUpdatedBy, item =>
-        {
-            item.NestedExtension().TextBox(s =>
-            {
-                s.ClientEnabled = false;
-            });
-            item.Visible = false;
-        });
-
-        ///////////////////////////////////////////////////////////////////////////////
-
-        settings.Items.Add(i =>
-        {
-            i.ShowCaption = DefaultBoolean.False;
-        }).SetNestedContent(() =>
-        {
-            ViewContext.Writer.Write("<div style='float:right'>");
-            Html.DevExpress().Button(
-                s =>
-                {
-                    s.Name = "carUpdateButton";
-                    s.Text = "Update";
-                    s.UseSubmitBehavior = true;
-                }).Render();
-            Html.DevExpress().Button(
-                s =>
-                {
-                    s.Name = "editCancelButton";
-                    s.Text = "Cancel";
-                    s.UseSubmitBehavior = true;
-                    s.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
-                }).Render();
-            ViewContext.Writer.Write("</div>");
-        });
-
-    }).Bind(Model).GetHtml()
+}).Bind(Model).GetHtml()
 
 }
