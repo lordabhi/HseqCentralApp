@@ -34,6 +34,10 @@
             {
                 @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.HseqTask)ViewData["record"]);
             }
+            else if (mainviewpanel.Contains("ApprovalEdit"))
+            {
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.HseqApprovalRequest)ViewData["record"]);
+            }
 
 
             else if (mainviewpanel.Contains("NcrNew"))
