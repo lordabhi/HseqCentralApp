@@ -17,110 +17,58 @@
     {
         
     @Html.HiddenFor(m => m.HseqRecordID)
-    @Html.HiddenFor(m => m.CaseNo)
-    @Html.HiddenFor(m => m.RecordNo)
-    @Html.HiddenFor(m => m.RecordType)
-    @Html.HiddenFor(m => m.CreatedBy)
-    @Html.HiddenFor(m => m.DateCreated)
-
+    
 @Html.DevExpress().FormLayout(settings =>
 {
     settings.Name = "FormLayout";
-    settings.Width = Unit.Percentage(100);
 
     var groupItem = settings.Items.AddGroupItem(groupSettings =>
     {
-        groupSettings.Caption = "New NCR: " + Model.CaseNo;
-
+        groupSettings.Caption = "NCR Edit";
         groupSettings.ShowCaption = DefaultBoolean.True;
-        groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
-
+        groupSettings.GroupBoxDecoration = GroupBoxDecoration.Default;
     });
-
+    
     //groupItem.SettingsItems.ShowCaption = DefaultBoolean.True;
-
     groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
 
     groupItem.SettingsItemHelpTexts.Position = HelpTextPosition.Auto;
 
     groupItem.ColCount = 2;
 
-
-    groupItem.Items.Add(m => m.Title, item =>
-    {
-        item.ColSpan = 2;
-        item.NestedExtensionSettings.Width = Unit.Percentage(100);
-        item.NestedExtension().TextBox(s =>
-        {
-            s.Width = Unit.Percentage(100);
-        });
-    });
-
-    groupItem.Items.Add(m => m.Description, i =>
-    {
-        i.ColSpan = 2;
-        i.NestedExtension().Memo(s =>
-        {
-            s.Width = Unit.Percentage(100);
-            s.Height = Unit.Pixel(100);
-
-        });
-    });
-
     groupItem.Items.Add(m => m.CaseNo, item =>
     {
-        item.NestedExtension().TextBox(s =>
-        {
-            //s.Style[HtmlTextWriterStyle.Color] = "red";
-            //s.ReadOnly = true;
-            s.ClientEnabled = false;
-
-        });
-        item.Visible = false;
+        // item.HelpText = "Help text for CaseNo";
     });
     groupItem.Items.Add(m => m.RecordNo, item =>
     {
-        item.NestedExtension().TextBox(s =>
-        {
-            s.ClientEnabled = false;
-        });
-        item.Visible = false;
+        // item.HelpText = "Help text for RecordNo";
     });
-
-
-
-
-    //groupItem.Items.Add(m => m.RecordType, i =>
-    //{
-    //    i.NestedExtension().ComboBox(s =>
-    //    {
-    //        s.Properties.Items.AddRange(typeof(RecordType).GetEnumValues());
-    //        s.Properties.TextField = "Name";
-    //        s.Properties.ValueField = "RecordType";
-
-    //        s.Properties.ValueType = typeof(string);
-    //        s.Properties.DropDownStyle = DropDownStyle.DropDown;
-
-    //    });
-
-    //    i.Visible = false;
-    //});
-
-    groupItem.Items.Add(m => m.JobNumber, item =>
+    groupItem.Items.Add(m => m.Title, item =>
     {
-        item.NestedExtension().TextBox(s =>
-        {
-            //s.Width = Unit.Percentage(100);
-            //s.ClientEnabled = false;
-        });
-
-
-        // item.HelpText = "Help text for JobNumber";
+        // item.HelpText = "Help text for Title";
     });
-    groupItem.Items.Add(m => m.DrawingNumber, item =>
+    groupItem.Items.Add(m => m.Description, i =>
     {
-        // item.HelpText = "Help text for DrawingNumber";
+        i.NestedExtension().Memo(s =>
+        {
+
+        });
     });
+
+    groupItem.Items.Add(m => m.RecordType, i =>
+    {
+        i.NestedExtension().ComboBox(s =>
+        {
+            s.Properties.Items.AddRange(typeof(RecordType).GetEnumValues());
+            s.Properties.TextField = "Name";
+            s.Properties.ValueField = "RecordType";
+
+            s.Properties.ValueType = typeof(string);
+            s.Properties.DropDownStyle = DropDownStyle.DropDown;
+        });
+    });
+    
 
     groupItem.Items.Add(m => m.NcrSource, i =>
     {
@@ -133,21 +81,19 @@
 
             s.Properties.Items.AddRange(typeof(NcrSource).GetEnumValues());
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
-            s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
         });
     });
 
     groupItem.Items.Add(m => m.NcrState, i =>
     {
-        i.NestedExtension().ComboBox(s =>
+         i.NestedExtension().ComboBox(s =>
         {
-            s.Properties.TextField = "NcrState";
-            s.Properties.ValueField = "NcrState";
-            s.Properties.ValueType = typeof(string);
+        s.Properties.TextField = "NcrState";
+        s.Properties.ValueField = "NcrState";
+        s.Properties.ValueType = typeof(string);
 
-            s.Properties.Items.AddRange(typeof(NcrState).GetEnumValues());
-            s.Properties.DropDownStyle = DropDownStyle.DropDown;
-            s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
+        s.Properties.Items.AddRange(typeof(NcrState).GetEnumValues());
+        s.Properties.DropDownStyle = DropDownStyle.DropDown;
         });
     });
 
@@ -160,17 +106,31 @@
             s.Properties.DataSource = Utils.DiscrepancyTypes();
             s.Properties.ValueType = typeof(string);
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
-            s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
+        });
+    });    
+    
+    
+    groupItem.Items.Add(m => m.DispositionTypeID, i =>
+    {
+        i.NestedExtension().ComboBox(s =>
+        {
+            s.Properties.TextField = "Name";
+            s.Properties.ValueField = "DispositionTypeID";
+            s.Properties.DataSource = Utils.DispositionTypes();
+            s.Properties.ValueType = typeof(string);
+            s.Properties.DropDownStyle = DropDownStyle.DropDown;
         });
     });
 
-    groupItem.Items.Add(m => m.ReportedBy, item =>
+
+    groupItem.Items.Add(m => m.DispositionNote, i =>
     {
-        // item.HelpText = "Help text for ReportedBy";
+        i.NestedExtension().Memo(s =>
+        {
+            
+        });
     });
-
-
-
+    
     groupItem.Items.Add(m => m.DetectedInAreaID, i =>
     {
         i.NestedExtension().ComboBox(s =>
@@ -180,7 +140,6 @@
             s.Properties.DataSource = Utils.BusinessAreas();
             s.Properties.ValueType = typeof(string);
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
-            s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
         });
     });
 
@@ -196,9 +155,37 @@
         });
     });
 
+    groupItem.Items.Add(m => m.CauseDesc, i =>
+    {
+        i.NestedExtension().Memo(s =>
+        {
+
+        });
+    });
+    
     groupItem.Items.Add(m => m.ResponsibleParty, item =>
     {
-        // item.HelpText = "Help text for ResponsibleParty";
+       // item.HelpText = "Help text for ResponsibleParty";
+    });
+    
+    
+    groupItem.Items.Add(m => m.HseqRecordID, item =>
+    {
+        item.Visible = false;
+    });
+    groupItem.Items.Add(m => m.AlfrescoNoderef, item =>
+    {
+        item.Visible = false;
+    });
+
+    
+    groupItem.Items.Add(m => m.EnteredBy, item =>
+    {
+       // item.HelpText = "Help text for EnteredBy";
+    });
+    groupItem.Items.Add(m => m.ReportedBy, item =>
+    {
+       // item.HelpText = "Help text for ReportedBy";
     });
 
     groupItem.Items.Add(m => m.CoordinatorID, i =>
@@ -210,39 +197,10 @@
             s.Properties.DataSource = Utils.AppUsers();
             s.Properties.ValueType = typeof(string);
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
-            s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
         });
     });
-
-    groupItem.Items.Add(m => m.HseqRecordID, item =>
-    {
-        item.Visible = false;
-    });
-    groupItem.Items.Add(m => m.AlfrescoNoderef, item =>
-    {
-        item.Visible = false;
-    });
-
-
-    groupItem.Items.Add(m => m.EnteredBy, item =>
-    {
-        // item.HelpText = "Help text for EnteredBy";
-    });
-
-    groupItem.Items.Add(m => m.DispositionTypeID, i =>
-    {
-        i.NestedExtension().ComboBox(s =>
-        {
-            s.Properties.TextField = "Name";
-            s.Properties.ValueField = "DispositionTypeID";
-            s.Properties.DataSource = Utils.DispositionTypes();
-            s.Properties.ValueType = typeof(string);
-            s.Properties.DropDownStyle = DropDownStyle.DropDown;
-        });
-    });
-
-
-
+    
+   
     groupItem.Items.Add(m => m.LinkedRecordsID, item =>
     {
         item.Visible = false;
@@ -252,62 +210,30 @@
     {
         item.Visible = false;
     });
-
+    groupItem.Items.Add(m => m.JobNumber, item =>
+    {
+       // item.HelpText = "Help text for JobNumber";
+    });
+    groupItem.Items.Add(m => m.DrawingNumber, item =>
+    {
+       // item.HelpText = "Help text for DrawingNumber";
+    });
     groupItem.Items.Add(m => m.DateCreated, item =>
     {
-        item.NestedExtension().DateEdit(s =>
-        {
-            s.ClientEnabled = false;
-        });
-
-        item.Visible = false;
-
+       // item.HelpText = "Help text for DateCreated";
     });
     groupItem.Items.Add(m => m.DateLastUpdated, item =>
     {
-        item.NestedExtension().DateEdit(s =>
-        {
-            s.ClientEnabled = false;
-        });
-        item.Visible = false;
+       // item.HelpText = "Help text for DateLastUpdated";
     });
     groupItem.Items.Add(m => m.CreatedBy, item =>
     {
-        item.NestedExtension().TextBox(s =>
-        {
-            s.ClientEnabled = false;
-        });
-        item.Visible = false;
+       // item.HelpText = "Help text for CreatedBy";
     });
     groupItem.Items.Add(m => m.LastUpdatedBy, item =>
     {
-        item.NestedExtension().TextBox(s =>
-        {
-            s.ClientEnabled = false;
-        });
-        item.Visible = false;
+       // item.HelpText = "Help text for LastUpdatedBy";
     });
-
-    groupItem.Items.Add(m => m.DispositionNote, i =>
-    {
-        i.ColSpan = 2;
-        i.NestedExtension().Memo(s =>
-        {
-            s.Width = Unit.Percentage(100);
-            s.Height = Unit.Pixel(75);
-        });
-    });
-
-    groupItem.Items.Add(m => m.CauseDesc, i =>
-    {
-        i.ColSpan = 2;
-        i.NestedExtension().Memo(s =>
-        {
-            s.Width = Unit.Percentage(100);
-            s.Height = Unit.Pixel(75);
-        });
-    });
-
     //groupItem.Items.Add(m => m.Delegatables, item =>
     //{
     //    item.Visible = false;
@@ -341,8 +267,7 @@
     //        //s.ClientSideEvents.Click = "ncrEditCancel";
     //    });
     //});
-    ////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////////////////////////////////
 
     settings.Items.Add(i =>
     {
@@ -366,7 +291,7 @@
                 s.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
             }).Render();
         ViewContext.Writer.Write("</div>");
-    });
+    });    
 
 }).Bind(Model).GetHtml()
 

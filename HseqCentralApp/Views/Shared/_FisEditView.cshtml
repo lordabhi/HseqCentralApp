@@ -5,89 +5,141 @@
 
 @*@using (Html.BeginForm("CarGridViewUpdate", "Navigation"))*@
 
-@using (Ajax.BeginForm("FisGridViewUpdate", "Navigation", 
-    new AjaxOptions { 
-        HttpMethod = "Post", 
-        UpdateTargetId = "CenterSplitterPane",
-        InsertionMode = System.Web.Mvc.Ajax.InsertionMode.Replace,
-        OnFailure = "PostFailure", 
-        OnSuccess = "PostSuccess", 
-        OnComplete = "PostOnComplete" 
-    }))
-    {
-        
+@using (Ajax.BeginForm("FisGridViewUpdate", "Navigation",
+                new AjaxOptions
+                {
+                    HttpMethod = "Post",
+                    UpdateTargetId = "CenterSplitterPane",
+                    InsertionMode = System.Web.Mvc.Ajax.InsertionMode.Replace,
+                    OnFailure = "PostFailure",
+                    OnSuccess = "PostSuccess",
+                    OnComplete = "PostOnComplete"
+                }))
+{
+
     @Html.HiddenFor(m => m.HseqRecordID)
-    
-@Html.DevExpress().FormLayout(settings =>
+    @Html.HiddenFor(m => m.CaseNo)
+    @Html.HiddenFor(m => m.RecordNo)
+    @Html.HiddenFor(m => m.RecordType)
+    @Html.HiddenFor(m => m.CreatedBy)
+    @Html.HiddenFor(m => m.DateCreated)
+
+    @Html.DevExpress().FormLayout(settings =>
 {
     settings.Name = "FormLayout";
+    settings.Width = Unit.Percentage(100);
 
     var groupItem = settings.Items.AddGroupItem(groupSettings =>
     {
-        groupSettings.ShowCaption = DefaultBoolean.False;
-        groupSettings.GroupBoxDecoration = GroupBoxDecoration.Default;
+        groupSettings.Caption = "Edit FIS: " + Model.CaseNo;
+
+        groupSettings.ShowCaption = DefaultBoolean.True;
+        groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
+
     });
 
-    groupItem.SettingsItems.ShowCaption = DefaultBoolean.True;
+    //groupItem.SettingsItems.ShowCaption = DefaultBoolean.True;
+
     groupItem.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
 
     groupItem.SettingsItemHelpTexts.Position = HelpTextPosition.Auto;
 
     groupItem.ColCount = 2;
 
-    groupItem.Items.Add(m => m.CaseNo, item =>
-    {
-        // item.HelpText = "Help text for CaseNo";
-    });
-    groupItem.Items.Add(m => m.RecordNo, item =>
-    {
-        // item.HelpText = "Help text for RecordNo";
-    });
+
     groupItem.Items.Add(m => m.Title, item =>
     {
-        // item.HelpText = "Help text for Title";
+        item.ColSpan = 2;
+        item.NestedExtensionSettings.Width = Unit.Percentage(100);
+        item.NestedExtension().TextBox(s =>
+        {
+            s.Width = Unit.Percentage(100);
+        });
     });
+
     groupItem.Items.Add(m => m.Description, i =>
     {
+        i.ColSpan = 2;
         i.NestedExtension().Memo(s =>
         {
+            s.Width = Unit.Percentage(100);
+            s.Height = Unit.Pixel(100);
 
         });
     });
 
-    groupItem.Items.Add(m => m.RecordType, i =>
+    groupItem.Items.Add(m => m.CaseNo, item =>
     {
+        item.NestedExtension().TextBox(s =>
+        {
+            s.ClientEnabled = false;
+
+        });
+        item.Visible = false;
+    });
+
+    groupItem.Items.Add(m => m.RecordNo, item =>
+    {
+        item.NestedExtension().TextBox(s =>
+        {
+            s.ClientEnabled = false;
+        });
+        item.Visible = false;
+    });
+
+    groupItem.Items.Add(m => m.JobNumber, item =>
+    {
+        item.NestedExtension().TextBox(s =>
+        {
+        });
+
+
+        // item.HelpText = "Help text for JobNumber";
+    });
+    groupItem.Items.Add(m => m.DrawingNumber, item =>
+    {
+        // item.HelpText = "Help text for DrawingNumber";
+    });
+
+    groupItem.Items.Add(m => m.FisSource, i =>
+    {
+        //i.HelpText = "Leave a little bit of information<br/>about yourself";
         i.NestedExtension().ComboBox(s =>
         {
-            s.Properties.Items.AddRange(typeof(RecordType).GetEnumValues());
-            s.Properties.TextField = "Name";
-            s.Properties.ValueField = "RecordType";
-
+            s.Properties.TextField = "FisSource";
+            s.Properties.ValueField = "FisSource";
             s.Properties.ValueType = typeof(string);
+
+            s.Properties.Items.AddRange(typeof(NcrSource).GetEnumValues());
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
+            s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
         });
     });
-    
 
-    
-    groupItem.Items.Add(m => m.HseqRecordID, item =>
+    groupItem.Items.Add(m => m.FisCodeID, item =>
     {
-        item.Visible = false;
-    });
-    groupItem.Items.Add(m => m.AlfrescoNoderef, item =>
-    {
-        item.Visible = false;
+        // item.HelpText = "Help text for DrawingNumber";
     });
 
-    
-    groupItem.Items.Add(m => m.EnteredBy, item =>
-    {
-       // item.HelpText = "Help text for EnteredBy";
-    });
+    //groupItem.Items.Add(m => m.FisCodeID, i =>
+    //{
+    //    i.NestedExtension().ComboBox(s =>
+    //    {
+    //        s.Properties.TextField = "FisCodeID";
+    //        s.Properties.ValueField = "FisCodeID";
+    //        s.Properties.DataSource = Utils.FisCodeTypes();
+    //        // s.Properties.ValueType = typeof(string);
+
+    //        s.Properties.DropDownStyle = DropDownStyle.DropDown;
+    //        //s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
+    //    });
+    //});
+
     groupItem.Items.Add(m => m.ReportedBy, item =>
     {
-       // item.HelpText = "Help text for ReportedBy";
+        // item.HelpText = "Help text for ReportedBy";
     });
+
 
     groupItem.Items.Add(m => m.CoordinatorID, i =>
     {
@@ -98,10 +150,26 @@
             s.Properties.DataSource = Utils.AppUsers();
             s.Properties.ValueType = typeof(string);
             s.Properties.DropDownStyle = DropDownStyle.DropDown;
+            s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
         });
     });
-    
-   
+
+    groupItem.Items.Add(m => m.HseqRecordID, item =>
+    {
+        item.Visible = false;
+    });
+    groupItem.Items.Add(m => m.AlfrescoNoderef, item =>
+    {
+        item.Visible = false;
+    });
+
+
+    groupItem.Items.Add(m => m.EnteredBy, item =>
+    {
+        // item.HelpText = "Help text for EnteredBy";
+    });
+
+
     groupItem.Items.Add(m => m.LinkedRecordsID, item =>
     {
         item.Visible = false;
@@ -111,36 +179,43 @@
     {
         item.Visible = false;
     });
-    groupItem.Items.Add(m => m.JobNumber, item =>
-    {
-       // item.HelpText = "Help text for JobNumber";
-    });
-    groupItem.Items.Add(m => m.DrawingNumber, item =>
-    {
-       // item.HelpText = "Help text for DrawingNumber";
-    });
+
     groupItem.Items.Add(m => m.DateCreated, item =>
     {
-       // item.HelpText = "Help text for DateCreated";
+        item.NestedExtension().DateEdit(s =>
+        {
+            s.ClientEnabled = false;
+        });
+
+        item.Visible = false;
+
     });
     groupItem.Items.Add(m => m.DateLastUpdated, item =>
     {
-       // item.HelpText = "Help text for DateLastUpdated";
+        item.NestedExtension().DateEdit(s =>
+        {
+            s.ClientEnabled = false;
+        });
+        item.Visible = false;
     });
     groupItem.Items.Add(m => m.CreatedBy, item =>
     {
-       // item.HelpText = "Help text for CreatedBy";
+        item.NestedExtension().TextBox(s =>
+        {
+            s.ClientEnabled = false;
+        });
+        item.Visible = false;
     });
     groupItem.Items.Add(m => m.LastUpdatedBy, item =>
     {
-       // item.HelpText = "Help text for LastUpdatedBy";
+        item.NestedExtension().TextBox(s =>
+        {
+            s.ClientEnabled = false;
+        });
+        item.Visible = false;
     });
-    //groupItem.Items.Add(m => m.Delegatables, item =>
-    //{
-    //    item.Visible = false;
-    //});
 
-   ///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
 
     settings.Items.Add(i =>
     {
@@ -164,7 +239,7 @@
                 s.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
             }).Render();
         ViewContext.Writer.Write("</div>");
-    });    
+    });
 
 }).Bind(Model).GetHtml()
 

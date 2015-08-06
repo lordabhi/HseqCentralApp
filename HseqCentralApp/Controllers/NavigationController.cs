@@ -44,7 +44,6 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult MainContentCallbackPanel()
 
-
         // DXCOMMENT: Pass a data model for GridView in the PartialView method's second parameter
         {
             if (DevExpressHelper.IsCallback)
@@ -205,19 +204,18 @@ namespace HseqCentralApp.Controllers
        // [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult NcrGridViewUpdate(HseqCentralApp.Models.Ncr item)
         {
-         //   var model = db3.NcrRecords;
+            //   var model = db3.NcrRecords;
             if (ModelState.IsValid)
             {
                 try
                 {
-           //         var modelItem = model.FirstOrDefault(it => it.HseqRecordID == item.HseqRecordID);
+                    //         var modelItem = model.FirstOrDefault(it => it.HseqRecordID == item.HseqRecordID);
                     if (item != null)
                     {
                         //this.UpdateModel(item);
                         //db.SaveChanges();
                         db.Entry(item).State = EntityState.Modified;
                         db.SaveChanges();
-
                     }
                 }
                 catch (DbEntityValidationException ex)
@@ -241,12 +239,13 @@ namespace HseqCentralApp.Controllers
                     ViewData["EditError"] = e.Message;
                 }
             }
-            else
+            else {
                 ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_NcrEditView", item);
+            }
             //return PartialView("_NcrGridViewPartial", model.ToList());
          //   ModelState.Clear();
             return PartialView("_MainContentCallbackPanel");
-
         }
 
 
@@ -269,10 +268,12 @@ namespace HseqCentralApp.Controllers
                     ViewData["EditError"] = e.Message;
                 }
             }
-            else
+            else {
                 ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_CarNewView", item);
+            }
+            
             return PartialView("_MainContentCallbackPanel");
-
         }
 
 
@@ -316,12 +317,8 @@ namespace HseqCentralApp.Controllers
                 ViewData["EditError"] = "Please, correct all errors.";
                 return PartialView("_NcrNewView", ncr);
             }
-
             return PartialView("_MainContentCallbackPanel");
-
         }
-
-
 
         [HttpPost, ValidateInput(false)]
         public ActionResult CarGridViewNew(HseqCentralApp.Models.Car car)
@@ -360,12 +357,41 @@ namespace HseqCentralApp.Controllers
                 ViewData["EditError"] = "Please, correct all errors.";
                 return PartialView("_CarNewView",car);
             }
-            
             return PartialView("_MainContentCallbackPanel");
-
         }
 
-        
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ParGridViewNew(Par par)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (par != null)
+                    {
+                        string caseNo;
+                        HseqCaseFile hseqCaseFile;
+                        par.CreatedBy = _RecordService.GetCurrentUser().FullName;
+                        par = (Par)_RecordService.CreateCaseFile(par, out caseNo, out hseqCaseFile, db);
+
+                        db.HseqRecords.Add(par);
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                    return PartialView("_ParNewView", par);
+                }
+            }
+            else
+            {
+                ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_ParNewView", par);
+            }
+
+            return PartialView("_MainContentCallbackPanel");
+        }
 
         [HttpPost, ValidateInput(false)]
         public ActionResult ParGridViewUpdate(HseqCentralApp.Models.Par item)
@@ -386,20 +412,57 @@ namespace HseqCentralApp.Controllers
                 }
             }
             else
+            {
                 ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_ParNewView", item);
+            }
+                
             return PartialView("_MainContentCallbackPanel");
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult FisGridViewUpdate(HseqCentralApp.Models.Fis item)
+        public ActionResult FisGridViewNew(Fis fis)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (item != null)
+                    if (fis != null)
                     {
-                        db.Entry(item).State = EntityState.Modified;
+                        string caseNo;
+                        HseqCaseFile hseqCaseFile;
+                        fis.CreatedBy = _RecordService.GetCurrentUser().FullName;
+                        fis = (Fis)_RecordService.CreateCaseFile(fis, out caseNo, out hseqCaseFile, db);
+
+                        db.HseqRecords.Add(fis);
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                    return PartialView("_FisNewView", fis);
+                }
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_FisNewView", fis);
+            }
+
+            return PartialView("_MainContentCallbackPanel");
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult FisGridViewUpdate(HseqCentralApp.Models.Fis fis)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (fis != null)
+                    {
+                        db.Entry(fis).State = EntityState.Modified;
                         db.SaveChanges();
                     }
                 }
@@ -409,7 +472,12 @@ namespace HseqCentralApp.Controllers
                 }
             }
             else
-                ViewData["EditError"] = "Please, correct all errors.";
+            {
+                    var errors = ModelState.Values.SelectMany(v => v.Errors);
+                    ViewData["EditError"] = "Please, correct all errors.";
+                    return PartialView("_FisEditView", fis);
+                }
+
             return PartialView("_MainContentCallbackPanel");
         }
 
@@ -428,7 +496,6 @@ namespace HseqCentralApp.Controllers
                     ViewData["activeTabIndex"] = currentActiveTabIndex;
                     return;
                 }
-                        
             }
 
             if (NavigationFilter.RecordTypes.Count() > 1)
@@ -455,12 +522,9 @@ namespace HseqCentralApp.Controllers
             {
                 ViewData["activeTabIndex"] = ALL_ITEM_TAB_INDEX;
             }
-
         }
 
         ////////////////////////////////////////
-
-        
 
         public ActionResult RightContentCallbackPanel()
         {
@@ -471,12 +535,10 @@ namespace HseqCentralApp.Controllers
             return PartialView("_RightContentCallbackPanel");
         }
 
-
         ////////////////////////////////////////
         
         public ActionResult LinkedItems()
         {
-
             string currentActiveView;
             string recordId;
 
@@ -509,13 +571,11 @@ namespace HseqCentralApp.Controllers
         
         public ActionResult Comments()
         {
-
             string currentActiveView;
             string recordId = null;
             dynamic recordType = null;
 
             List<Comment> filteredComments = new List<Comment>();
-
             
             if (DevExpressHelper.IsCallback)
             {
@@ -586,7 +646,6 @@ namespace HseqCentralApp.Controllers
             return PartialView("_CommentsPanel", filteredComments);
         }
 
-
         public ActionResult ExportTo(string OutputFormat)
         {
             //var model = Session["TypedListModel"];
@@ -614,8 +673,6 @@ namespace HseqCentralApp.Controllers
         //{
         //    return PartialView("_CommentsPanel", db.Comments.ToList());
         //}
-
-
     }
 }
 

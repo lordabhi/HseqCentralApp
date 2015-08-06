@@ -71,6 +71,11 @@ namespace HseqCentralApp.Helpers
             return db.DiscrepancyTypes.ToList();
         }
 
+        public static IEnumerable<FisCode> FisCodeTypes()
+        {
+            return db.FisCodes.ToList();
+        }
+
         public static IEnumerable<DispositionType> DispositionTypes()
         {
             return db.DispositionTypes.ToList();
