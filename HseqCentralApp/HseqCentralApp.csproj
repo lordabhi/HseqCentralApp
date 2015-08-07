@@ -538,6 +538,7 @@
     <Content Include="Views\Shared\_NcrEditView - Copy.cshtml" />
     <Content Include="Views\Shared\_TaskEditView.cshtml" />
     <Content Include="Views\Shared\_ApprovalEditView.cshtml" />
+    <Content Include="Views\Shared\_TaskNewView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -109,10 +109,15 @@ function OnBeginCallback(s, e) {
     } else if (newbtnclicked) {
 
         e.customArgs["new"] = true;
+
+    } else if (newTaskbtnclicked) {
+
+        e.customArgs["addTask"] = true;
     }
 
     newbtnclicked = false;
     editbtnclicked = false;
+    newTaskbtnclicked = false;
 }
 
 
@@ -324,6 +329,20 @@ function GridNewRow(s, e) {
 
     var focusedRowIndex = activeViewObj.GetFocusedRowIndex();
     newbtnclicked = true;
+    MainContentCallbackPanel.PerformCallback();
+    }
+
+var newTaskbtnclicked = false;
+function GridAddTask(s, e) {
+
+    var results = computeCurrentRecord();
+    console.log(results);
+    var activeViewObj = results[0].currentActiveViewObj;
+
+   console.log(s.name);
+
+   var focusedRowIndex = activeViewObj.GetFocusedRowIndex();
+    newTaskbtnclicked = true;
     MainContentCallbackPanel.PerformCallback();
     }
 

@@ -90,13 +90,13 @@ namespace HseqCentralApp.Controllers
 
                 //ViewData["Collapsed"] = false;
 
-            //edit
-            if (!string.IsNullOrEmpty(Request.Params["edit"]))
-            {
-                if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]) && !string.IsNullOrEmpty(Request.Params["recordId"]))
+                //edit
+                if (!string.IsNullOrEmpty(Request.Params["edit"]))
                 {
-                    string currentActiveView = Request.Params["currentActiveView"];
-                    int recordId = int.Parse(Request.Params["recordId"]);
+                    if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]) && !string.IsNullOrEmpty(Request.Params["recordId"]))
+                    {
+                        string currentActiveView = Request.Params["currentActiveView"];
+                        int recordId = int.Parse(Request.Params["recordId"]);
 
                         if (currentActiveView.Contains("Task"))
                         {
@@ -113,7 +113,8 @@ namespace HseqCentralApp.Controllers
 
                         ////////////////////////////////////////
 
-                        else if (currentActiveView.Contains("Ncr")) {
+                        else if (currentActiveView.Contains("Ncr"))
+                        {
                             Ncr record = db.NcrRecords.Find(recordId);
                             ViewData["record"] = record;
                             ViewData["currentview"] = "_NcrEditView";
@@ -137,17 +138,17 @@ namespace HseqCentralApp.Controllers
                             ViewData["currentview"] = "_FisEditView";
                         }
                     }
-            }
+                }
 
-            //new
-            else if (!string.IsNullOrEmpty(Request.Params["new"]))
-            {
-                if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]))
+                //new
+                else if (!string.IsNullOrEmpty(Request.Params["new"]))
                 {
-                    string currentActiveView = Request.Params["currentActiveView"];
-
-                    if (currentActiveView.Contains("Ncr"))
+                    if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]))
                     {
+                        string currentActiveView = Request.Params["currentActiveView"];
+
+                        if (currentActiveView.Contains("Ncr"))
+                        {
                             Ncr ncr = new Ncr();
                             ncr.CaseNo = _RecordService.GetNextCaseNumber(db);
                             ncr.RecordNo = ncr.CaseNo;
@@ -160,8 +161,8 @@ namespace HseqCentralApp.Controllers
                             ViewData["record"] = ncr;
                             ViewData["currentview"] = "_NcrNewView";
                         }
-                    else if (currentActiveView.Contains("Car"))
-                    {
+                        else if (currentActiveView.Contains("Car"))
+                        {
                             Car car = new Car();
                             car.CaseNo = _RecordService.GetNextCaseNumber(db);
                             car.RecordNo = car.CaseNo;
@@ -171,9 +172,9 @@ namespace HseqCentralApp.Controllers
 
                             ViewData["record"] = car;
                             ViewData["currentview"] = "_CarNewView";
-                    }
-                    else if (currentActiveView.Contains("Par"))
-                    {
+                        }
+                        else if (currentActiveView.Contains("Par"))
+                        {
                             Par par = new Par();
                             par.CaseNo = _RecordService.GetNextCaseNumber(db);
                             par.RecordNo = par.CaseNo;
@@ -184,8 +185,8 @@ namespace HseqCentralApp.Controllers
                             ViewData["record"] = par;
                             ViewData["currentview"] = "_ParNewView";
                         }
-                    else if (currentActiveView.Contains("Fis"))
-                    {
+                        else if (currentActiveView.Contains("Fis"))
+                        {
                             Fis fis = new Fis();
                             fis.CaseNo = _RecordService.GetNextCaseNumber(db);
                             fis.RecordNo = fis.CaseNo;
@@ -197,12 +198,34 @@ namespace HseqCentralApp.Controllers
                             ViewData["currentview"] = "_FisNewView";
                         }
                     }
-            }
-            //////////////////////////////////////////////////
-            else
-            {
-                ViewData["currentview"] = "_MainContentTabPanel";
-            }
+                }
+                //////////////////////////////////////////////////
+
+
+                else if (!string.IsNullOrEmpty(Request.Params["addTask"]))
+                {
+                    if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]) && !string.IsNullOrEmpty(Request.Params["recordId"]))
+                    {
+                        string currentActiveView = Request.Params["currentActiveView"];
+                        int recordId = int.Parse(Request.Params["recordId"]);
+
+                        HseqTask hseqTask = new HseqTask();
+                        HseqRecord hseqRecord = db.HseqRecords.Find(recordId);
+                        hseqTask.HseqRecordID = hseqRecord.HseqRecordID;
+                        hseqTask.HseqRecord = hseqRecord;
+
+                        ViewData["record"] = hseqTask;
+                        ViewData["currentview"] = "_TaskNewView";
+
+                    }
+
+                }
+
+                ///////////////////////////////////////////////////////////
+                else
+                {
+                    ViewData["currentview"] = "_MainContentTabPanel";
+                }
         }
          //   Console.WriteLine(NavigationFilter.RecordTypes);
         //   Console.WriteLine(NavigationFilter.ResponsibleAreaIds);
@@ -216,7 +239,39 @@ namespace HseqCentralApp.Controllers
         {
             return PartialView("_MainContentCallbackPanel");
         }
+
         
+        [HttpPost, ValidateInput(false)]
+        public ActionResult TaskGridViewAdd(HseqTask task)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (task != null)
+                    {
+                        db.Entry(task).State = EntityState.Added;
+
+                        HseqRecord record = db.HseqRecords.Find(task.HseqRecordID);
+                        record.Delegatables.Add(task);
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                    return PartialView("_TaskNewView", task);
+                }
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_TaskNewView", task);
+            }
+            return PartialView("_MainContentCallbackPanel");
+        }
+
         [HttpPost, ValidateInput(false)]
         public ActionResult TaskGridViewUpdate(HseqTask item)
         {
