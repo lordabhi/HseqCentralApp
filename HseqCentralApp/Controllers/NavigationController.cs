@@ -216,11 +216,24 @@ namespace HseqCentralApp.Controllers
 
                         ViewData["record"] = hseqTask;
                         ViewData["currentview"] = "_TaskNewView";
-
                     }
-
                 }
+                else if (!string.IsNullOrEmpty(Request.Params["addApproval"]))
+                {
+                    if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]) && !string.IsNullOrEmpty(Request.Params["recordId"]))
+                    {
+                        string currentActiveView = Request.Params["currentActiveView"];
+                        int recordId = int.Parse(Request.Params["recordId"]);
 
+                        HseqApprovalRequest hseqApproval = new HseqApprovalRequest();
+                        HseqRecord hseqRecord = db.HseqRecords.Find(recordId);
+                        hseqApproval.HseqRecordID = hseqRecord.HseqRecordID;
+                        hseqApproval.HseqRecord = hseqRecord;
+
+                        ViewData["record"] = hseqApproval;
+                        ViewData["currentview"] = "_ApprovalNewView";
+                    }
+                }
                 ///////////////////////////////////////////////////////////
                 else
                 {
@@ -299,7 +312,37 @@ namespace HseqCentralApp.Controllers
             return PartialView("_MainContentCallbackPanel");
         }
 
-        
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ApprovalGridViewAdd(HseqApprovalRequest approval)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (approval != null)
+                    {
+                        db.Entry(approval).State = EntityState.Added;
+
+                        HseqRecord record = db.HseqRecords.Find(approval.HseqRecordID);
+                        record.Delegatables.Add(approval);
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                    return PartialView("_ApprovalNewView", approval);
+                }
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_ApprovalNewView", approval);
+            }
+            return PartialView("_MainContentCallbackPanel");
+        }
+
         [HttpPost, ValidateInput(false)]
         public ActionResult ApprovalGridViewUpdate(HseqApprovalRequest item)
         {

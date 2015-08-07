@@ -113,11 +113,15 @@ function OnBeginCallback(s, e) {
     } else if (newTaskbtnclicked) {
 
         e.customArgs["addTask"] = true;
+    } else if (newApprovalbtnclicked) {
+
+        e.customArgs["addApproval"] = true;
     }
 
     newbtnclicked = false;
     editbtnclicked = false;
     newTaskbtnclicked = false;
+    newApprovalbtnclicked = false;
 }
 
 
@@ -333,6 +337,8 @@ function GridNewRow(s, e) {
     }
 
 var newTaskbtnclicked = false;
+var newApprovalbtnclicked = false;
+
 function GridAddTask(s, e) {
 
     var results = computeCurrentRecord();
@@ -343,6 +349,19 @@ function GridAddTask(s, e) {
 
    var focusedRowIndex = activeViewObj.GetFocusedRowIndex();
     newTaskbtnclicked = true;
+    MainContentCallbackPanel.PerformCallback();
+    }
+
+function GridAddApproval(s, e) {
+
+    var results = computeCurrentRecord();
+    console.log(results);
+    var activeViewObj = results[0].currentActiveViewObj;
+
+   console.log(s.name);
+
+   var focusedRowIndex = activeViewObj.GetFocusedRowIndex();
+   newApprovalbtnclicked = true;
     MainContentCallbackPanel.PerformCallback();
     }
 

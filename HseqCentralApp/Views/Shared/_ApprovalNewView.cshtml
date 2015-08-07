@@ -1,9 +1,9 @@
-﻿@model HseqCentralApp.Models.HseqTask
+﻿@model HseqCentralApp.Models.HseqApprovalRequest
 
 @using HseqCentralApp.Helpers;
 @using HseqCentralApp.Models;
 
-@using (Ajax.BeginForm("TaskGridViewAdd", "Navigation",
+@using (Ajax.BeginForm("ApprovalGridViewAdd", "Navigation",
                 new AjaxOptions
                 {
                     HttpMethod = "Post",
@@ -15,18 +15,16 @@
                 }))
 {
 
-    @*@Html.HiddenFor(m => m.DelegatableID)*@
     @Html.HiddenFor(m => m.HseqRecordID)
-    @*@Html.HiddenFor(m => m.HseqRecord)*@
 
 @Html.DevExpress().FormLayout(settings =>
 {
-    settings.Name = "TaskFormLayout";
+    settings.Name = "ApprovalFormLayout";
     settings.Width = Unit.Percentage(100);
 
     var groupItem2 = settings.Items.AddGroupItem(groupSettings =>
     {
-        groupSettings.Caption = "New Task: " + Model.HseqRecord.CaseNo;
+        groupSettings.Caption = "New Approval: " + Model.HseqRecord.CaseNo;
 
         groupSettings.ShowCaption = DefaultBoolean.True;
         groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
@@ -70,7 +68,6 @@
         });
     });
 
-
     groupItem2.Items.Add(m => m.HseqRecord.Description, item =>
     {
         item.ColSpan = 2;
@@ -81,8 +78,6 @@
 
         });
     });
-
-
 
     var groupItem = settings.Items.AddGroupItem(groupSettings =>
     {
@@ -124,21 +119,9 @@
         });
     });
 
-    groupItem.Items.Add(m => m.Status, i =>
-    {
-        i.NestedExtension().ComboBox(s =>
-        {
-            s.Properties.TextField = "Status";
-            s.Properties.ValueField = "Status";
-            s.Properties.ValueType = typeof(string);
-            s.Properties.DropDownStyle = DropDownStyle.DropDown;
-            s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
+    groupItem.Items.Add(m => m.Status);
 
-            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
-            s.ShowModelErrors = true;
-        });
-    });
-
+    groupItem.Items.Add(m => m.Response);
 
     groupItem.Items.Add(m => m.OwnerID, i =>
     {
@@ -176,10 +159,51 @@
         });
     });
 
-    groupItem.Items.Add(m => m.DateAssigned);
-    groupItem.Items.Add(m => m.DueDate);
-    //groupItem.Items.Add(m => m.HseqRecordID).Visible = false;
-    //groupItem.Items.Add(m => m.Comments);
+
+    groupItem.Items.Add(m => m.DateAssigned, item =>
+    {
+        item.NestedExtension().DateEdit(s =>
+        {
+            s.ClientEnabled = false;
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+
+        item.Visible = false;
+
+    });
+
+
+    groupItem.Items.Add(m => m.DueDate, item =>
+    {
+        item.NestedExtension().DateEdit(s =>
+        {
+            //s.ClientEnabled = false;
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+
+        item.Visible = true;
+
+    });
+    groupItem.Items.Add(m => m.ResponseDate);
+
+    groupItem.Items.Add(m => m.ResponseComment, i =>
+    {
+        i.ColSpan = 2;
+        i.NestedExtension().Memo(s =>
+        {
+            s.Width = Unit.Percentage(100);
+            s.Height = Unit.Pixel(100);
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+
+        });
+    });
+
+    ///////////////////////////////////////////////////////////////////////////
 
     settings.Items.Add(i =>
     {
@@ -190,7 +214,7 @@
         Html.DevExpress().Button(
             s =>
             {
-                s.Name = "taskAddButton";
+                s.Name = "approvalAddButton";
                 s.Text = "Add";
                 s.UseSubmitBehavior = true;
             }).Render();
