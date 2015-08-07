@@ -307,6 +307,7 @@
         };
 
         settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { ncrFocusChanged(s, e); }";
+        settings.ClientSideEvents.RowDblClick = "function(s, e) { GridEditRow(s, e); }";
 
 
     });

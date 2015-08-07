@@ -2,7 +2,7 @@
 @using HseqCentralApp.Models;
 
 @{
-	var grid = Html.DevExpress().GridView(settings => {
+    var grid = Html.DevExpress().GridView(settings => {
         settings.Name = "CarGridView";
         settings.CallbackRouteValues = new { Controller = "Cars", Action = "CarGridViewPartial" };
 
@@ -15,25 +15,25 @@
 
         settings.Styles.Cell.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(0);
 
-        
-		settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Cars", Action = "CarGridViewPartialAddNew" };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Cars", Action = "CarGridViewPartialAddNew" };
         settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Cars", Action = "CarGridViewPartialUpdate" };
         settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Cars", Action = "CarGridViewPartialDelete" };
         //settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
         settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
         settings.SettingsBehavior.ConfirmDelete = true;
 
-		//settings.CommandColumn.Visible = true;
+        //settings.CommandColumn.Visible = true;
         //settings.CommandColumn.ShowNewButton = true;
         //settings.CommandColumn.ShowDeleteButton = true;
         //settings.CommandColumn.ShowEditButton = true;
 
-		settings.KeyFieldName = "HseqRecordID";
+        settings.KeyFieldName = "HseqRecordID";
 
-		settings.SettingsPager.Visible = true;
-		settings.Settings.ShowGroupPanel = true;
-		settings.Settings.ShowFilterRow = true;
-		settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
 
         //settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
         settings.SettingsBehavior.AllowFocusedRow = true;
@@ -127,9 +127,10 @@
         settings.Columns.Add("LastUpdatedBy");
         settings.Columns.Add("DateCreatedForDisplay").Visible = false;
 
-        settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { carFocusChanged(s, e); }"; 
+        settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { carFocusChanged(s, e); }";
+        settings.ClientSideEvents.RowDblClick = "function(s, e) { GridEditRow(s, e); }";
     });
-		if (ViewData["EditError"] != null){
+    if (ViewData["EditError"] != null){
         grid.SetEditErrorText((string)ViewData["EditError"]);
     }
 }

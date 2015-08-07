@@ -2,11 +2,11 @@
 @using HseqCentralApp.Models;
 
 @{
-	var grid = Html.DevExpress().GridView(settings => {
+    var grid = Html.DevExpress().GridView(settings => {
         settings.Name = "ParGridView";
         settings.CallbackRouteValues = new { Controller = "Pars", Action = "ParGridViewPartial" };
 
-		settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Pars", Action = "ParGridViewPartialAddNew" };
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Pars", Action = "ParGridViewPartialAddNew" };
         settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Pars", Action = "ParGridViewPartialUpdate" };
         settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Pars", Action = "ParGridViewPartialDelete" };
         //settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
@@ -21,12 +21,12 @@
         settings.SettingsBehavior.AllowFocusedRow = true;
         settings.SettingsSearchPanel.Visible = true;
 
-		settings.KeyFieldName = "HseqRecordID";
+        settings.KeyFieldName = "HseqRecordID";
 
-		settings.SettingsPager.Visible = true;
-		settings.Settings.ShowGroupPanel = true;
-		settings.Settings.ShowFilterRow = true;
-		settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
 
         //settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
 
@@ -118,10 +118,11 @@
         settings.Columns.Add("LastUpdatedBy");
         settings.Columns.Add("DateCreatedForDisplay").Visible = false;
 
-        settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { parFocusChanged(s, e); }"; 
-        
+        settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { parFocusChanged(s, e); }";
+        settings.ClientSideEvents.RowDblClick = "function(s, e) { GridEditRow(s, e); }";
+
     });
-		if (ViewData["EditError"] != null){
+    if (ViewData["EditError"] != null){
         grid.SetEditErrorText((string)ViewData["EditError"]);
     }
 }

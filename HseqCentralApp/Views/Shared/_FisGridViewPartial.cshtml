@@ -119,8 +119,9 @@
         settings.Columns.Add("LastUpdatedBy");
         settings.Columns.Add("DateCreatedForDisplay").Visible = false;
 
-        settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { fisFocusChanged(s, e); }"; 
-        
+        settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { fisFocusChanged(s, e); }";
+        settings.ClientSideEvents.RowDblClick = "function(s, e) { GridEditRow(s, e); }";
+
     });
     if (ViewData["EditError"] != null)
     {
