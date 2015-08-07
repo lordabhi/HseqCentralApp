@@ -38,6 +38,15 @@
         //settings.CommandColumn.ShowEditButton = true;
         //settings.SettingsContextMenu.Enabled = true;
 
+        /////////////////////////////////////////////////////////////////////
+
+        settings.Settings.ShowHeaderFilterButton = true;
+        settings.Settings.ShowFilterRowMenu = true;
+        settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+
+
+        /////////////////////////////////////////////////////////////////////
+
         settings.KeyFieldName = "HseqRecordID";
 
         settings.SettingsPager.Visible = true;
@@ -304,6 +313,13 @@
                 gridView.SettingsText.CommandUpdate = "Save";
             else
                 gridView.SettingsText.CommandUpdate = "Update";
+        };
+
+        settings.PreRender = (sender, e) =>
+        {
+            MVCxGridView gridView = sender as MVCxGridView;
+            if (gridView != null)
+                gridView.FilterExpression = "CaseNo > 100";
         };
 
         settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { ncrFocusChanged(s, e); }";

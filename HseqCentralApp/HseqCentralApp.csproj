@@ -540,6 +540,7 @@
     <Content Include="Views\Shared\_ApprovalEditView.cshtml" />
     <Content Include="Views\Shared\_TaskNewView.cshtml" />
     <Content Include="Views\Shared\_ApprovalNewView.cshtml" />
+    <Content Include="Views\Shared\_ActionViewPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

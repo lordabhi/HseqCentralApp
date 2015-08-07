@@ -14,7 +14,7 @@
         settings.Height = Unit.Pixel(400);
         settings.Collapsed = false;
         settings.ControlStyle.Font.Size = FontUnit.Medium;
-        
+
         settings.CallbackRouteValues = new { Controller = "Navigation", Action = "Comments" };
 
         //settings.SetContent(() =>
@@ -58,17 +58,17 @@
 
         settings.SetContent(() =>
         {
-            
+
             @Html.DevExpress().Memo(settings1 =>
             {
                 settings1.Name = "commentAddNewMeno";
                 settings1.Text = "";
                 settings1.Width = Unit.Percentage(100);
                 //settings1.Properties.EnableClientSideAPI = true;
-                    
+
             }).GetHtml();
 
-                        
+
             @Html.DevExpress().Button(settings4 =>
             {
                 settings4.Name = "commentSaveNewBtn";
@@ -93,17 +93,17 @@
                 settings3.SetItemTemplateContent(c =>
                 {
                     ViewContext.Writer.Write(
-                    "<div style=\"background-color: lightgoldenrodyellow\">" 
+                    "<div style=\"background-color: #e1f0f0\">"
                         + DataBinder.Eval(c.DataItem, "Content").ToString() + "</label><br/><br/><label>"
-                        + "<div style=\"font-size: 10px;font-style:italic\">"     
+                        + "<div style=\"font-size: 10px;font-style:italic\">"
                         + DataBinder.Eval(c.DataItem, "DateCreated").ToString()
                         + "<br/>"
                         + Utils.GetApplicationUserById((int)DataBinder.Eval(c.DataItem, "OwnerId")).FullName
                         + "</div></div>" );
                 });
             }).Bind(Model).GetHtml();
-            
-            
+
+
             //if (ViewData["Comments"] != null)
             //{
             //    @Html.DevExpress().ListBox(settings2 =>

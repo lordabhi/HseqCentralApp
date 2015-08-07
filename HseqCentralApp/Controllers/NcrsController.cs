@@ -849,6 +849,11 @@ namespace HseqCentralApp.Controllers
             return PartialView("_NcrGridViewPanel");
         }
 
+        public ActionResult ActionViewPanel()
+        {
+            //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
+            return PartialView("_ActionViewPanel");
+        }
 
         //public ActionResult NcrEditView()
         //{

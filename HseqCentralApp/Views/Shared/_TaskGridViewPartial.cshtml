@@ -14,6 +14,8 @@
         settings.CommandColumn.ShowDeleteButton = true;
         settings.CommandColumn.ShowEditButton = true;
 
+        settings.Settings.ShowHeaderFilterButton = true;
+
         settings.KeyFieldName = "DelegatableID";
 
         settings.SettingsPager.Visible = true;
@@ -30,8 +32,19 @@
         settings.Columns.Add("Title");
         settings.Columns.Add("Description");
         settings.Columns.Add("Status");
-        settings.Columns.Add("Owner.FullName");
-        settings.Columns.Add("Assignee.FullName");
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Owner.FullName";
+            column.Caption = "Owner";
+            //column.Width = 300;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Assignee.FullName";
+            column.Caption = "Assignee";
+            //column.Width = 300;
+        });
         settings.Columns.Add("DelegatableID").Visible = false;
         settings.Columns.Add("DateAssigned");
         settings.Columns.Add("DueDate");
