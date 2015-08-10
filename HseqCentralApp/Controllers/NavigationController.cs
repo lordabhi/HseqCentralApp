@@ -9,6 +9,7 @@ using DevExpress.Web.Mvc;
 using HseqCentralApp.Helpers;
 using HseqCentralApp.Models;
 using HseqCentralApp.Services;
+using HseqCentralApp.ViewModels;
 
 namespace HseqCentralApp.Controllers
 {
@@ -201,7 +202,7 @@ namespace HseqCentralApp.Controllers
                 }
                 //////////////////////////////////////////////////
 
-
+                //// Task ///////////////////
                 else if (!string.IsNullOrEmpty(Request.Params["addTask"]))
                 {
                     if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]) && !string.IsNullOrEmpty(Request.Params["recordId"]))
@@ -218,6 +219,8 @@ namespace HseqCentralApp.Controllers
                         ViewData["currentview"] = "_TaskNewView";
                     }
                 }
+
+                //// Approval ///////////////////
                 else if (!string.IsNullOrEmpty(Request.Params["addApproval"]))
                 {
                     if (!string.IsNullOrEmpty(Request.Params["currentActiveView"]) && !string.IsNullOrEmpty(Request.Params["recordId"]))
@@ -234,6 +237,44 @@ namespace HseqCentralApp.Controllers
                         ViewData["currentview"] = "_ApprovalNewView";
                     }
                 }
+
+                //// Linked Record ///////////////////
+                else if (!string.IsNullOrEmpty(Request.Params["createLinkedRecord"])
+                    && !string.IsNullOrEmpty(Request.Params["linkedRecordDetails"]))
+                {
+                    if (!string.IsNullOrEmpty(Request.Params["recordId"]))
+                    {
+                        int recordId = int.Parse(Request.Params["recordId"]);
+
+                        var linkedRecordDetails = Request.Params["linkedRecordDetails"].Split('-');
+                        var sourceRecord = linkedRecordDetails[0];
+                        var targetRecord = linkedRecordDetails[1];
+
+                        //Ncr to Car
+                        if (sourceRecord == "NCR") {
+
+                            if (targetRecord == "CAR") {
+
+                                Ncr ncr = db.NcrRecords.Find(recordId);
+                                Car car = new Car(ncr) {
+                                    CreatedBy = _RecordService.GetCurrentApplicationUser().FullName,
+                                    DateCreated = DateTime.Now,
+                                    RecordType = RecordType.CAR
+                                };
+
+                                CarVM carVM = new CarVM();
+                                carVM.Car = car;
+                                carVM.LinkedRecord = true;
+                                carVM.SourceRecordId = ncr.HseqRecordID;
+
+                                ViewData["record"] = carVM;
+                                ViewData["currentview"] = "_CarLinkedView";
+                            }
+                        }
+
+                    }
+                }
+
                 ///////////////////////////////////////////////////////////
                 else
                 {
@@ -547,6 +588,54 @@ namespace HseqCentralApp.Controllers
             return PartialView("_MainContentCallbackPanel");
         }
 
+        
+        [HttpPost, ValidateInput(false)]
+        public ActionResult CarGridViewLinked(CarVM carVM)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (carVM != null)
+                    {
+                        Car car = carVM.Car;
+                        string caseNo;
+                        HseqCaseFile hseqCaseFile;
+                        car.CreatedBy = _RecordService.GetCurrentUser().FullName;
+                        car = (Car)_RecordService.CreateCaseFile(car, out caseNo, out hseqCaseFile, db);
+
+                        db.HseqRecords.Add(car);
+                        db.SaveChanges();
+                        HseqRecord sourceRecord = db.HseqRecords.Find(carVM.SourceRecordId);
+
+                        car.LinkedRecords.Add(sourceRecord);
+                        sourceRecord.LinkedRecords.Add(car);
+                        db.SaveChanges();
+                        //create the folder in Alfresco and return the alfresconoderef
+                        //Dummy for now
+
+                        //int alfresconoderef = caseNo;
+                        //hseqCaseFile.AlfrescoNoderef = caseNo;
+
+                        //car.AlfrescoNoderef = caseNo;
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                    return PartialView("_CarNewView", carVM);
+                }
+            }
+            else
+            {
+                ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_CarNewView", carVM);
+            }
+            return PartialView("_MainContentCallbackPanel");
+        }
+
+
+
         [HttpPost, ValidateInput(false)]
         public ActionResult ParGridViewNew(Par par)
         {
@@ -833,34 +922,135 @@ namespace HseqCentralApp.Controllers
             return PartialView("_CommentsPanel", filteredComments);
         }
 
-        public ActionResult ExportTo(string OutputFormat)
+        public ActionResult ExportTo(string OutputFormat, string currentView)
         {
             //var model = Session["TypedListModel"];
-            var model = db.NcrRecords.ToList();
+            //var model = db.NcrRecords.ToList();
+            
+            //var filteredAllItemRecords = from record in db.HseqRecords
+            //                        where NavigationFilter.FilteredNcrRecordIds.Contains(record.HseqRecordID)
+            //                        select record;
 
-            switch (OutputFormat.ToUpper())
+            //var model = filteredAllItemRecords.ToList();
+
+            //var model = Session["TypedListModel"];
+
+            GridViewSettings exportSettings = GridViewHelper.CreateExportGridViewSettings(currentView);
+            if (currentView.Equals("NcrGridView"))
             {
-                case "CSV":
-                    return GridViewExtension.ExportToCsv(GridViewHelper.ExportGridViewSettings, model);
-                case "PDF":
-                    return GridViewExtension.ExportToPdf(GridViewHelper.ExportGridViewSettings, model);
-                case "RTF":
-                    return GridViewExtension.ExportToRtf(GridViewHelper.ExportGridViewSettings, model);
-                case "XLS":
-                    return GridViewExtension.ExportToXls(GridViewHelper.ExportGridViewSettings, model);
-                case "XLSX":
-                    return GridViewExtension.ExportToXlsx(GridViewHelper.ExportGridViewSettings, model);
-                default:
-                    return RedirectToAction("Index");
+                var filteredAllItemRecords = from record in db.NcrRecords
+                                    where NavigationFilter.FilteredNcrRecordIds.Contains(record.HseqRecordID)
+                                    select record;
+
+                var model = filteredAllItemRecords.ToList();
+
+                switch (OutputFormat.ToUpper())
+                {
+                    case "CSV":
+                        return GridViewExtension.ExportToCsv(exportSettings, model);
+                    case "PDF":
+                        return GridViewExtension.ExportToPdf(exportSettings, model);
+                    case "RTF":
+                        return GridViewExtension.ExportToRtf(exportSettings, model);
+                    case "XLS":
+                        return GridViewExtension.ExportToXls(exportSettings, model);
+                    case "XLSX":
+                        return GridViewExtension.ExportToXlsx(exportSettings, model);
+                    default:
+                        return RedirectToAction("Index");
+                }
+
+
             }
+            else if (currentView.Equals("CarGridView")) {
+
+                var filteredAllItemRecords = from record in db.CarRecords
+                                             where NavigationFilter.FilteredCarRecordIds.Contains(record.HseqRecordID)
+                                             select record;
+
+                var model = filteredAllItemRecords.ToList();
+
+                switch (OutputFormat.ToUpper())
+                {
+                    case "CSV":
+                        return GridViewExtension.ExportToCsv(exportSettings, model);
+                    case "PDF":
+                        return GridViewExtension.ExportToPdf(exportSettings, model);
+                    case "RTF":
+                        return GridViewExtension.ExportToRtf(exportSettings, model);
+                    case "XLS":
+                        return GridViewExtension.ExportToXls(GridViewHelper.ExportGridViewSettings, model);
+                    case "XLSX":
+                        return GridViewExtension.ExportToXlsx(GridViewHelper.ExportGridViewSettings, model);
+                    default:
+                        return RedirectToAction("Index");
+                }
+
+            }
+
+            else if (currentView.Equals("ParGridView"))
+            {
+
+                var filteredAllItemRecords = from record in db.ParRecords
+                                             where NavigationFilter.FilteredParRecordIds.Contains(record.HseqRecordID)
+                                             select record;
+
+                var model = filteredAllItemRecords.ToList();
+
+                switch (OutputFormat.ToUpper())
+                {
+                    case "CSV":
+                        return GridViewExtension.ExportToCsv(exportSettings, model);
+                    case "PDF":
+                        return GridViewExtension.ExportToPdf(exportSettings, model);
+                    case "RTF":
+                        return GridViewExtension.ExportToRtf(exportSettings, model);
+                    case "XLS":
+                        return GridViewExtension.ExportToXls(GridViewHelper.ExportGridViewSettings, model);
+                    case "XLSX":
+                        return GridViewExtension.ExportToXlsx(GridViewHelper.ExportGridViewSettings, model);
+                    default:
+                        return RedirectToAction("Index");
+                }
+
+            }
+
+            else if (currentView.Equals("FisGridView"))
+            {
+
+                var filteredAllItemRecords = from record in db.FisRecords
+                                             where NavigationFilter.FilteredFisRecordIds.Contains(record.HseqRecordID)
+                                             select record;
+
+                var model = filteredAllItemRecords.ToList();
+
+                switch (OutputFormat.ToUpper())
+                {
+                    case "CSV":
+                        return GridViewExtension.ExportToCsv(exportSettings, model);
+                    case "PDF":
+                        return GridViewExtension.ExportToPdf(exportSettings, model);
+                    case "RTF":
+                        return GridViewExtension.ExportToRtf(exportSettings, model);
+                    case "XLS":
+                        return GridViewExtension.ExportToXls(GridViewHelper.ExportGridViewSettings, model);
+                    case "XLSX":
+                        return GridViewExtension.ExportToXlsx(GridViewHelper.ExportGridViewSettings, model);
+                    default:
+                        return RedirectToAction("Index");
+                }
+
+            }
+
+            else if (currentView.Equals("AllItemsGridView")){
+
+            }
+
+            return RedirectToAction("Index");
         }
 
-        // [HttpPost]
-        //public ActionResult AddNewComment(string selectedMenuItemName)
-        //{
-        //    return PartialView("_CommentsPanel", db.Comments.ToList());
-        //}
     }
+
 }
 
 public static class GridViewHelper
@@ -877,16 +1067,53 @@ public static class GridViewHelper
         }
     }
 
-    private static GridViewSettings CreateExportGridViewSettings()
+    public static GridViewSettings CreateExportGridViewSettings()
     {
-        GridViewSettings settings = new GridViewSettings();
+        GridViewSettings settings = new GridViewSettings()
+        {
+            Name = "gvTypedListDataBinding",
+            CallbackRouteValues = new
+            { Controller = "Ncrs", Action = "NcrGridViewPartial" },
+            KeyFieldName = "HseqRecordID"
+        };
+        settings.Settings.ShowFilterRow = true;
+        //settings.SettingsExport.ExportedRowType = DevExpress.Web.GridViewExportedRowType.Selected;
+        settings.Columns.Add("CaseNo");
+        settings.Columns.Add("RecordNo");
+        settings.Columns.Add("RecordType");
+        settings.Columns.Add("Title");
+        settings.Columns.Add("Description");
 
-        settings.Name = "gvTypedListDataBinding";
-        settings.CallbackRouteValues = new { Controller = "Ncrs", Action = "NcrGridViewPartial" };
+        return settings;
+    }
+
+
+    public static GridViewSettings CreateExportGridViewSettings(string currentView)
+    {
+        GridViewSettings settings = new GridViewSettings() { Name = "gvTypedListDataBinding" };
+
+        if (currentView.Equals("NcrGridView")) {
+            settings.CallbackRouteValues = new { Controller = "Ncrs", Action = "NcrGridViewPartial" };
+        }else if (currentView.Equals("CarGridView"))
+        {
+            settings.CallbackRouteValues = new { Controller = "Cars", Action = "CarGridViewPartial" };
+        }
+        else if (currentView.Equals("ParGridView"))
+        {
+            settings.CallbackRouteValues = new { Controller = "Pars", Action = "ParGridViewPartial" };
+        }
+        else if (currentView.Equals("FisGridView"))
+        {
+            settings.CallbackRouteValues = new { Controller = "Fis", Action = "FisGridViewPartial" };
+        }
+        else if (currentView.Equals("AllItemsGridView"))
+        {
+            settings.CallbackRouteValues = new { Controller = "Home", Action = "AllItemsGridViewPartial" };
+        }
+
 
         settings.KeyFieldName = "HseqRecordID";
         settings.Settings.ShowFilterRow = true;
-
         settings.Columns.Add("CaseNo");
         settings.Columns.Add("RecordNo");
         settings.Columns.Add("RecordType");

@@ -1,14 +1,31 @@
 ﻿@using (Html.BeginForm("ExportTo", "Navigation"))
 {
 
-    <table>
+    <table cellpadding="0" cellspacing="0">
         <tr>
+
+
+       @Html.DevExpress().Label(settings =>
+       {
+           settings.Name = "Label";
+           settings.Text = "Export To:";
+           settings.Style["color"] = "#0072C6";
+           settings.Style["font-style"] = "#italic";
+           settings.Style["font-size"] = "75%";
+       }).GetHtml()
+
+
+            </tr>
+<tr>
             <td>
                 @Html.DevExpress().Button(btn =>
            {
                btn.Name = "btnExportToCSV";
                btn.Attributes["OutputFormatAttribute"] = "CSV";
                btn.Text = "CSV";
+               btn.Styles.Native = true;
+               btn.Style["font-size"] = "8px";
+               
                btn.UseSubmitBehavior = true;
                btn.ClientSideEvents.Click = "OnClick";
            }).GetHtml()
@@ -20,6 +37,8 @@
                btn.Attributes["OutputFormatAttribute"] = "PDF";
                btn.Attributes["recordid"] = "1";
                btn.Text = "PDF";
+               btn.Styles.Native = true;
+               btn.Style["font-size"] = "8px";
                btn.UseSubmitBehavior = true;
                btn.ClientSideEvents.Click = "OnClick";
            }).GetHtml()
@@ -31,6 +50,8 @@
                btn.Attributes["OutputFormatAttribute"] = "RTF";
                btn.Text = "RTF";
                btn.UseSubmitBehavior = true;
+               btn.Styles.Native = true;
+               btn.Style["font-size"] = "8px";
                btn.ClientSideEvents.Click = "OnClick";
            }).GetHtml()
             </td>
@@ -41,6 +62,8 @@
                btn.Attributes["OutputFormatAttribute"] = "XLS";
                btn.Text = "XLS";
                btn.UseSubmitBehavior = true;
+               btn.Styles.Native = true;
+               btn.Style["font-size"] = "8px";
                btn.ClientSideEvents.Click = "OnClick";
            }).GetHtml()
             </td>
@@ -51,7 +74,10 @@
                btn.Attributes["OutputFormatAttribute"] = "XLSX";
                btn.Text = "XLSX";
                btn.UseSubmitBehavior = true;
+               btn.Styles.Native = true;
+               btn.Style["font-size"] = "8px";
                btn.ClientSideEvents.Click = "OnClick";
+               btn.ClientVisible = false;
            }).GetHtml()
             </td>
         </tr>

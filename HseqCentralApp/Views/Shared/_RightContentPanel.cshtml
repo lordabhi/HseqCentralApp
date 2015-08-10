@@ -26,8 +26,9 @@
 
     settings.SetContent(() =>
     {
-        @Html.RenderPartial("ExportPanel");
+        
         @Html.RenderPartial("_ActionViewPanel");
+        @Html.RenderPartial("ExportPanel");
         //ViewContext.Writer.Write("Container for Attachments");
     });
 }).GetHtml()

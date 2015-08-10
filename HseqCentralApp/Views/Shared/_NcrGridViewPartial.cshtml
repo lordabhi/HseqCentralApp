@@ -64,7 +64,14 @@
         settings.Columns.Add("CaseNo").VisibleIndex = 1;
 
         settings.Columns.Add("RecordNo");
-        settings.Columns.Add("Title");
+        //settings.Columns.Add("Title");
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Title";
+            column.Caption = "Title";
+            //column.Width = Unit.Percentage(150);
+        });
 
         //settings.Columns.Add("NcrSource");
         settings.Columns.Add(column =>
@@ -300,11 +307,11 @@
             e.NewValues["CaseNo"] = "15-10020";
         };
 
-        settings.CellEditorInitialize = (s, e) =>
-        {
-            //if (e.Column.FieldName == "Name")
-            (e.Editor).Width = System.Web.UI.WebControls.Unit.Pixel(250);
-        };
+        //settings.CellEditorInitialize = (s, e) =>
+        //{
+        //    //if (e.Column.FieldName == "Name")
+        //    (e.Editor).Width = System.Web.UI.WebControls.Unit.Pixel(250);
+        //};
 
         settings.BeforeGetCallbackResult = (sender, e) =>
         {
@@ -317,9 +324,9 @@
 
         settings.PreRender = (sender, e) =>
         {
-            MVCxGridView gridView = sender as MVCxGridView;
-            if (gridView != null)
-                gridView.FilterExpression = "CaseNo > 100";
+            //MVCxGridView gridView = sender as MVCxGridView;
+            //if (gridView != null)
+            //    gridView.FilterExpression = "CaseNo > 100";
         };
 
         settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { ncrFocusChanged(s, e); }";

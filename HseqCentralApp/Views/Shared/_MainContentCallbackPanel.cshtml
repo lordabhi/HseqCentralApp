@@ -65,6 +65,10 @@
             {
                 @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.HseqApprovalRequest)ViewData["record"]);
             }
+            else if (mainviewpanel.Contains("CarLinked"))
+            {
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.CarVM)ViewData["record"]);
+            }
 
             else
             {

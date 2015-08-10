@@ -28,7 +28,8 @@ namespace HseqCentralApp.Models
             this.EnteredBy = record.EnteredBy;
             this.ReportedBy = record.ReportedBy;
             //this.QualityCoordinator = record.QualityCoordinator;
-
+            this.CaseNo = record.CaseNo;
+            this.RecordNo = record.RecordNo;
         }
 
 

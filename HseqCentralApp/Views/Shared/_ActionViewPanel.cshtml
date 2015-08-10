@@ -10,8 +10,9 @@
             settings1.Name = "ncr_btn_New";
             settings1.Text = "NEW";
             settings1.Styles.Native = true;
-            settings1.Width = Unit.Pixel(50);
-            settings1.Height = Unit.Pixel(20);
+            settings1.Style["font-size"] = "10px";
+            //settings1.Width = Unit.Pixel(50);
+            //settings1.Height = Unit.Pixel(20);
             settings1.Style["margin-right"] = "5px";
 
 
@@ -28,8 +29,9 @@
             //settings2.RouteValues = new { Controller = "Ncr", Action = "NcrGridViewUpdate1", ParamValue1 = "NcrGridView.GetRowKey(0)" };
             settings2.UseSubmitBehavior = false;
             settings2.Styles.Native = true;
-            settings2.Width = Unit.Pixel(50);
-            settings2.Height = Unit.Pixel(20);
+            settings2.Style["font-size"] = "10px";
+            //settings2.Width = Unit.Pixel(50);
+            //settings2.Height = Unit.Pixel(20);
 
         }).Render();
         @Html.DevExpress().Button(settings3 =>
@@ -38,8 +40,9 @@
             settings3.Text = "DELETE";
             settings3.Style["margin-right"] = "5px";
             settings3.Styles.Native = true;
-            settings3.Width = Unit.Pixel(70);
-            settings3.Height = Unit.Pixel(20);
+            settings3.Style["font-size"] = "10px";
+            //settings3.Width = Unit.Pixel(70);
+            //settings3.Height = Unit.Pixel(20);
 
             settings3.ClientSideEvents.Click = "function(s, e) { GridDeleteRow(s,e); }";
         }).Render();
@@ -52,6 +55,7 @@
             settings3.Style["margin-top"] = "10px";
             //settings3.Style["padding-top"] = "5px";
             settings3.Styles.Native = true;
+            settings3.Style["font-size"] = "10px";
             //settings3.Width = Unit.Pixel(70);
             //settings3.Height = Unit.Pixel(20);
 
@@ -66,12 +70,38 @@
             settings3.Style["margin-top"] = "10px";
             //settings3.Style["padding-top"] = "5px";
             settings3.Styles.Native = true;
+            settings3.Style["font-size"] = "10px";
             //settings3.Width = Unit.Pixel(70);
             //settings3.Height = Unit.Pixel(20);
 
             settings3.ClientSideEvents.Click = "function(s, e) { GridAddApproval(s,e); }";
         }).Render();
 
+        ViewContext.Writer.Write("<br/>");
+        ViewContext.Writer.Write("<br/>");
+
+        @Html.DevExpress().Label(settings4 =>
+        {
+            settings4.Name = "LinkedLabel";
+            settings4.Text = "Create Linked:";
+            settings4.Style["color"] = "#0072C6";
+            settings4.Style["font-style"] = "#italic";
+            //settings4.Style["font-size"] = "75%";
+        }).Render();
+
+        ViewContext.Writer.Write("<br/>");
+
+        @Html.DevExpress().Button(btn =>
+        {
+            btn.Name = "btnLinkedCAR";
+            btn.Attributes["OutputFormatAttribute"] = "NCR-CAR";
+            btn.Text = "CAR";
+            btn.Styles.Native = true;
+            btn.Style["font-size"] = "8px";
+
+            btn.UseSubmitBehavior = true;
+            btn.ClientSideEvents.Click = "CreateLinkedRecord";
+        }).Render();
 
     });
 }).GetHtml()

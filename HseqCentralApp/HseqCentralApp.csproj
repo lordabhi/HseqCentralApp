@@ -312,6 +312,7 @@
     <Compile Include="Services\RecordService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AllItemsVM.cs" />
+    <Compile Include="ViewModels\CarVM.cs" />
     <Compile Include="ViewModels\HseqTaskVM.cs" />
     <Compile Include="ViewModels\HseqApprovalRequestVM.cs" />
     <Compile Include="ViewModels\DelegatableVM.cs" />
@@ -541,6 +542,7 @@
     <Content Include="Views\Shared\_TaskNewView.cshtml" />
     <Content Include="Views\Shared\_ApprovalNewView.cshtml" />
     <Content Include="Views\Shared\_ActionViewPanel.cshtml" />
+    <Content Include="Views\Shared\_CarLinkedView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

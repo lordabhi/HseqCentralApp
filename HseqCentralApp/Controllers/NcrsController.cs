@@ -838,8 +838,9 @@ namespace HseqCentralApp.Controllers
             else {
                 NavigationFilter.FilteredNcrRecordIds = new List<int>();
             }
-            
+
             //return PartialView("_NcrGridViewPartial", model.ToList());
+            Session["TypedListModel"] = filteredNcrRecords;
             return PartialView("_NcrGridViewPartial", filteredNcrRecords);
         }
 

@@ -110,25 +110,40 @@ function OnBeginCallback(s, e) {
 
         e.customArgs["new"] = true;
 
-    } else if (newTaskbtnclicked) {
+    }
+
+    ///// Add Task ///////
+    else if (newTaskbtnclicked) {
 
         e.customArgs["addTask"] = true;
-    } else if (newApprovalbtnclicked) {
+    }
+        ///// Add Approval ///////
+    else if (newApprovalbtnclicked) {
 
         e.customArgs["addApproval"] = true;
+    }
+
+        ////////// Linked Records///////////////
+
+    else if (createLinkedRecordbtnclicked) {
+
+        e.customArgs["createLinkedRecord"] = true;
+        e.customArgs["linkedRecordDetails"] = linkedRecordDetails;
     }
 
     newbtnclicked = false;
     editbtnclicked = false;
     newTaskbtnclicked = false;
     newApprovalbtnclicked = false;
+    createLinkedRecordbtnclicked = false;
+    linkedRecordDetails = null;
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 var currentActiveView;
 var currentActiveViewObj;
- var recordId;
+var recordId;
 
 function ncrFocusChanged(s, e) {
 
@@ -396,20 +411,18 @@ function OnClick(s, e) {
         var actionParams = $("form").attr("action").split("?OutputFormat=");
         actionParams[1] = s.GetMainElement().getAttribute("OutputFormatAttribute");
 
-        $("form").attr( { action:actionParams.join("?OutputFormat=")} );
+    //    $("form").attr({ action: actionParams.join("?OutputFormat=") });
+        var results = computeCurrentRecord();
+        var currentView = results[0].currentActiveView;
+
+        var outputFormat = actionParams.join("?OutputFormat=");
+
+        var actionString = outputFormat + "&&currentView=" + currentView;
+
+        $("form").attr({ action: actionString });
+
+        console.log();
 }
-
-
-//function OnNcrEditClick(s, e) {
-//    $.ajax({
-//        type: "POST",
-//        url: "@Url.Action("NcrGridViewUpdate","Navigation")",
-//        success: function(response) {
-//            $("#container").html(response);
-//        }
-//    });
-//}
-
 
 function PostFailure() {};
 
@@ -424,11 +437,6 @@ function PostSuccess(response) {
 function PostOnComplete() {};
 
 
-//function ncrEditCancel() {
-//        $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
-
-//};
-
 function RecordCancelEdit(s, e) {
         $.ajax({
             url: ('Navigation/CancelEdit'),
@@ -441,61 +449,21 @@ function RecordCancelEdit(s, e) {
         return false;
 }
 
-//$(function() {
-//    $('editCancelButton').click(function() {
-//        $.ajax({
-//            //url: $(this).data('url'),
-//            type: 'GET',
-//            cache: false,
-//            success: function(result) {
-//                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
-//            }
-//        });
-//        return false;
-//    });
-//});
+var createLinkedRecordbtnclicked = false;
+var linkedRecordDetails = null;
 
+function CreateLinkedRecord(s, e) {
+    linkedRecordDetails = s.GetMainElement().getAttribute("OutputFormatAttribute");
 
-//$(function() {
-//    $('carCancelButton').click(function() {
-//        $.ajax({
-//            //url: $(this).data('url'),
-//            type: 'GET',
-//            cache: false,
-//            success: function(result) {
-//                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
-//            }
-//        });
-//        return false;
-//    });
-//});
+    console.log(linkedRecordDetails);
 
-//$(function () {
-//    $('parCancelButton').click(function () {
-//        $.ajax({
-//            //url: $(this).data('url'),
-//            type: 'GET',
-//            cache: false,
-//            success: function (result) {
-//                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
-//            }
-//        });
-//        return false;
-//    });
-//});
+    var results = computeCurrentRecord();
+    var activeViewObj = results[0].currentActiveViewObj;
 
-//$(function () {
-//    $('fisCancelButton1').click(function () {
-//        $.ajax({
-//            //url: $(this).data('url'),
-//            type: 'GET',
-//            cache: false,
-//            success: function (result) {
-//                $(MainPaneSplitterContainer).html($("_MainContentCallbackPanel"));
-//            }
-//        });
-//        return false;
-//    });
-//});
+    var focusedRowIndex = activeViewObj.GetFocusedRowIndex();
 
+    createLinkedRecordbtnclicked = true;
 
+    MainContentCallbackPanel.PerformCallback();
+    
+}
