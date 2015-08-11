@@ -401,11 +401,11 @@ namespace HseqCentralApp.Controllers
             return PartialView("_FisChartContainer", model.ToList());
         }
 
-        public ActionResult FisGridViewPanel()
-        {
-            //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
-            return PartialView("_FisGridViewPanel");
-        }
+        //public ActionResult FisGridViewPanel()
+        //{
+        //    //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
+        //    return PartialView("_FisGridViewPanel");
+        //}
 
     }
 }

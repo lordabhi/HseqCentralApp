@@ -105,10 +105,10 @@ function OnBeginCallback(s, e) {
 
     if (editbtnclicked) {
 
-        e.customArgs["edit"] = true;
+        e.customArgs["EditRecord"] = true;
     } else if (newbtnclicked) {
 
-        e.customArgs["new"] = true;
+        e.customArgs["NewRecord"] = true;
 
     }
 

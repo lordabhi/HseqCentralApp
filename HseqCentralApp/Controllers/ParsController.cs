@@ -349,10 +349,10 @@ namespace HseqCentralApp.Controllers
             return PartialView("_ParChartContainer", model.ToList());
         }
 
-        public ActionResult ParGridViewPanel()
-        {
-            //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
-            return PartialView("_ParGridViewPanel");
-        }
+        //public ActionResult ParGridViewPanel()
+        //{
+        //    //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
+        //    return PartialView("_ParGridViewPanel");
+        //}
     }
 }

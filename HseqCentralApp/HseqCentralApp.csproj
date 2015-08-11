@@ -235,8 +235,10 @@
     <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\DispositionTypesController.cs" />
+    <Compile Include="Controllers\ExportController.cs" />
     <Compile Include="Controllers\FisCategoriesController.cs" />
     <Compile Include="Controllers\FisCodesController.cs" />
+    <Compile Include="Helpers\ExportUtils.cs" />
     <Compile Include="Controllers\GroupsAdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HseqTasksController.cs" />
@@ -335,7 +337,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\js\LeftTreeView.js" />
+    <Content Include="Scripts\js\Navigation.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -513,9 +515,6 @@
     <Content Include="Views\Shared\_ApprovalChartContainer.cshtml" />
     <Content Include="Views\Shared\_ApprovalGridViewPartial.cshtml" />
     <Content Include="Views\Shared\_ApprovalSplitter.cshtml" />
-    <Content Include="Views\Shared\_CarGridViewPanel.cshtml" />
-    <Content Include="Views\Shared\_ParGridViewPanel.cshtml" />
-    <Content Include="Views\Shared\_FisGridViewPanel.cshtml" />
     <Content Include="Views\Shared\_NcrEditView.cshtml" />
     <Content Include="Views\Shared\_LinkedItemsPanel.cshtml" />
     <Content Include="Views\Comments\Create.cshtml" />
@@ -547,6 +546,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="Views\Export\" />
     <Folder Include="Views\Navigation\" />
     <Folder Include="Views\Records\" />
   </ItemGroup>

@@ -21,7 +21,8 @@
     @Html.HiddenFor(m => m.Car.CreatedBy)
     @Html.HiddenFor(m => m.Car.DateCreated)
     @Html.HiddenFor(m => m.SourceRecordId)
-    
+    @Html.HiddenFor(m => m.Car.HseqCaseFileID)
+
     @Html.DevExpress().FormLayout(settings =>
 {
 settings.Name = "FormLayout";
@@ -29,7 +30,7 @@ settings.Width = Unit.Percentage(100);
 
 var groupItem = settings.Items.AddGroupItem(groupSettings =>
 {
-    groupSettings.Caption = "New CAR: " + Model.Car.CaseNo;
+    groupSettings.Caption = "Linked CAR Record: " + Model.Car.CaseNo;
 
     groupSettings.ShowCaption = DefaultBoolean.True;
     groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
@@ -232,7 +233,7 @@ var groupItem = settings.Items.AddGroupItem(groupSettings =>
             s =>
             {
                 s.Name = "carLinkedCreateButton";
-                s.Text = "Create Linked";
+                s.Text = "Create";
                 s.UseSubmitBehavior = true;
             }).Render();
         Html.DevExpress().Button(

@@ -164,12 +164,13 @@ namespace HseqCentralApp.Services
             record.CaseNo = caseNo;
             record.RecordNo = caseNo;
 
-            hseqCaseFile = new HseqCaseFile();
-
-            hseqCaseFile.CaseNo = caseNo;
+            hseqCaseFile = new HseqCaseFile() {
+                CaseNo = caseNo
+            };
 
             db.HseqCaseFiles.Add(hseqCaseFile);
 
+            db.SaveChanges();
             record.HseqCaseFile = hseqCaseFile;
             record.HseqCaseFileID = hseqCaseFile.HseqCaseFileID;
 

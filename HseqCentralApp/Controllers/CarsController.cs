@@ -344,11 +344,11 @@ namespace HseqCentralApp.Controllers
             return PartialView("_CarChartContainer", model.ToList());
         }
 
-        public ActionResult CarGridViewPanel()
-        {
-            //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
-            return PartialView("_CarGridViewPanel");
-        }
+        //public ActionResult CarGridViewPanel()
+        //{
+        //    //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
+        //    return PartialView("_CarGridViewPanel");
+        //}
 
     }
 }
