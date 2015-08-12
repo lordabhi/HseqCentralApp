@@ -79,6 +79,13 @@
         });
     });
 
+    groupItem2.Items.Add(m => m.Status, i =>
+    {
+        i.NestedExtension().Label(s =>
+        {
+        });
+    });
+
     var groupItem = settings.Items.AddGroupItem(groupSettings =>
     {
         groupSettings.Caption = "Edit Task: ";
@@ -119,7 +126,7 @@
         });
     });
 
-    groupItem.Items.Add(m => m.Status);
+    //groupItem.Items.Add(m => m.Status);
 
     groupItem.Items.Add(m => m.Response);
 

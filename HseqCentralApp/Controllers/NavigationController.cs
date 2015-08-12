@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using DevExpress.Web.Mvc;
 using HseqCentralApp.Helpers;
@@ -215,6 +214,8 @@ namespace HseqCentralApp.Controllers
                         int recordId = int.Parse(Request.Params["recordId"]);
 
                         HseqTask hseqTask = new HseqTask();
+                        hseqTask.Status = TaskStatus.NotStarted;
+
                         HseqRecord hseqRecord = db.HseqRecords.Find(recordId);
                         hseqTask.HseqRecordID = hseqRecord.HseqRecordID;
                         hseqTask.HseqRecord = hseqRecord;
@@ -233,6 +234,9 @@ namespace HseqCentralApp.Controllers
                         int recordId = int.Parse(Request.Params["recordId"]);
 
                         HseqApprovalRequest hseqApproval = new HseqApprovalRequest();
+                        hseqApproval.Response = ApprovalResult.Waiting;
+                        hseqApproval.Status = ApprovalStatus.Active;
+
                         HseqRecord hseqRecord = db.HseqRecords.Find(recordId);
                         hseqApproval.HseqRecordID = hseqRecord.HseqRecordID;
                         hseqApproval.HseqRecord = hseqRecord;
@@ -386,15 +390,23 @@ namespace HseqCentralApp.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult ApprovalGridViewUpdate(HseqApprovalRequest item)
+        public ActionResult ApprovalGridViewUpdate(HseqApprovalRequest approvalRequest)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (item != null)
+                    if (approvalRequest != null)
                     {
-                        db.Entry(item).State = EntityState.Modified;
+                        if (approvalRequest.Response == ApprovalResult.Approved
+                            || approvalRequest.Response == ApprovalResult.Rejected)
+                        {
+                            approvalRequest.Status = ApprovalStatus.Completed;
+                        }else if (approvalRequest.Response == ApprovalResult.Canceled)
+                        {
+                            approvalRequest.Status = ApprovalStatus.Canceled;
+                        }
+                        db.Entry(approvalRequest).State = EntityState.Modified;
                         db.SaveChanges();
                     }
                 }
@@ -423,7 +435,7 @@ namespace HseqCentralApp.Controllers
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_ApprovalEditView", item);
+                return PartialView("_ApprovalEditView", approvalRequest);
             }
             return PartialView("_MainContentCallbackPanel");
         }
@@ -438,11 +450,8 @@ namespace HseqCentralApp.Controllers
             {
                 try
                 {
-                    //         var modelItem = model.FirstOrDefault(it => it.HseqRecordID == item.HseqRecordID);
                     if (item != null)
                     {
-                        //this.UpdateModel(item);
-                        //db.SaveChanges();
                         db.Entry(item).State = EntityState.Modified;
                         db.SaveChanges();
                     }
@@ -514,8 +523,6 @@ namespace HseqCentralApp.Controllers
                 {
                     if (ncr != null)
                     {
-
-                        //string caseNo;
                         HseqCaseFile hseqCaseFile;
                         string caseNo;
                         ncr.CreatedBy = _RecordService.GetCurrentUser().FullName;
@@ -558,7 +565,6 @@ namespace HseqCentralApp.Controllers
                 {
                     if (car != null)
                     {
-
                         string caseNo;
                         HseqCaseFile hseqCaseFile;
                         car.CreatedBy = _RecordService.GetCurrentUser().FullName;
@@ -567,13 +573,6 @@ namespace HseqCentralApp.Controllers
                         db.HseqRecords.Add(car);
                         db.SaveChanges();
 
-                        //create the folder in Alfresco and return the alfresconoderef
-                        //Dummy for now
-
-                        //int alfresconoderef = caseNo;
-                        //hseqCaseFile.AlfrescoNoderef = caseNo;
-
-                        //car.AlfrescoNoderef = caseNo;
                     }
                 }
                 catch (Exception e)
@@ -600,10 +599,7 @@ namespace HseqCentralApp.Controllers
                     if (carVM != null)
                     {
                         Car car = carVM.Car;
-                        string caseNo;
-                        HseqCaseFile hseqCaseFile;
                         car.CreatedBy = _RecordService.GetCurrentUser().FullName;
-                        //car = (Car)_RecordService.CreateCaseFile(car, out caseNo, out hseqCaseFile, db);
 
                         db.HseqRecords.Add(car);
                         db.SaveChanges();
@@ -612,13 +608,6 @@ namespace HseqCentralApp.Controllers
                         car.LinkedRecords.Add(sourceRecord);
                         sourceRecord.LinkedRecords.Add(car);
                         db.SaveChanges();
-                        //create the folder in Alfresco and return the alfresconoderef
-                        //Dummy for now
-
-                        //int alfresconoderef = caseNo;
-                        //hseqCaseFile.AlfrescoNoderef = caseNo;
-
-                        //car.AlfrescoNoderef = caseNo;
                     }
                 }
                 catch (Exception e)
@@ -761,7 +750,6 @@ namespace HseqCentralApp.Controllers
 
         ////////////////////////////////////////
         
-        /// </summary>
         private void setActiveTab()
         {
           if (!String.IsNullOrEmpty(Request.Params["currentActiveTabIndex"]))
@@ -834,7 +822,6 @@ namespace HseqCentralApp.Controllers
                 {
                     recordId = Request.Params["recordId"];
 
-                    //ViewData["record"] = db.NcrRecords.Find(int.Parse(recordId));
                     record = db.HseqRecords.Find(int.Parse(recordId));
                     linkedRecords = record.LinkedRecords.ToList();
                     ViewData["LinkedItems"] = record.LinkedRecords;
@@ -842,7 +829,6 @@ namespace HseqCentralApp.Controllers
             }
 
             return PartialView("_LinkedItemsPanel", linkedRecords);
-            //return PartialView("_RightContentPanel");
         }
 
         ////////////////////////////////////////
