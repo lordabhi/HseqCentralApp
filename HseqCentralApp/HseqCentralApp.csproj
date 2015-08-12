@@ -258,23 +258,6 @@
     <Compile Include="Helpers\TreeViewHelper.cs" />
     <Compile Include="Helpers\NavigationUtils.cs" />
     <Compile Include="Helpers\Utils.cs" />
-    <Compile Include="Migrations\201507282140488_InitialCreate.cs" />
-    <Compile Include="Migrations\201507282140488_InitialCreate.Designer.cs">
-      <DependentUpon>201507282140488_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507282141019_InitialCreate1.cs" />
-    <Compile Include="Migrations\201507282141019_InitialCreate1.Designer.cs">
-      <DependentUpon>201507282141019_InitialCreate1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507292046229_InitialCreate2.cs" />
-    <Compile Include="Migrations\201507292046229_InitialCreate2.Designer.cs">
-      <DependentUpon>201507292046229_InitialCreate2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507292047061_InitialCreate3.cs" />
-    <Compile Include="Migrations\201507292047061_InitialCreate3.Designer.cs">
-      <DependentUpon>201507292047061_InitialCreate3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\UserAccount\AccountViewModels.cs" />
     <Compile Include="Models\Enums\ApprovalResult.cs" />
@@ -342,7 +325,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -542,6 +527,7 @@
     <Content Include="Views\Shared\_ApprovalNewView.cshtml" />
     <Content Include="Views\Shared\_ActionViewPanel.cshtml" />
     <Content Include="Views\Shared\_CarLinkedView.cshtml" />
+    <Content Include="Views\abhi.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -558,20 +544,6 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201507282140488_InitialCreate.resx">
-      <DependentUpon>201507282140488_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507282141019_InitialCreate1.resx">
-      <DependentUpon>201507282141019_InitialCreate1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507292046229_InitialCreate2.resx">
-      <DependentUpon>201507292046229_InitialCreate2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507292047061_InitialCreate3.resx">
-      <DependentUpon>201507292047061_InitialCreate3.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
