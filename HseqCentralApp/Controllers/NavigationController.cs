@@ -202,6 +202,7 @@ namespace HseqCentralApp.Controllers
                             ViewData["record"] = fis;
                             ViewData["currentview"] = "_Fis" + NEW_VIEW_PREFIX;
                         }
+
                     }
                 }
 
@@ -471,7 +472,6 @@ namespace HseqCentralApp.Controllers
                 ViewData["EditError"] = "Please, correct all errors.";
                 return PartialView("_NcrEditView", item);
             }
-            //return PartialView("_NcrGridViewPartial", model.ToList());
          //   ModelState.Clear();
             return PartialView("_MainContentCallbackPanel");
         }

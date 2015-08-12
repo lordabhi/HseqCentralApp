@@ -74,24 +74,24 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult RecordTypeTreeViewPartial()
         {
-            return PartialView("_RecordTypeTreeViewPartial");
+            return PartialView("_RecordTypeTreeView");
         }
 
         public ActionResult ResponsibleAreaTreeViewPartial()
         {
-            return PartialView("_ResponsibleAreaTreeViewPartial");
+            return PartialView("_ResponsibleAreaTreeView");
         }
 
         public ActionResult CoordinatorTreeViewPartial()
         {
-            return PartialView("_CoordinatorTreeViewPartial");
+            return PartialView("_CoordinatorTreeView");
         }
 
 
 
         public ActionResult HseqHome()
         {
-            return PartialView("HseqHome");
+            return PartialView("_HseqHomeView");
         }
 
 
@@ -105,11 +105,11 @@ namespace HseqCentralApp.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult _AllItemsGridViewPartial()
+        public ActionResult AllItemsGridView()
         {
             //var model = db3.HseqRecords;
             var model = NavigationUtils.GetFilteredAllItems();
-            return PartialView("_AllItemsGridViewPartial", model.ToList());
+            return PartialView("_AllItemsGridView", model.ToList());
         }
 
     }

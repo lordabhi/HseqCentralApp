@@ -1,11 +1,11 @@
 @{
     var grid = Html.DevExpress().GridView(settings => {
-        settings.Name = "TaskGridViewPartial";
-        settings.CallbackRouteValues = new { Controller = "HseqTasks", Action = "TaskGridViewPartial" };
+        settings.Name = "ApprovalGridView";
+        settings.CallbackRouteValues = new { Controller = "HseqApprovalRequests", Action = "ApprovalGridViewPartial" };
 
-        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "HseqTasks", Action = "TaskGridViewPartialAddNew" };
-        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "HseqTasks", Action = "TaskGridViewPartialUpdate" };
-        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "HseqTasks", Action = "TaskGridViewPartialDelete" };
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "HseqApprovalRequests", Action = "ApprovalGridViewPartialAddNew" };
+        settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "HseqApprovalRequests", Action = "ApprovalGridViewPartialUpdate" };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "HseqApprovalRequests", Action = "ApprovalGridViewPartialDelete" };
         settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
         settings.SettingsBehavior.ConfirmDelete = true;
 
@@ -32,6 +32,8 @@
         settings.Columns.Add("Title");
         settings.Columns.Add("Description");
         settings.Columns.Add("Status");
+        //settings.Columns.Add("Owner.FullName");
+        //settings.Columns.Add("Assignee.FullName");
         settings.Columns.Add(column =>
         {
             column.FieldName = "Owner.FullName";
@@ -49,7 +51,7 @@
         settings.Columns.Add("DateAssigned");
         settings.Columns.Add("DueDate");
 
-        settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { taskFocusChanged(s, e); }";
+        settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { approvalFocusChanged(s, e); }";
         settings.ClientSideEvents.RowDblClick = "function(s, e) { GridEditRow(s, e); }";
     });
 

@@ -697,45 +697,9 @@ namespace HseqCentralApp.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_NcrGridViewPartial", model.ToList());
+            return PartialView("_NcrGridView", model.ToList());
         }
 
-        //[HttpPost, ValidateInput(false)]
-        //public ActionResult NcrGridViewAddNew(NcrVM ncrVM)
-        //{
-        //    var model = db3.NcrRecords;
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            //model.Add(item);
-        //            //db3.SaveChanges();
-
-        //            Ncr ncr = ncrVM.Ncr;
-
-        //            string caseNo;
-        //            HseqCaseFile hseqCaseFile;
-        //            ncr.CreatedBy = _RecordService.GetCurrentUser().FullName;
-        //            ncr = (Ncr)_RecordService.CreateCaseFile(ncr, out caseNo, out hseqCaseFile, db);
-
-        //            model.Add(ncrVM.Ncr);
-        //            db3.SaveChanges();
-
-        //            //db.NcrRecords.Add(ncrVM.Ncr);
-        //            //db.SaveChanges();
-
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            ViewData["EditError"] = e.Message;
-        //        }
-        //    }
-        //    else
-        //        ViewData["EditError"] = "Please, correct all errors.";
-        //    return PartialView("_NcrGridViewPartial", model.ToList());
-        //}
-
-        
         //[HttpPost, ValidateInput(false)]
         public ActionResult NcrGridViewUpdate1(string ParamValue1)
         {
@@ -745,12 +709,6 @@ namespace HseqCentralApp.Controllers
             {
                 try
                 {
-                    //var modelItem = model.FirstOrDefault(it => it.HseqRecordID == item.HseqRecordID);
-                    //if (modelItem != null)
-                    //{
-                      //  this.UpdateModel(modelItem);
-                        //db3.SaveChanges();
-                    //}
                     ncr = db3.NcrRecords.Find(int.Parse(ParamValue1));
                     ViewData["NcrEditor"] = true;
                 }
@@ -764,8 +722,6 @@ namespace HseqCentralApp.Controllers
 
                 ViewData["editmodel"] = model.FirstOrDefault();
                 return PartialView("_MainContentTabPanel", model);
-                //return PartialView("_NcrEditView", model.FirstOrDefault());
-
         }
 
         [HttpPost, ValidateInput(false)]
@@ -790,7 +746,7 @@ namespace HseqCentralApp.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_NcrGridViewPartial", model.ToList());
+            return PartialView("_NcrGridView", model.ToList());
 
         }
         [HttpPost, ValidateInput(false)]
@@ -811,7 +767,7 @@ namespace HseqCentralApp.Controllers
                     ViewData["EditError"] = e.Message;
                 }
             }
-            return PartialView("_NcrGridViewPartial", model.ToList());
+            return PartialView("_NcrGridView", model.ToList());
         }
 
         public ActionResult _NcrChartContainer()
@@ -839,9 +795,8 @@ namespace HseqCentralApp.Controllers
                 NavigationFilter.FilteredNcrRecordIds = new List<int>();
             }
 
-            //return PartialView("_NcrGridViewPartial", model.ToList());
             Session["TypedListModel"] = filteredNcrRecords;
-            return PartialView("_NcrGridViewPartial", filteredNcrRecords);
+            return PartialView("_NcrGridView", filteredNcrRecords);
         }
 
         public ActionResult NcrGridViewPanel()
@@ -852,15 +807,9 @@ namespace HseqCentralApp.Controllers
 
         public ActionResult ActionViewPanel()
         {
-            //return PartialView("~/Views/Shared/_NcrChartContainer.cshtml", model);
             return PartialView("_ActionViewPanel");
         }
 
-        //public ActionResult NcrEditView()
-        //{
-        //    var model = db3.NcrRecords;
-        //    return PartialView("_NcrEditView", model.FirstOrDefault());
-        //}
 
     }
 }

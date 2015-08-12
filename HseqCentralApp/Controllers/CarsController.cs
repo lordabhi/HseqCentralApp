@@ -266,7 +266,7 @@ namespace HseqCentralApp.Controllers
                 NavigationFilter.FilteredCarRecordIds = new List<int>();
             }
 
-            return PartialView("_CarGridViewPartial", model.ToList());
+            return PartialView("_CarGridView", model.ToList());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -287,7 +287,7 @@ namespace HseqCentralApp.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_CarGridViewPartial", model.ToList());
+            return PartialView("_CarGridView", model.ToList());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -312,7 +312,7 @@ namespace HseqCentralApp.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_CarGridViewPartial", model.ToList());
+            return PartialView("_CarGridView", model.ToList());
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult CarGridViewPartialDelete(System.Int32 HseqRecordID)
@@ -332,7 +332,7 @@ namespace HseqCentralApp.Controllers
                     ViewData["EditError"] = e.Message;
                 }
             }
-            return PartialView("_CarGridViewPartial", model.ToList());
+            return PartialView("_CarGridView", model.ToList());
         }
 
         //HseqCentralApp.Models.ApplicationDbContext db2 = new HseqCentralApp.Models.ApplicationDbContext();

@@ -62,11 +62,11 @@
     settings.Styles.ExpandBar.CssClass = "bar";
     settings.SetContent(() =>
     {
-        Html.RenderPartial("HeaderPartialView", HeaderViewRenderMode.Full);
+        Html.RenderPartial("_HeaderView", HeaderViewRenderMode.Full);
     });
     settings.SetExpandBarTemplateContent((c) =>
     {
-        Html.RenderPartial("HeaderPartialView", HeaderViewRenderMode.Title);
+        Html.RenderPartial("_HeaderView", HeaderViewRenderMode.Title);
     });
 }).GetHtml()
 
@@ -87,7 +87,7 @@
     settings.Styles.Panel.CssClass = "panel";
     settings.SetContent(() =>
     {
-        Html.RenderPartial("FooterPartialView");
+        Html.RenderPartial("_FooterView");
     });
 }).GetHtml()
 

@@ -271,7 +271,7 @@ namespace HseqCentralApp.Controllers
                 NavigationFilter.FilteredParRecordIds = new List<int>();
             }
 
-            return PartialView("_ParGridViewPartial", model.ToList());
+            return PartialView("_ParGridView", model.ToList());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -292,7 +292,7 @@ namespace HseqCentralApp.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_ParGridViewPartial", model.ToList());
+            return PartialView("_ParGridView", model.ToList());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -317,7 +317,7 @@ namespace HseqCentralApp.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_ParGridViewPartial", model.ToList());
+            return PartialView("_ParGridView", model.ToList());
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult ParGridViewPartialDelete(System.Int32 HseqRecordID)
@@ -337,7 +337,7 @@ namespace HseqCentralApp.Controllers
                     ViewData["EditError"] = e.Message;
                 }
             }
-            return PartialView("_ParGridViewPartial", model.ToList());
+            return PartialView("_ParGridView", model.ToList());
         }
 
         //HseqCentralApp.Models.ApplicationDbContext db2 = new HseqCentralApp.Models.ApplicationDbContext();

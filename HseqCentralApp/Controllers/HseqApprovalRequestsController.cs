@@ -374,7 +374,7 @@ namespace HseqCentralApp.Controllers
             //var model = db1.HseqApprovalRequests;
             var model = NavigationUtils.GetFilteredApprovalRequests();
             AllItemsVM.ApprovalRecords = model;
-            return PartialView("~/Views/Shared/_ApprovalGridViewPartial.cshtml", model.ToList());
+            return PartialView("~/Views/Shared/_ApprovalGridView.cshtml", model.ToList());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -394,7 +394,7 @@ namespace HseqCentralApp.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("~/Views/Shared/_ApprovalGridViewPartial.cshtml", model);
+            return PartialView("~/Views/Shared/_ApprovalGridView.cshtml", model);
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult ApprovalGridViewPartialUpdate(HseqCentralApp.Models.HseqTask item)
@@ -413,7 +413,7 @@ namespace HseqCentralApp.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("~/Views/Shared/_ApprovalGridViewPartial.cshtml", model);
+            return PartialView("~/Views/Shared/_ApprovalGridView.cshtml", model);
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult ApprovalGridViewPartialDelete(System.Int32 DelegatableID)
@@ -430,7 +430,7 @@ namespace HseqCentralApp.Controllers
                     ViewData["EditError"] = e.Message;
                 }
             }
-            return PartialView("~/Views/Shared/_ApprovalGridViewPartial.cshtml", model);
+            return PartialView("~/Views/Shared/_ApprovalGridView.cshtml", model);
         }
 
         public ActionResult _ApprovalChartContainer()

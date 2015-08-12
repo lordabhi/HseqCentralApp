@@ -7,7 +7,7 @@
 @{
 	var grid = Html.DevExpress().GridView(settings => {
         settings.Name = "AllItemsGridView";
-        settings.CallbackRouteValues = new { Controller = "Home", Action = "_AllItemsGridViewPartial" };
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "AllItemsGridView" };
 
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 

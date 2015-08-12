@@ -33,7 +33,7 @@
     
     settings.SetContent(() =>
     {
-        @Html.RenderPartial("_RecordTypeTreeViewPartial");
+        @Html.RenderPartial("_RecordTypeTreeView");
         //ViewContext.Writer.Write("Round panel content");
     });
 }).GetHtml()
@@ -54,7 +54,7 @@
     settings.SetContent(() =>
     {
         //ViewContext.Writer.Write("Container for coordinators");
-        @Html.RenderPartial("_CoordinatorTreeViewPartial");
+        @Html.RenderPartial("_CoordinatorTreeView");
     });
 }).GetHtml()
 
@@ -74,6 +74,6 @@
     settings.SetContent(() =>
     {
         //ViewContext.Writer.Write("Container for Responsible Area");
-        @Html.RenderPartial("_ResponsibleAreaTreeViewPartial");
+        @Html.RenderPartial("_ResponsibleAreaTreeView");
     });
 }).GetHtml()

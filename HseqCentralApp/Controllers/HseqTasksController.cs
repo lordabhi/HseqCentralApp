@@ -46,7 +46,6 @@ namespace HseqCentralApp.Controllers
             return View(delegatables.ToList());
         }
 
-
         public ActionResult OpenAction()
         {
             HseqUser user = _RecordService.GetCurrentApplicationUser();
@@ -320,7 +319,7 @@ namespace HseqCentralApp.Controllers
             //var model = db1.HseqTasks;
             var model = NavigationUtils.GetFilteredTasks();
             AllItemsVM.TaskRecords = model;
-            return PartialView("~/Views/Shared/_TaskGridViewPartial.cshtml", model.ToList());
+            return PartialView("~/Views/Shared/_TaskGridView.cshtml", model.ToList());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -340,7 +339,7 @@ namespace HseqCentralApp.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("~/Views/Shared/_TaskGridViewPartial.cshtml", model);
+            return PartialView("~/Views/Shared/_TaskGridView.cshtml", model);
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult TaskGridViewPartialUpdate(HseqCentralApp.Models.HseqTask item)
@@ -359,7 +358,7 @@ namespace HseqCentralApp.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("~/Views/Shared/_TaskGridViewPartial.cshtml", model);
+            return PartialView("~/Views/Shared/_TaskGridView.cshtml", model);
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult TaskGridViewPartialDelete(System.Int32 DelegatableID)
@@ -376,7 +375,7 @@ namespace HseqCentralApp.Controllers
                     ViewData["EditError"] = e.Message;
                 }
             }
-            return PartialView("~/Views/Shared/_TaskGridViewPartial.cshtml", model);
+            return PartialView("~/Views/Shared/_TaskGridView.cshtml", model);
         }
 
         public ActionResult _TaskChartContainer()

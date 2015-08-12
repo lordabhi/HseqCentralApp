@@ -324,7 +324,7 @@ namespace HseqCentralApp.Controllers
                 NavigationFilter.FilteredFisRecordIds = new List<int>();
             }
 
-            return PartialView("_FisGridViewPartial", model.ToList());
+            return PartialView("_FisGridView", model.ToList());
         }
 
         [HttpPost, ValidateInput(false)]
@@ -345,7 +345,7 @@ namespace HseqCentralApp.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_FisGridViewPartial", model.ToList());
+            return PartialView("_FisGridView", model.ToList());
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult FisGridViewPartialUpdate(Fis item)
@@ -369,7 +369,7 @@ namespace HseqCentralApp.Controllers
             }
             else
                 ViewData["EditError"] = "Please, correct all errors.";
-            return PartialView("_FisGridViewPartial", model.ToList());
+            return PartialView("_FisGridView", model.ToList());
         }
         [HttpPost, ValidateInput(false)]
         public ActionResult FisGridViewPartialDelete(System.Int32 HseqRecordID)
@@ -389,7 +389,7 @@ namespace HseqCentralApp.Controllers
                     ViewData["EditError"] = e.Message;
                 }
             }
-            return PartialView("_FisGridViewPartial", model.ToList());
+            return PartialView("_FisGridView", model.ToList());
         }
 
         HseqCentralApp.Models.ApplicationDbContext db2 = new HseqCentralApp.Models.ApplicationDbContext();

@@ -263,14 +263,14 @@ function computeCurrentRecord(){
         recordId = FisGridView.GetRowKey(FisGridView.GetFocusedRowIndex());
         }
         else if(MainContentTabPanel.GetActiveTabIndex() === 4) {
-        currentActiveViewObj = TaskGridViewPartial;
-        currentActiveView = TaskGridViewPartial.name;
-        recordId = TaskGridViewPartial.GetRowKey(TaskGridViewPartial.GetFocusedRowIndex());
+        currentActiveViewObj = TaskGridView;
+        currentActiveView = TaskGridView.name;
+        recordId = TaskGridView.GetRowKey(TaskGridView.GetFocusedRowIndex());
         }
         else if (MainContentTabPanel.GetActiveTabIndex() === 5) {
-        currentActiveViewObj = ApprovalGridViewPartial;
-        currentActiveView = ApprovalGridViewPartial.name;
-        recordId = ApprovalGridViewPartial.GetRowKey(ApprovalGridViewPartial.GetFocusedRowIndex());
+        currentActiveViewObj = ApprovalGridView;
+        currentActiveView = ApprovalGridView.name;
+        recordId = ApprovalGridView.GetRowKey(ApprovalGridView.GetFocusedRowIndex());
         }
     else if (MainContentTabPanel.GetActiveTabIndex() === 6) {
         currentActiveViewObj = AllItemsGridView;
