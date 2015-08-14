@@ -18,7 +18,6 @@ namespace HseqCentralApp.Site.Tests.AutoMapper
         public void TestAutoMapper()
         {
             AutoMapperConfig.RegisterMappings();
-            //Mapper.CreateMap<Car, CarViewModel>();
 
             Mapper.AssertConfigurationIsValid();
         }
