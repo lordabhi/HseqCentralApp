@@ -9,6 +9,7 @@ using HseqCentralApp.Helpers;
 using HseqCentralApp.Models;
 using HseqCentralApp.Services;
 using HseqCentralApp.ViewModels;
+using AutoMapper;
 
 namespace HseqCentralApp.Controllers
 {
@@ -174,7 +175,9 @@ namespace HseqCentralApp.Controllers
                             car.DateCreated = DateTime.Now;
                             car.RecordType = RecordType.CAR;
 
-                            ViewData["record"] = car;
+                            CarCreateViewModel carVM = Mapper.Map<Car, CarCreateViewModel>(car);
+
+                            ViewData["record"] = carVM;
                             ViewData["currentview"] = "_Car" + NEW_VIEW_PREFIX;
                         }
                         else if (currentActiveView.Contains("Par"))
@@ -557,7 +560,7 @@ namespace HseqCentralApp.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult CarGridViewNew(HseqCentralApp.Models.Car car)
+        public ActionResult CarGridViewNew1(HseqCentralApp.Models.Car car)
         {
             if (ModelState.IsValid)
             {
@@ -588,7 +591,72 @@ namespace HseqCentralApp.Controllers
             return PartialView("_MainContentCallbackPanel");
         }
 
-        
+        [HttpPost, ValidateInput(false)]
+        public ActionResult CarGridViewNew(CarCreateViewModel carVM)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (carVM != null)
+                    {
+                        HseqCaseFile hseqCaseFile = new HseqCaseFile()
+                        {
+                            CaseNo = carVM.CaseNo
+                        };
+
+                        Car car = new Car();
+                        Mapper.Map(carVM, car);
+
+                        //Car car = new Car()
+                        //{
+                        //    CaseNo = carVM.CaseNo,
+                        //    RecordNo = carVM.RecordNo,
+                        //    Title = carVM.Title,
+                        //    Description = carVM.Description,
+                        //    JobNumber = carVM.JobNumber,
+                        //    DrawingNumber = carVM.DrawingNumber,
+                        //    RecordType = carVM.RecordType,
+                        //    EnteredBy = carVM.EnteredBy,
+                        //    ReportedBy = carVM.ReportedBy,
+                        //    CreatedBy = carVM.CreatedBy,
+                        //    DateCreated = carVM.DateCreated,
+                        //    CoordinatorID = carVM.CoordinatorID
+                        //};
+
+                        car = (Car)_RecordService.CreateCaseFile(car, out hseqCaseFile, db);
+
+                        db.HseqRecords.Add(car);
+                        db.SaveChanges();
+
+                    }
+                }
+                
+                catch (AutoMapperConfigurationException autoMapperException)
+                {
+
+                    throw autoMapperException.InnerException;
+                }
+                catch (AutoMapperMappingException autoMapperException) {
+
+                    throw autoMapperException.InnerException;
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                    return PartialView("_CarNewView", carVM);
+                }
+            }
+            else
+            {
+                ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_CarNewView", carVM);
+            }
+            return PartialView("_MainContentCallbackPanel");
+        }
+
+
+
         [HttpPost, ValidateInput(false)]
         public ActionResult CarGridViewLinked(CarVM carVM)
         {

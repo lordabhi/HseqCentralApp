@@ -5,34 +5,34 @@
 
 
 @{
-	var grid = Html.DevExpress().GridView(settings => {
+    var grid = Html.DevExpress().GridView(settings => {
         settings.Name = "AllItemsGridView";
         settings.CallbackRouteValues = new { Controller = "Home", Action = "AllItemsGridView" };
 
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
 
         //settings.Height = System.Web.UI.WebControls.Unit.Percentage(100);
-            
+
         settings.SettingsPager.PageSize = 10;
         settings.ControlStyle.Paddings.Padding = System.Web.UI.WebControls.Unit.Pixel(0);
         settings.ControlStyle.Border.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(0);
         settings.ControlStyle.BorderBottom.BorderWidth = System.Web.UI.WebControls.Unit.Pixel(1);
-        
+
         //settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
         settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
         settings.SettingsBehavior.ConfirmDelete = true;
 
-		//settings.CommandColumn.Visible = true;
+        //settings.CommandColumn.Visible = true;
         settings.CommandColumn.ShowNewButton = true;
         settings.CommandColumn.ShowDeleteButton = true;
         settings.CommandColumn.ShowEditButton = true;
 
-		settings.KeyFieldName = "HseqRecordID";
+        settings.KeyFieldName = "HseqRecordID";
 
-		settings.SettingsPager.Visible = true;
-		settings.Settings.ShowGroupPanel = true;
-		settings.Settings.ShowFilterRow = true;
-		settings.SettingsBehavior.AllowSelectByRowClick = true;
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
 
         settings.SettingsBehavior.AllowFocusedRow = true;
         settings.SettingsSearchPanel.Visible = true;
@@ -40,114 +40,114 @@
 
         settings.Settings.ShowStatusBar = GridViewStatusBarMode.Auto;
 
-                
-            settings.Columns.Add("CaseNo").VisibleIndex = 1;
 
-            settings.Columns.Add("RecordNo");
+        settings.Columns.Add("CaseNo").VisibleIndex = 1;
 
-            settings.Columns.Add(column =>
-            {
-                column.FieldName = "RecordType";
-                column.Caption = "Record Type";
+        settings.Columns.Add("RecordNo");
 
-                column.ColumnType = MVCxGridViewColumnType.ComboBox;
-                var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
-                comboBoxProperties.TextField = "RecordType";
-                comboBoxProperties.ValueField = "RecordType";
-                comboBoxProperties.ValueType = typeof(string);
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "RecordType";
+            column.Caption = "Record Type";
 
-                comboBoxProperties.Items.AddRange(typeof(RecordType).GetEnumValues());
-                comboBoxProperties.DropDownStyle = DropDownStyle.DropDown;
-                column.EditFormSettings.Visible = DefaultBoolean.True;
-                column.Visible = true;
-            });  
-        
-            settings.Columns.Add("Title");
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+            comboBoxProperties.TextField = "RecordType";
+            comboBoxProperties.ValueField = "RecordType";
+            comboBoxProperties.ValueType = typeof(string);
 
-        
-        
-				settings.Columns.Add("HseqRecordID").Visible = false;
-                settings.Columns.Add("AlfrescoNoderef").Visible = false; ;
-				
-				
-                settings.Columns.Add(column =>
-                {
-                    column.FieldName = "Description";
-                    column.Caption = "Description";
+            comboBoxProperties.Items.AddRange(typeof(RecordType).GetEnumValues());
+            comboBoxProperties.DropDownStyle = DropDownStyle.DropDown;
+            column.EditFormSettings.Visible = DefaultBoolean.True;
+            column.Visible = true;
+        });
 
-                    column.ColumnType = MVCxGridViewColumnType.Memo;
-                    column.EditFormSettings.Visible = DefaultBoolean.True;
-                    column.Visible = false;
-                    column.VisibleIndex = 101;
-                });                         
-          
-                
-				settings.Columns.Add("EnteredBy");
-				settings.Columns.Add("ReportedBy").Width = Unit.Pixel(200);
-        
-                settings.Columns.Add(column =>
-                {
-                    column.FieldName = "CoordinatorID";
-                    column.Caption = "Coordinator";
+        settings.Columns.Add("Title").Width = Unit.Percentage(50);
 
-                    column.ColumnType = MVCxGridViewColumnType.ComboBox;
-                    var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
-                    comboBoxProperties.DataSource = Utils.AppUsers();
-                    comboBoxProperties.TextField = "FullName";
-                    comboBoxProperties.ValueField = "HseqUserID";
-                    comboBoxProperties.ValueType = typeof(string);
-                    comboBoxProperties.DropDownStyle = DropDownStyle.DropDown;
-                });          
-        
-                settings.Columns.Add("LinkedRecordsID").Visible = false;
-                settings.Columns.Add("HseqCaseFileID").Visible = false;
-		
-                settings.Columns.Add(column =>
-                {
-                    column.FieldName = "JobNumber";
-                    column.Caption = "Job Number";
 
-                    column.ColumnType = MVCxGridViewColumnType.Default;
-                    column.EditFormSettings.Visible = DefaultBoolean.True;
-                    column.Visible = false;
-                });        
-        
-                settings.Columns.Add(column =>
-                {
-                    column.FieldName = "DrawingNumber";
-                    column.Caption = "Drawing Number";
 
-                    column.ColumnType = MVCxGridViewColumnType.Default;
-                    column.EditFormSettings.Visible = DefaultBoolean.True;
-                    column.Visible = false;
-                });		
-        
-                settings.Columns.Add(column=>
-                {
-                    column.FieldName = "DateCreated";
-                    column.Caption = "Date Created";
-                    
-                    column.ColumnType = MVCxGridViewColumnType.DateEdit;
-                    var dateEditProperties = column.PropertiesEdit as DateEditProperties;
-                    dateEditProperties.DisplayFormatString = "D";
-                });
-        
-                settings.Columns.Add(column =>
-                {
-                    column.FieldName = "DateLastUpdated";
-                    column.Caption = "Date Last Updated";
+        settings.Columns.Add("HseqRecordID").Visible = false;
+        settings.Columns.Add("AlfrescoNoderef").Visible = false; ;
 
-                    column.ColumnType = MVCxGridViewColumnType.DateEdit;
-                    var dateEditProperties = column.PropertiesEdit as DateEditProperties;
-                    dateEditProperties.DisplayFormatString = "D";
-                });        
-        
-				settings.Columns.Add("LastUpdatedBy");
-				settings.Columns.Add("DateCreatedForDisplay").Visible = false;
 
-                settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { allItemsFocusChanged(s, e);}";         
-			});
-		if (ViewData["EditError"] != null){
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "Description";
+            column.Caption = "Description";
+
+            column.ColumnType = MVCxGridViewColumnType.Memo;
+            column.EditFormSettings.Visible = DefaultBoolean.True;
+            column.Visible = false;
+            column.VisibleIndex = 101;
+        });
+
+
+        settings.Columns.Add("EnteredBy");
+        settings.Columns.Add("ReportedBy").Width = Unit.Pixel(200);
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "CoordinatorID";
+            column.Caption = "Coordinator";
+
+            column.ColumnType = MVCxGridViewColumnType.ComboBox;
+            var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
+            comboBoxProperties.DataSource = Utils.AppUsers();
+            comboBoxProperties.TextField = "FullName";
+            comboBoxProperties.ValueField = "HseqUserID";
+            comboBoxProperties.ValueType = typeof(string);
+            comboBoxProperties.DropDownStyle = DropDownStyle.DropDown;
+        });
+
+        settings.Columns.Add("LinkedRecordsID").Visible = false;
+        settings.Columns.Add("HseqCaseFileID").Visible = false;
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "JobNumber";
+            column.Caption = "Job Number";
+
+            column.ColumnType = MVCxGridViewColumnType.Default;
+            column.EditFormSettings.Visible = DefaultBoolean.True;
+            column.Visible = false;
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "DrawingNumber";
+            column.Caption = "Drawing Number";
+
+            column.ColumnType = MVCxGridViewColumnType.Default;
+            column.EditFormSettings.Visible = DefaultBoolean.True;
+            column.Visible = false;
+        });
+
+        settings.Columns.Add(column=>
+        {
+            column.FieldName = "DateCreated";
+            column.Caption = "Date Created";
+
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dateEditProperties = column.PropertiesEdit as DateEditProperties;
+            dateEditProperties.DisplayFormatString = "D";
+        });
+
+        settings.Columns.Add(column =>
+        {
+            column.FieldName = "DateLastUpdated";
+            column.Caption = "Date Last Updated";
+
+            column.ColumnType = MVCxGridViewColumnType.DateEdit;
+            var dateEditProperties = column.PropertiesEdit as DateEditProperties;
+            dateEditProperties.DisplayFormatString = "D";
+        });
+
+        settings.Columns.Add("LastUpdatedBy");
+        settings.Columns.Add("DateCreatedForDisplay").Visible = false;
+
+        settings.ClientSideEvents.FocusedRowChanged = "function(s, e) { allItemsFocusChanged(s, e);}";
+    });
+    if (ViewData["EditError"] != null){
         grid.SetEditErrorText((string)ViewData["EditError"]);
     }
 }

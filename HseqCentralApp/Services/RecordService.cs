@@ -179,6 +179,24 @@ namespace HseqCentralApp.Services
             return record;
         }
 
+        public HseqRecord CreateCaseFile(HseqRecord record, out HseqCaseFile hseqCaseFile, ApplicationDbContext db)
+        {
+
+            hseqCaseFile = new HseqCaseFile()
+            {
+                CaseNo = record.CaseNo
+            };
+
+            db.HseqCaseFiles.Add(hseqCaseFile);
+
+            db.SaveChanges();
+            record.HseqCaseFile = hseqCaseFile;
+            record.HseqCaseFileID = hseqCaseFile.HseqCaseFileID;
+
+            hseqCaseFile.HseqRecords.Add(record);
+
+            return record;
+        }
         public HseqRecord PopulateLinkedRecordDefaults(String recordSource, HseqRecord linkedRecord, HseqRecord ncr, TempDataDictionary TempData)
         {
             ncr.HseqRecordID = linkedRecord.HseqRecordID;

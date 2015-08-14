@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using HseqCentralApp.Controllers;
+using AutoMapper;
+using HseqCentralApp.App_Start;
 
 namespace HseqCentralApp
 {
@@ -24,6 +26,11 @@ namespace HseqCentralApp
             //Register your View Engine Here.
             ModelBinders.Binders.DefaultBinder = new DevExpress.Web.Mvc.DevExpressEditorsBinder();
             //ViewEngines.Engines.Add(new MyViewEngine());
+
+            //Configure Auto mapper settings
+            AutoMapperConfig.RegisterMappings();
+
+
         }
     }
 }

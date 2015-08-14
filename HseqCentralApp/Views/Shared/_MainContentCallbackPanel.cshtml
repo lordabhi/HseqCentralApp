@@ -46,7 +46,7 @@
             }
             else if (mainviewpanel.Contains("CarNew"))
             {
-                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Car)ViewData["record"]);
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.CarCreateViewModel)ViewData["record"]);
             }
             else if (mainviewpanel.Contains("ParNew"))
             {

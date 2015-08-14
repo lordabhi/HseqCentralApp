@@ -23,7 +23,7 @@
         settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Ncrs", Action = "NcrGridViewDelete" };
         //settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
         settings.SettingsEditing.Mode = GridViewEditingMode.EditForm;
-        settings.SettingsPopup.EditForm.Width = 900;
+        //settings.SettingsPopup.EditForm.Width = 900;
         settings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.LeftSides;
         settings.SettingsPopup.EditForm.VerticalAlign = PopupVerticalAlign.Middle;
 
@@ -64,16 +64,15 @@
         settings.Columns.Add("CaseNo").VisibleIndex = 1;
 
         settings.Columns.Add("RecordNo");
-        //settings.Columns.Add("Title");
 
-        settings.Columns.Add(column =>
-        {
-            column.FieldName = "Title";
-            column.Caption = "Title";
-            //column.Width = Unit.Percentage(150);
-        });
+        settings.Columns.Add("Title").Width = Unit.Percentage(50);
 
-        //settings.Columns.Add("NcrSource");
+        //settings.Columns.Add(column =>
+        //{
+        //    column.FieldName = "Title";
+        //    column.Caption = "Title";
+        //});
+
         settings.Columns.Add(column =>
         {
             column.FieldName = "NcrSource";
@@ -91,7 +90,6 @@
             column.Visible = true;
         });
 
-        //settings.Columns.Add("NcrState");
         settings.Columns.Add(column =>
         {
             column.FieldName = "NcrState";
@@ -109,7 +107,6 @@
             column.Visible = true;
         });
 
-        //settings.Columns.Add("DiscrepancyTypeID");
         settings.Columns.Add(column =>
         {
             column.FieldName = "DiscrepancyTypeID";
@@ -124,12 +121,11 @@
             comboBoxProperties.DropDownStyle = DropDownStyle.DropDown;
         });
 
-        //settings.Columns.Add("DispositionTypeID");
         settings.Columns.Add(column =>
         {
             column.FieldName = "DispositionTypeID";
             column.Caption = "Disposition Type";
-
+            column.Visible = false;
             column.ColumnType = MVCxGridViewColumnType.ComboBox;
             var comboBoxProperties = column.PropertiesEdit as ComboBoxProperties;
             comboBoxProperties.DataSource = Utils.DispositionTypes();
@@ -140,7 +136,6 @@
         });
 
 
-        //settings.Columns.Add("DispositionNote");
         settings.Columns.Add(column =>
         {
             column.FieldName = "DispositionNote";
@@ -152,7 +147,6 @@
             column.VisibleIndex = 102;
         });
 
-        //settings.Columns.Add("DetectedInAreaID");
         settings.Columns.Add(column =>
         {
             column.FieldName = "DetectedInAreaID";
@@ -167,7 +161,6 @@
             comboBoxProperties.DropDownStyle = DropDownStyle.DropDown;
         });
 
-        //settings.Columns.Add("ResponsibleAreaID");
         settings.Columns.Add(column =>
         {
             column.FieldName = "ResponsibleAreaID";
@@ -181,8 +174,6 @@
             comboBoxProperties.ValueType = typeof(string);
             comboBoxProperties.DropDownStyle = DropDownStyle.DropDown;
         });
-
-        //settings.Columns.Add("CauseDesc");
 
         settings.Columns.Add(column =>
         {
@@ -201,7 +192,6 @@
         settings.Columns.Add("AlfrescoNoderef").Visible = false; ;
 
 
-        //settings.Columns.Add("Description");
         settings.Columns.Add(column =>
         {
             column.FieldName = "Description";
@@ -213,7 +203,6 @@
             column.VisibleIndex = 101;
         });
 
-        //settings.Columns.Add("RecordType");
         settings.Columns.Add(column =>
         {
             column.FieldName = "RecordType";
@@ -228,11 +217,12 @@
             comboBoxProperties.Items.AddRange(typeof(RecordType).GetEnumValues());
             comboBoxProperties.DropDownStyle = DropDownStyle.DropDown;
             column.EditFormSettings.Visible = DefaultBoolean.True;
-            column.Visible = true;
+            column.Visible = false;
         });
 
         settings.Columns.Add("EnteredBy");
-        settings.Columns.Add("ReportedBy").Width = Unit.Pixel(200);
+        //settings.Columns.Add("ReportedBy").Width = Unit.Pixel(200);
+        settings.Columns.Add("ReportedBy").Visible=false;
 
         settings.Columns.Add(column =>
         {
@@ -251,7 +241,6 @@
         settings.Columns.Add("LinkedRecordsID").Visible = false;
         settings.Columns.Add("HseqCaseFileID").Visible = false;
 
-        //settings.Columns.Add("JobNumber");
         settings.Columns.Add(column =>
         {
             column.FieldName = "JobNumber";
@@ -262,7 +251,6 @@
             column.Visible = false;
         });
 
-        //settings.Columns.Add("DrawingNumber");
         settings.Columns.Add(column =>
         {
             column.FieldName = "DrawingNumber";
@@ -273,20 +261,18 @@
             column.Visible = false;
         });
 
-        //settings.Columns.Add("DateCreated");
 
         settings.Columns.Add(column=>
         {
             column.FieldName = "DateCreated";
             column.Caption = "Date Created";
-
+            column.Visible = false;
             column.ColumnType = MVCxGridViewColumnType.DateEdit;
             var dateEditProperties = column.PropertiesEdit as DateEditProperties;
             dateEditProperties.DisplayFormatString = "D";
         });
 
 
-        //settings.Columns.Add("DateLastUpdated");
         settings.Columns.Add(column =>
         {
             column.FieldName = "DateLastUpdated";
@@ -295,11 +281,11 @@
             column.ColumnType = MVCxGridViewColumnType.DateEdit;
             var dateEditProperties = column.PropertiesEdit as DateEditProperties;
             dateEditProperties.DisplayFormatString = "D";
+
+            column.Visible = false;
         });
 
-
-
-        settings.Columns.Add("LastUpdatedBy");
+        settings.Columns.Add("LastUpdatedBy").Visible = false;
         settings.Columns.Add("DateCreatedForDisplay").Visible = false;
 
         settings.InitNewRow = (s, e) =>
