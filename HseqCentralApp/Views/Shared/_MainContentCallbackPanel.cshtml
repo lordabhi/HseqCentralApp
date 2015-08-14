@@ -16,7 +16,7 @@
         {
             if (mainviewpanel.Contains("NcrEdit"))
             {
-                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Ncr)ViewData["record"]);
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.NcrEditViewModel)ViewData["record"]);
             }
             else if (mainviewpanel.Contains("CarEdit"))
             {
@@ -42,7 +42,7 @@
 
             else if (mainviewpanel.Contains("NcrNew"))
             {
-                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Ncr)ViewData["record"]);
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.NcrCreateViewModel)ViewData["record"]);
             }
             else if (mainviewpanel.Contains("CarNew"))
             {

@@ -1,4 +1,4 @@
-﻿@model HseqCentralApp.Models.Ncr
+﻿@model HseqCentralApp.ViewModels.NcrEditViewModel
 
 @using HseqCentralApp.Helpers;
 @using HseqCentralApp.Models;
@@ -22,6 +22,7 @@
     @Html.HiddenFor(m => m.RecordType)
     @Html.HiddenFor(m => m.CreatedBy)
     @Html.HiddenFor(m => m.DateCreated)
+    @Html.HiddenFor(m => m.HseqCaseFileID)
 
 @Html.DevExpress().FormLayout(settings =>
 {
@@ -287,10 +288,6 @@
         item.Visible = false;
     });
 
-    groupItem.Items.Add(m => m.HseqCaseFileID, item =>
-    {
-        item.Visible = false;
-    });
 
     groupItem.Items.Add(m => m.DateCreated, item =>
     {

@@ -122,7 +122,9 @@ namespace HseqCentralApp.Controllers
                         else if (currentActiveView.Contains("Ncr"))
                         {
                             Ncr record = db.NcrRecords.Find(recordId);
-                            ViewData["record"] = record;
+                            NcrEditViewModel ncrEditVM = Mapper.Map<Ncr, NcrEditViewModel>(record);
+
+                            ViewData["record"] = ncrEditVM;
                             ViewData["currentview"] = "_Ncr" + EDIT_VIEW_PREFIX;
                         }
                         else if (currentActiveView.Contains("Car"))
@@ -170,7 +172,9 @@ namespace HseqCentralApp.Controllers
                             ncr.NcrSource = NcrSource.Internal;
                             ncr.NcrState = NcrState.New;
 
-                            ViewData["record"] = ncr;
+                            NcrCreateViewModel carVM = Mapper.Map<Ncr, NcrCreateViewModel>(ncr);
+
+                            ViewData["record"] = carVM;
                             ViewData["currentview"] = "_Ncr" + NEW_VIEW_PREFIX;
                         }
                         else if (currentActiveView.Contains("Car"))
@@ -457,16 +461,18 @@ namespace HseqCentralApp.Controllers
 
         [HttpPost, ValidateInput(false)]
        // [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
-        public ActionResult NcrGridViewUpdate(HseqCentralApp.Models.Ncr item)
+        public ActionResult NcrGridViewUpdate(NcrEditViewModel ncrEditVM)
         {
-            //   var model = db3.NcrRecords;
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (item != null)
+                    if (ncrEditVM != null)
                     {
-                        db.Entry(item).State = EntityState.Modified;
+                        Ncr ncr = db.NcrRecords.Find(ncrEditVM.HseqRecordID);
+                        Mapper.Map(ncrEditVM, ncr);
+
+                        db.Entry(ncr).State = EntityState.Modified;
                         db.SaveChanges();
                     }
                 }
@@ -486,14 +492,20 @@ namespace HseqCentralApp.Controllers
                     // Throw a new DbEntityValidationException with the improved exception message.
                     throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
                 }
+                catch (InvalidOperationException e)
+                {
+                    ViewData["EditError"] = e.Message;
+                    return PartialView("_NcrEditView", ncrEditVM);
+                }
                 catch (Exception e)
                 {
                     ViewData["EditError"] = e.Message;
+                    return PartialView("_NcrEditView", ncrEditVM);
                 }
             }
             else {
                 ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_NcrEditView", item);
+                return PartialView("_NcrEditView", ncrEditVM);
             }
          //   ModelState.Clear();
             return PartialView("_MainContentCallbackPanel");
@@ -559,18 +571,19 @@ namespace HseqCentralApp.Controllers
 
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult NcrGridViewNew(Ncr ncr)
+        public ActionResult NcrGridViewNew(NcrCreateViewModel ncrVM)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (ncr != null)
+                    if (ncrVM != null)
                     {
                         HseqCaseFile hseqCaseFile;
-                        string caseNo;
-                        ncr.CreatedBy = _RecordService.GetCurrentUser().FullName;
-                        ncr = (Ncr)_RecordService.CreateCaseFile(ncr, out caseNo, out hseqCaseFile, db);
+                        Ncr ncr = new Ncr();
+                        Mapper.Map(ncrVM, ncr);
+
+                        ncr = (Ncr)_RecordService.CreateCaseFile(ncr, out hseqCaseFile, db);
 
                         db.HseqRecords.Add(ncr);
                         db.SaveChanges();
@@ -587,7 +600,7 @@ namespace HseqCentralApp.Controllers
                 catch (Exception e)
                 {
                     ViewData["EditError"] = e.Message;
-                    return PartialView("_NcrNewView", ncr);
+                    return PartialView("_NcrNewView", ncrVM);
                 }
             }
             else
@@ -595,7 +608,7 @@ namespace HseqCentralApp.Controllers
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 Console.WriteLine(errors);
                 ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_NcrNewView", ncr);
+                return PartialView("_NcrNewView", ncrVM);
             }
             return PartialView("_MainContentCallbackPanel");
         }

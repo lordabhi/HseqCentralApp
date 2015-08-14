@@ -106,6 +106,41 @@ namespace HseqCentralApp.App_Start
                     .ForMember(dest => dest.Comments, opts => opts.Ignore())
                     .ForMember(dest => dest.FisCode, opts => opts.Ignore());
 
+                //NCR
+                cfg.CreateMap<Ncr, NcrCreateViewModel>()
+                    .ForMember(dest => dest.Coordinators, opts => opts.UseValue(Utils.AppUsers()));
+
+                cfg.CreateMap<NcrCreateViewModel, Ncr>()
+                    .ForMember(dest => dest.HseqRecordID, opts => opts.Ignore())
+                    .ForMember(dest => dest.AlfrescoNoderef, opts => opts.Ignore())
+                    .ForMember(dest => dest.Coordinator, opts => opts.Ignore())
+                    .ForMember(dest => dest.LinkedRecordsID, opts => opts.Ignore())
+                    .ForMember(dest => dest.LinkedRecords, opts => opts.Ignore())
+                    .ForMember(dest => dest.HseqCaseFileID, opts => opts.Ignore())
+                    .ForMember(dest => dest.HseqCaseFile, opts => opts.Ignore())
+                    .ForMember(dest => dest.DateLastUpdated, opts => opts.Ignore())
+                    .ForMember(dest => dest.LastUpdatedBy, opts => opts.Ignore())
+                    .ForMember(dest => dest.Delegatables, opts => opts.Ignore())
+                    .ForMember(dest => dest.Comments, opts => opts.Ignore())
+                    .ForMember(dest => dest.DiscrepancyType, opts => opts.Ignore())
+                    .ForMember(dest => dest.DispositionType, opts => opts.Ignore())
+                    .ForMember(dest => dest.DetectedInArea, opts => opts.Ignore())
+                    .ForMember(dest => dest.ResponsibleArea, opts => opts.Ignore());
+
+                cfg.CreateMap<Ncr, NcrEditViewModel>()
+                    .ForMember(dest => dest.Coordinators, opts => opts.UseValue(Utils.AppUsers()));
+
+                cfg.CreateMap<NcrEditViewModel, Ncr>()
+                    .ForMember(dest => dest.Coordinator, opts => opts.Ignore())
+                    .ForMember(dest => dest.LinkedRecords, opts => opts.Ignore())
+                    .ForMember(dest => dest.HseqCaseFile, opts => opts.Ignore())
+                    .ForMember(dest => dest.Delegatables, opts => opts.Ignore())
+                    .ForMember(dest => dest.Comments, opts => opts.Ignore())
+                    .ForMember(dest => dest.DiscrepancyType, opts => opts.Ignore())
+                    .ForMember(dest => dest.DispositionType, opts => opts.Ignore())
+                    .ForMember(dest => dest.DetectedInArea, opts => opts.Ignore())
+                    .ForMember(dest => dest.ResponsibleArea, opts => opts.Ignore());
+
             });
 
 

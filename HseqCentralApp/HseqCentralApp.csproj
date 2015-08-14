@@ -318,6 +318,8 @@
     <Compile Include="Services\RecordService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AllItemsVM.cs" />
+    <Compile Include="ViewModels\NcrEditViewModel.cs" />
+    <Compile Include="ViewModels\NcrCreateViewModel.cs" />
     <Compile Include="ViewModels\FisCreateViewModel.cs" />
     <Compile Include="ViewModels\FisEditViewModel.cs" />
     <Compile Include="ViewModels\ParCreateViewModel.cs" />

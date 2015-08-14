@@ -1,4 +1,4 @@
-﻿@model HseqCentralApp.Models.Ncr
+﻿@model HseqCentralApp.ViewModels.NcrCreateViewModel
 
 @using HseqCentralApp.Helpers;
 @using HseqCentralApp.Models;
@@ -248,16 +248,6 @@
         });
     });
 
-    groupItem.Items.Add(m => m.HseqRecordID, item =>
-    {
-        item.Visible = false;
-    });
-    groupItem.Items.Add(m => m.AlfrescoNoderef, item =>
-    {
-        item.Visible = false;
-    });
-
-
     groupItem.Items.Add(m => m.EnteredBy, item =>
     {
         item.NestedExtension().TextBox(s =>
@@ -284,17 +274,6 @@
     });
 
 
-
-    groupItem.Items.Add(m => m.LinkedRecordsID, item =>
-    {
-        item.Visible = false;
-    });
-
-    groupItem.Items.Add(m => m.HseqCaseFileID, item =>
-    {
-        item.Visible = false;
-    });
-
     groupItem.Items.Add(m => m.DateCreated, item =>
     {
         item.NestedExtension().DateEdit(s =>
@@ -305,23 +284,8 @@
         item.Visible = false;
 
     });
-    groupItem.Items.Add(m => m.DateLastUpdated, item =>
-    {
-        item.NestedExtension().DateEdit(s =>
-        {
-            s.ClientEnabled = false;
-        });
-        item.Visible = false;
-    });
+
     groupItem.Items.Add(m => m.CreatedBy, item =>
-    {
-        item.NestedExtension().TextBox(s =>
-        {
-            s.ClientEnabled = false;
-        });
-        item.Visible = false;
-    });
-    groupItem.Items.Add(m => m.LastUpdatedBy, item =>
     {
         item.NestedExtension().TextBox(s =>
         {
