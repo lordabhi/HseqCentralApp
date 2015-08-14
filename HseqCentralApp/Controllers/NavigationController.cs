@@ -10,6 +10,7 @@ using HseqCentralApp.Models;
 using HseqCentralApp.Services;
 using HseqCentralApp.ViewModels;
 using AutoMapper;
+using System.Diagnostics;
 
 namespace HseqCentralApp.Controllers
 {
@@ -127,19 +128,25 @@ namespace HseqCentralApp.Controllers
                         else if (currentActiveView.Contains("Car"))
                         {
                             Car record = db.CarRecords.Find(recordId);
-                            ViewData["record"] = record;
+                            CarEditViewModel carEditVM = Mapper.Map<Car, CarEditViewModel>(record);
+
+                            ViewData["record"] = carEditVM;
                             ViewData["currentview"] = "_Car" + EDIT_VIEW_PREFIX;
                         }
                         else if (currentActiveView.Contains("Par"))
                         {
                             Par record = db.ParRecords.Find(recordId);
-                            ViewData["record"] = record;
+                            ParEditViewModel parEditVM = Mapper.Map<Par, ParEditViewModel>(record);
+
+                            ViewData["record"] = parEditVM;
                             ViewData["currentview"] = "_Par" + EDIT_VIEW_PREFIX;
                         }
                         else if (currentActiveView.Contains("Fis"))
                         {
                             Fis record = db.FisRecords.Find(recordId);
-                            ViewData["record"] = record;
+                            FisEditViewModel fisEditVM = Mapper.Map<Fis, FisEditViewModel>(record);
+
+                            ViewData["record"] = fisEditVM;
                             ViewData["currentview"] = "_Fis" + EDIT_VIEW_PREFIX;
                         }
                     }
@@ -189,7 +196,9 @@ namespace HseqCentralApp.Controllers
                             par.DateCreated = DateTime.Now;
                             par.RecordType = RecordType.PAR;
 
-                            ViewData["record"] = par;
+                            ParCreateViewModel parVM = Mapper.Map<Par, ParCreateViewModel>(par);
+
+                            ViewData["record"] = parVM;
                             ViewData["currentview"] = "_Par" + NEW_VIEW_PREFIX;
                         }
                         else if (currentActiveView.Contains("Fis"))
@@ -201,7 +210,9 @@ namespace HseqCentralApp.Controllers
                             fis.DateCreated = DateTime.Now;
                             fis.RecordType = RecordType.FIS;
 
-                            ViewData["record"] = fis;
+                            FisCreateViewModel fisVM = Mapper.Map<Fis, FisCreateViewModel>(fis);
+
+                            ViewData["record"] = fisVM;
                             ViewData["currentview"] = "_Fis" + NEW_VIEW_PREFIX;
                         }
 
@@ -490,7 +501,7 @@ namespace HseqCentralApp.Controllers
 
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult CarGridViewUpdate(HseqCentralApp.Models.Car item)
+        public ActionResult CarGridViewUpdate1(HseqCentralApp.Models.Car item)
         {
             if (ModelState.IsValid)
             {
@@ -513,6 +524,36 @@ namespace HseqCentralApp.Controllers
                 return PartialView("_CarEditView", item);
             }
             
+            return PartialView("_MainContentCallbackPanel");
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult CarGridViewUpdate(CarEditViewModel carEditVM)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (carEditVM != null)
+                    {
+                        Car car = db.CarRecords.Find(carEditVM.HseqRecordID);
+                        Mapper.Map(carEditVM, car);
+                        db.Entry(car).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+            {
+                ViewData["EditError"] = "Please, correct all errors.";
+                return PartialView("_CarEditView", carEditVM);
+            }
+
             return PartialView("_MainContentCallbackPanel");
         }
 
@@ -600,11 +641,8 @@ namespace HseqCentralApp.Controllers
                 {
                     if (carVM != null)
                     {
-                        HseqCaseFile hseqCaseFile = new HseqCaseFile()
-                        {
-                            CaseNo = carVM.CaseNo
-                        };
-
+                        
+                        HseqCaseFile hseqCaseFile;
                         Car car = new Car();
                         Mapper.Map(carVM, car);
 
@@ -704,10 +742,9 @@ namespace HseqCentralApp.Controllers
                 {
                     if (par != null)
                     {
-                        string caseNo;
                         HseqCaseFile hseqCaseFile;
                         par.CreatedBy = _RecordService.GetCurrentUser().FullName;
-                        par = (Par)_RecordService.CreateCaseFile(par, out caseNo, out hseqCaseFile, db);
+                        par = (Par)_RecordService.CreateCaseFile(par, out hseqCaseFile, db);
 
                         db.HseqRecords.Add(par);
                         db.SaveChanges();
@@ -729,15 +766,18 @@ namespace HseqCentralApp.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult ParGridViewUpdate(HseqCentralApp.Models.Par item)
+        public ActionResult ParGridViewUpdate(ParEditViewModel parEditVM)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (item != null)
+                    if (parEditVM != null)
                     {
-                        db.Entry(item).State = EntityState.Modified;
+                        Par par = db.ParRecords.Find(parEditVM.HseqRecordID);
+                        Mapper.Map(parEditVM, par);
+
+                        db.Entry(par).State = EntityState.Modified;
                         db.SaveChanges();
                     }
                 }
@@ -749,54 +789,75 @@ namespace HseqCentralApp.Controllers
             else
             {
                 ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_ParEditView", item);
+                return PartialView("_ParEditView", parEditVM);
             }
                 
             return PartialView("_MainContentCallbackPanel");
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult FisGridViewNew(Fis fis)
+        public ActionResult FisGridViewNew(FisCreateViewModel fisVM)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (fis != null)
+                    if (fisVM != null)
                     {
-                        string caseNo;
+                        Fis fis = new Fis();
+                        Mapper.Map(fisVM, fis);
+
                         HseqCaseFile hseqCaseFile;
-                        fis.CreatedBy = _RecordService.GetCurrentUser().FullName;
-                        fis = (Fis)_RecordService.CreateCaseFile(fis, out caseNo, out hseqCaseFile, db);
+                        fis = (Fis)_RecordService.CreateCaseFile(fis, out hseqCaseFile, db);
 
                         db.HseqRecords.Add(fis);
                         db.SaveChanges();
                     }
                 }
+                catch (DbEntityValidationException dbEx)
+                {
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            Trace.TraceInformation("Property: {0} Error: {1}",
+                                                    validationError.PropertyName,
+                                                    validationError.ErrorMessage);
+
+                            Console.WriteLine("Property: {0} Error: {1}",
+                                                    validationError.PropertyName,
+                                                    validationError.ErrorMessage);
+                        }
+                    }
+                }
                 catch (Exception e)
                 {
                     ViewData["EditError"] = e.Message;
-                    return PartialView("_FisNewView", fis);
+                    return PartialView("_FisNewView", fisVM);
                 }
             }
             else
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_FisNewView", fis);
+                return PartialView("_FisNewView", fisVM);
             }
 
             return PartialView("_MainContentCallbackPanel");
         }
+
         [HttpPost, ValidateInput(false)]
-        public ActionResult FisGridViewUpdate(HseqCentralApp.Models.Fis fis)
+        public ActionResult FisGridViewUpdate(FisEditViewModel fisEditVM)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (fis != null)
+                    if (fisEditVM != null)
                     {
+                        Fis fis = db.FisRecords.Find(fisEditVM.HseqRecordID);
+                        Mapper.Map(fisEditVM, fis);
+
                         db.Entry(fis).State = EntityState.Modified;
                         db.SaveChanges();
                     }
@@ -810,7 +871,7 @@ namespace HseqCentralApp.Controllers
             {
                     var errors = ModelState.Values.SelectMany(v => v.Errors);
                     ViewData["EditError"] = "Please, correct all errors.";
-                    return PartialView("_FisEditView", fis);
+                    return PartialView("_FisEditView", fisEditVM);
                 }
 
             return PartialView("_MainContentCallbackPanel");

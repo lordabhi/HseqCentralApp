@@ -20,15 +20,15 @@
             }
             else if (mainviewpanel.Contains("CarEdit"))
             {
-                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Car)ViewData["record"]);
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.CarEditViewModel)ViewData["record"]);
             }
             else if (mainviewpanel.Contains("ParEdit"))
             {
-                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Par)ViewData["record"]);
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.ParEditViewModel)ViewData["record"]);
             }
             else if (mainviewpanel.Contains("FisEdit"))
             {
-                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Fis)ViewData["record"]);
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.FisEditViewModel)ViewData["record"]);
             }
             else if (mainviewpanel.Contains("TaskEdit"))
             {
@@ -50,11 +50,11 @@
             }
             else if (mainviewpanel.Contains("ParNew"))
             {
-                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Par)ViewData["record"]);
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.ParCreateViewModel)ViewData["record"]);
             }
             else if (mainviewpanel.Contains("FisNew"))
             {
-                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.Fis)ViewData["record"]);
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.FisCreateViewModel)ViewData["record"]);
             }
 
             else if (mainviewpanel.Contains("TaskNew"))

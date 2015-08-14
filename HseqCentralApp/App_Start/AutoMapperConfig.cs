@@ -19,6 +19,7 @@ namespace HseqCentralApp.App_Start
 
             Mapper.Initialize(cfg =>
             {
+                //CAR
                 cfg.CreateMap<Car, CarCreateViewModel>()
                     .ForMember(dest => dest.Coordinators, opts => opts.UseValue(Utils.AppUsers()));
 
@@ -35,7 +36,78 @@ namespace HseqCentralApp.App_Start
                     .ForMember(dest => dest.Delegatables, opts => opts.Ignore())
                     .ForMember(dest => dest.Comments, opts => opts.Ignore())
                     .ForMember(dest => dest.status, opts => opts.Ignore());
+
+                cfg.CreateMap<Car, CarEditViewModel>()
+                    .ForMember(dest => dest.Coordinators, opts => opts.UseValue(Utils.AppUsers()));
+
+                cfg.CreateMap<CarEditViewModel, Car>()
+                    .ForMember(dest => dest.Coordinator, opts => opts.Ignore())
+                    .ForMember(dest => dest.LinkedRecords, opts => opts.Ignore())
+                    .ForMember(dest => dest.HseqCaseFile, opts => opts.Ignore())
+                    .ForMember(dest => dest.Delegatables, opts => opts.Ignore())
+                    .ForMember(dest => dest.Comments, opts => opts.Ignore())
+                    .ForMember(dest => dest.status, opts => opts.Ignore());
+
+                //PAR
+                cfg.CreateMap<Par, ParCreateViewModel>()
+                    .ForMember(dest => dest.Coordinators, opts => opts.UseValue(Utils.AppUsers()));
+
+                cfg.CreateMap<ParCreateViewModel, Par>()
+                    .ForMember(dest => dest.HseqRecordID, opts => opts.Ignore())
+                    .ForMember(dest => dest.AlfrescoNoderef, opts => opts.Ignore())
+                    .ForMember(dest => dest.Coordinator, opts => opts.Ignore())
+                    .ForMember(dest => dest.LinkedRecordsID, opts => opts.Ignore())
+                    .ForMember(dest => dest.LinkedRecords, opts => opts.Ignore())
+                    .ForMember(dest => dest.HseqCaseFileID, opts => opts.Ignore())
+                    .ForMember(dest => dest.HseqCaseFile, opts => opts.Ignore())
+                    .ForMember(dest => dest.DateLastUpdated, opts => opts.Ignore())
+                    .ForMember(dest => dest.LastUpdatedBy, opts => opts.Ignore())
+                    .ForMember(dest => dest.Delegatables, opts => opts.Ignore())
+                    .ForMember(dest => dest.Comments, opts => opts.Ignore())
+                    .ForMember(dest => dest.status, opts => opts.Ignore());
+
+                cfg.CreateMap<Par, ParEditViewModel>()
+                    .ForMember(dest => dest.Coordinators, opts => opts.UseValue(Utils.AppUsers()));
+
+                cfg.CreateMap<ParEditViewModel, Par>()
+                    .ForMember(dest => dest.Coordinator, opts => opts.Ignore())
+                    .ForMember(dest => dest.LinkedRecords, opts => opts.Ignore())
+                    .ForMember(dest => dest.HseqCaseFile, opts => opts.Ignore())
+                    .ForMember(dest => dest.Delegatables, opts => opts.Ignore())
+                    .ForMember(dest => dest.Comments, opts => opts.Ignore())
+                    .ForMember(dest => dest.status, opts => opts.Ignore());
+
+                //FIS
+                cfg.CreateMap<Fis, FisCreateViewModel>()
+                                   .ForMember(dest => dest.Coordinators, opts => opts.UseValue(Utils.AppUsers()));
+
+                cfg.CreateMap<FisCreateViewModel, Fis>()
+                    .ForMember(dest => dest.HseqRecordID, opts => opts.Ignore())
+                    .ForMember(dest => dest.AlfrescoNoderef, opts => opts.Ignore())
+                    .ForMember(dest => dest.Coordinator, opts => opts.Ignore())
+                    .ForMember(dest => dest.LinkedRecordsID, opts => opts.Ignore())
+                    .ForMember(dest => dest.LinkedRecords, opts => opts.Ignore())
+                    .ForMember(dest => dest.HseqCaseFileID, opts => opts.Ignore())
+                    .ForMember(dest => dest.HseqCaseFile, opts => opts.Ignore())
+                    .ForMember(dest => dest.DateLastUpdated, opts => opts.Ignore())
+                    .ForMember(dest => dest.LastUpdatedBy, opts => opts.Ignore())
+                    .ForMember(dest => dest.Delegatables, opts => opts.Ignore())
+                    .ForMember(dest => dest.Comments, opts => opts.Ignore())
+                    .ForMember(dest => dest.FisCode, opts => opts.Ignore());
+
+                cfg.CreateMap<Fis, FisEditViewModel>()
+                    .ForMember(dest => dest.Coordinators, opts => opts.UseValue(Utils.AppUsers()));
+
+                cfg.CreateMap<FisEditViewModel, Fis>()
+                    .ForMember(dest => dest.Coordinator, opts => opts.Ignore())
+                    .ForMember(dest => dest.LinkedRecords, opts => opts.Ignore())
+                    .ForMember(dest => dest.HseqCaseFile, opts => opts.Ignore())
+                    .ForMember(dest => dest.Delegatables, opts => opts.Ignore())
+                    .ForMember(dest => dest.Comments, opts => opts.Ignore())
+                    .ForMember(dest => dest.FisCode, opts => opts.Ignore());
+
             });
+
 
         }
 

@@ -1,7 +1,7 @@
-﻿@model HseqCentralApp.Models.Par
+﻿@model HseqCentralApp.ViewModels.ParCreateViewModel
 
 @using HseqCentralApp.Helpers;
-@using HseqCentralApp.Models;
+@*@using HseqCentralApp.Models;*@
 
 @using (Ajax.BeginForm("ParGridViewNew", "Navigation",
                 new AjaxOptions
@@ -139,27 +139,27 @@
         });
     });
 
-    groupItem.Items.Add(m => m.HseqRecordID, item =>
-    {
-        item.Visible = false;
-        item.NestedExtension().TextBox(s =>
-        {
-            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
-            s.ShowModelErrors = true;
+    //groupItem.Items.Add(m => m.HseqRecordID, item =>
+    //{
+    //    item.Visible = false;
+    //    item.NestedExtension().TextBox(s =>
+    //    {
+    //        s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+    //        s.ShowModelErrors = true;
 
-        });
-    });
+    //    });
+    //});
 
-    groupItem.Items.Add(m => m.AlfrescoNoderef, item =>
-    {
-        item.Visible = false;
-        item.NestedExtension().TextBox(s =>
-        {
-            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
-            s.ShowModelErrors = true;
+    //groupItem.Items.Add(m => m.AlfrescoNoderef, item =>
+    //{
+    //    item.Visible = false;
+    //    item.NestedExtension().TextBox(s =>
+    //    {
+    //        s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+    //        s.ShowModelErrors = true;
 
-        });
-    });
+    //    });
+    //});
 
     groupItem.Items.Add(m => m.EnteredBy, item =>
     {
@@ -171,15 +171,15 @@
         });
     });
 
-    groupItem.Items.Add(m => m.LinkedRecordsID, item =>
-    {
-        item.Visible = false;
-    });
+    //groupItem.Items.Add(m => m.LinkedRecordsID, item =>
+    //{
+    //    item.Visible = false;
+    //});
 
-    groupItem.Items.Add(m => m.HseqCaseFileID, item =>
-    {
-        item.Visible = false;
-    });
+    //groupItem.Items.Add(m => m.HseqCaseFileID, item =>
+    //{
+    //    item.Visible = false;
+    //});
 
     groupItem.Items.Add(m => m.DateCreated, item =>
     {
@@ -192,14 +192,14 @@
 
     });
 
-    groupItem.Items.Add(m => m.DateLastUpdated, item =>
-    {
-        item.NestedExtension().DateEdit(s =>
-        {
-            s.ClientEnabled = false;
-        });
-        item.Visible = false;
-    });
+    //groupItem.Items.Add(m => m.DateLastUpdated, item =>
+    //{
+    //    item.NestedExtension().DateEdit(s =>
+    //    {
+    //        s.ClientEnabled = false;
+    //    });
+    //    item.Visible = false;
+    //});
 
     groupItem.Items.Add(m => m.CreatedBy, item =>
     {
@@ -210,14 +210,14 @@
         item.Visible = false;
     });
 
-    groupItem.Items.Add(m => m.LastUpdatedBy, item =>
-    {
-        item.NestedExtension().TextBox(s =>
-        {
-            s.ClientEnabled = false;
-        });
-        item.Visible = false;
-    });
+    //groupItem.Items.Add(m => m.LastUpdatedBy, item =>
+    //{
+    //    item.NestedExtension().TextBox(s =>
+    //    {
+    //        s.ClientEnabled = false;
+    //    });
+    //    item.Visible = false;
+    //});
     ///////////////////////////////////////////////////////////////////////////////
 
     settings.Items.Add(i =>
