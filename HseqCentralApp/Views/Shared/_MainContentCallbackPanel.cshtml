@@ -36,7 +36,7 @@
             }
             else if (mainviewpanel.Contains("ApprovalEdit"))
             {
-                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.HseqApprovalRequest)ViewData["record"]);
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.HseqApprovalEditViewModel)ViewData["record"]);
             }
 
 
@@ -63,7 +63,7 @@
             }
             else if (mainviewpanel.Contains("ApprovalNew"))
             {
-                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.HseqApprovalRequest)ViewData["record"]);
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.HseqApprovalCreateViewModel)ViewData["record"]);
             }
             else if (mainviewpanel.Contains("CarLinked"))
             {

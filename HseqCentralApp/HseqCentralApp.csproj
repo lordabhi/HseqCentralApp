@@ -318,6 +318,8 @@
     <Compile Include="Services\RecordService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AllItemsVM.cs" />
+    <Compile Include="ViewModels\HseqApprovalCreateViewModel.cs" />
+    <Compile Include="ViewModels\HseqApprovalEditViewModel.cs" />
     <Compile Include="ViewModels\HseqTaskEditViewModel.cs" />
     <Compile Include="ViewModels\HseqTaskCreateViewModel.cs" />
     <Compile Include="ViewModels\NcrEditViewModel.cs" />

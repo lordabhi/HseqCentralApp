@@ -114,7 +114,9 @@ namespace HseqCentralApp.Controllers
                         else if (currentActiveView.Contains("Approval"))
                         {
                             HseqApprovalRequest record = db.HseqApprovalRequests.Find(recordId);
-                            ViewData["record"] = record;
+                            HseqApprovalEditViewModel HseqApprovalEditVM = Mapper.Map<HseqApprovalRequest, HseqApprovalEditViewModel>(record);
+
+                            ViewData["record"] = HseqApprovalEditVM;
                             ViewData["currentview"] = "_Approval" + EDIT_VIEW_PREFIX;
                         }
 
@@ -256,15 +258,20 @@ namespace HseqCentralApp.Controllers
                         string currentActiveView = Request.Params["currentActiveView"];
                         int recordId = int.Parse(Request.Params["recordId"]);
 
-                        HseqApprovalRequest hseqApproval = new HseqApprovalRequest();
-                        hseqApproval.Response = ApprovalResult.Waiting;
-                        hseqApproval.Status = ApprovalStatus.Active;
+                        HseqApprovalRequest hseqApproval = new HseqApprovalRequest()
+                        {
+                            Response = ApprovalResult.Waiting,
+                            Status = ApprovalStatus.Active,
+                            DateAssigned = DateTime.Now
+                        };
 
                         HseqRecord hseqRecord = db.HseqRecords.Find(recordId);
                         hseqApproval.HseqRecordID = hseqRecord.HseqRecordID;
                         hseqApproval.HseqRecord = hseqRecord;
 
-                        ViewData["record"] = hseqApproval;
+                        HseqApprovalCreateViewModel hseqApprovalVM = Mapper.Map<HseqApprovalRequest, HseqApprovalCreateViewModel>(hseqApproval);
+
+                        ViewData["record"] = hseqApprovalVM;
                         ViewData["currentview"] = "_Approval" + NEW_VIEW_PREFIX;
                     }
                 }
@@ -388,18 +395,22 @@ namespace HseqCentralApp.Controllers
             }
             return PartialView("_MainContentCallbackPanel");
         }
+
         [HttpPost, ValidateInput(false)]
-        public ActionResult ApprovalGridViewAdd(HseqApprovalRequest approval)
+        public ActionResult ApprovalGridViewAdd(HseqApprovalCreateViewModel approvalVM)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (approval != null)
+                    if (approvalVM != null)
                     {
+                        HseqApprovalRequest approval = new HseqApprovalRequest();
+                        Mapper.Map(approvalVM, approval);
+
                         db.Entry(approval).State = EntityState.Added;
 
-                        HseqRecord record = db.HseqRecords.Find(approval.HseqRecordID);
+                        HseqRecord record = db.HseqRecords.Find(approvalVM.HseqRecordID);
                         record.Delegatables.Add(approval);
                         db.SaveChanges();
                     }
@@ -407,36 +418,40 @@ namespace HseqCentralApp.Controllers
                 catch (Exception e)
                 {
                     ViewData["EditError"] = e.Message;
-                    return PartialView("_ApprovalNewView", approval);
+                    return PartialView("_ApprovalNewView", approvalVM);
                 }
             }
             else
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_ApprovalNewView", approval);
+                return PartialView("_ApprovalNewView", approvalVM);
             }
             return PartialView("_MainContentCallbackPanel");
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult ApprovalGridViewUpdate(HseqApprovalRequest approvalRequest)
+        public ActionResult ApprovalGridViewUpdate(HseqApprovalEditViewModel approvalEditVM)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (approvalRequest != null)
+                    if (approvalEditVM != null)
                     {
-                        if (approvalRequest.Response == ApprovalResult.Approved
-                            || approvalRequest.Response == ApprovalResult.Rejected)
+                        if (approvalEditVM.Response == ApprovalResult.Approved
+                            || approvalEditVM.Response == ApprovalResult.Rejected)
                         {
-                            approvalRequest.Status = ApprovalStatus.Completed;
-                        }else if (approvalRequest.Response == ApprovalResult.Canceled)
+                            approvalEditVM.Status = ApprovalStatus.Completed;
+                        }else if (approvalEditVM.Response == ApprovalResult.Canceled)
                         {
-                            approvalRequest.Status = ApprovalStatus.Canceled;
+                            approvalEditVM.Status = ApprovalStatus.Canceled;
                         }
-                        db.Entry(approvalRequest).State = EntityState.Modified;
+
+                        HseqApprovalRequest approvalRecord = db.HseqApprovalRequests.Find(approvalEditVM.DelegatableID);
+                        Mapper.Map(approvalEditVM, approvalRecord);
+
+                        db.Entry(approvalRecord).State = EntityState.Modified;
                         db.SaveChanges();
                     }
                 }
@@ -465,7 +480,7 @@ namespace HseqCentralApp.Controllers
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_ApprovalEditView", approvalRequest);
+                return PartialView("_ApprovalEditView", approvalEditVM);
             }
             return PartialView("_MainContentCallbackPanel");
         }

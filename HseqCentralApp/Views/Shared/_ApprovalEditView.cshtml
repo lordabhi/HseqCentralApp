@@ -1,23 +1,29 @@
-﻿@model HseqCentralApp.Models.HseqApprovalRequest
+﻿@model HseqCentralApp.ViewModels.HseqApprovalEditViewModel
 
 @using HseqCentralApp.Helpers;
-@using HseqCentralApp.Models;
+@*@using HseqCentralApp.Models;*@
 
 @using (Ajax.BeginForm("ApprovalGridViewUpdate", "Navigation",
-                new AjaxOptions
-                {
-                    HttpMethod = "Post",
-                    UpdateTargetId = "CenterSplitterPane",
-                    InsertionMode = System.Web.Mvc.Ajax.InsertionMode.Replace,
-                    OnFailure = "PostFailure",
-                    OnSuccess = "PostSuccess",
-                    OnComplete = "PostOnComplete"
-                }))
+                            new AjaxOptions
+                            {
+                                HttpMethod = "Post",
+                                UpdateTargetId = "CenterSplitterPane",
+                                InsertionMode = System.Web.Mvc.Ajax.InsertionMode.Replace,
+                                OnFailure = "PostFailure",
+                                OnSuccess = "PostSuccess",
+                                OnComplete = "PostOnComplete"
+                            }))
 {
 
     @Html.HiddenFor(m => m.DelegatableID)
     @Html.HiddenFor(m => m.HseqRecordID)
-    @*@Html.HiddenFor(m => m.HseqRecord)*@
+    @Html.HiddenFor(m => m.CaseNo)
+    @Html.HiddenFor(m => m.RecordNo)
+    @Html.HiddenFor(m => m.RecordTitle)
+    @Html.HiddenFor(m => m.RecordDescription)
+    @Html.HiddenFor(m => m.RecordType)
+    @Html.HiddenFor(m => m.Status)
+    @Html.HiddenFor(m => m.DateAssigned)
 
 @Html.DevExpress().FormLayout(settings =>
 {
@@ -26,7 +32,7 @@
 
     var groupItem2 = settings.Items.AddGroupItem(groupSettings =>
     {
-        groupSettings.Caption = "Edit Approval: " + Model.HseqRecord.CaseNo;
+        groupSettings.Caption = "Edit Approval: " + Model.CaseNo;
 
         groupSettings.ShowCaption = DefaultBoolean.True;
         groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
@@ -39,7 +45,7 @@
 
     groupItem2.ColCount = 2;
 
-    groupItem2.Items.Add(m => m.HseqRecord.RecordType, item =>
+    groupItem2.Items.Add(m => m.RecordType, item =>
     {
         item.NestedExtensionSettings.Width = Unit.Percentage(100);
         item.NestedExtension().Label(s =>
@@ -49,7 +55,7 @@
         });
     });
 
-    groupItem2.Items.Add(m => m.HseqRecord.RecordNo, item =>
+    groupItem2.Items.Add(m => m.RecordNo, item =>
     {
         item.NestedExtensionSettings.Width = Unit.Percentage(100);
         item.NestedExtension().Label(s =>
@@ -59,7 +65,7 @@
         });
     });
 
-    groupItem2.Items.Add(m => m.HseqRecord.Title, item =>
+    groupItem2.Items.Add(m => m.RecordTitle, item =>
     {
         item.ColSpan = 2;
         item.NestedExtensionSettings.Width = Unit.Percentage(100);
@@ -70,7 +76,7 @@
         });
     });
 
-    groupItem2.Items.Add(m => m.HseqRecord.Description, item =>
+    groupItem2.Items.Add(m => m.RecordDescription, item =>
     {
         item.ColSpan = 2;
         item.NestedExtensionSettings.Width = Unit.Percentage(100);
@@ -148,8 +154,6 @@
         });
     });
 
-
-
     groupItem.Items.Add(m => m.DelegatableID).Visible = false;
 
     groupItem.Items.Add(m => m.AssigneeID, i =>
@@ -168,20 +172,19 @@
         });
     });
 
+    //groupItem.Items.Add(m => m.DateAssigned, item =>
+    //{
+    //    item.NestedExtension().DateEdit(s =>
+    //    {
+    //        s.ClientEnabled = false;
+    //        s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+    //        s.ShowModelErrors = true;
 
-    groupItem.Items.Add(m => m.DateAssigned, item =>
-    {
-        item.NestedExtension().DateEdit(s =>
-        {
-            s.ClientEnabled = false;
-            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
-            s.ShowModelErrors = true;
+    //    });
 
-        });
+    //    item.Visible = true;
 
-        item.Visible = false;
-
-    });
+    //});
 
 
     groupItem.Items.Add(m => m.DueDate, item =>
