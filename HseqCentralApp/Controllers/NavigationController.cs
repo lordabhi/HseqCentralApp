@@ -47,7 +47,6 @@ namespace HseqCentralApp.Controllers
             return View();
         }
 
-
         public ActionResult MainContentCallbackPanel()
 
         // DXCOMMENT: Pass a data model for GridView in the PartialView method's second parameter
@@ -107,7 +106,9 @@ namespace HseqCentralApp.Controllers
                         if (currentActiveView.Contains("Task"))
                         {
                             HseqTask record = db.HseqTasks.Find(recordId);
-                            ViewData["record"] = record;
+                            HseqTaskEditViewModel HseqTaskEditVM = Mapper.Map<HseqTask, HseqTaskEditViewModel>(record);
+
+                            ViewData["record"] = HseqTaskEditVM;
                             ViewData["currentview"] = "_Task"+EDIT_VIEW_PREFIX;
                         }
                         else if (currentActiveView.Contains("Approval"))
@@ -231,14 +232,18 @@ namespace HseqCentralApp.Controllers
                         string currentActiveView = Request.Params["currentActiveView"];
                         int recordId = int.Parse(Request.Params["recordId"]);
 
-                        HseqTask hseqTask = new HseqTask();
-                        hseqTask.Status = TaskStatus.NotStarted;
+                        HseqTask hseqTask = new HseqTask()
+                        {
+                            Status = TaskStatus.NotStarted
+                        };
 
                         HseqRecord hseqRecord = db.HseqRecords.Find(recordId);
                         hseqTask.HseqRecordID = hseqRecord.HseqRecordID;
                         hseqTask.HseqRecord = hseqRecord;
 
-                        ViewData["record"] = hseqTask;
+                        HseqTaskCreateViewModel hseqTaskVM = Mapper.Map<HseqTask, HseqTaskCreateViewModel>(hseqTask);
+
+                        ViewData["record"] = hseqTaskVM;
                         ViewData["currentview"] = "_Task" + NEW_VIEW_PREFIX;
                     }
                 }
@@ -317,19 +322,22 @@ namespace HseqCentralApp.Controllers
             return PartialView("_MainContentCallbackPanel");
         }
 
-        
         [HttpPost, ValidateInput(false)]
-        public ActionResult TaskGridViewAdd(HseqTask task)
+        public ActionResult TaskGridViewAdd(HseqTaskCreateViewModel taskVM)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (task != null)
+                    if (taskVM != null)
                     {
+
+                        HseqTask task = new HseqTask();
+                        Mapper.Map(taskVM, task);
+
                         db.Entry(task).State = EntityState.Added;
 
-                        HseqRecord record = db.HseqRecords.Find(task.HseqRecordID);
+                        HseqRecord record = db.HseqRecords.Find(taskVM.HseqRecordID);
                         record.Delegatables.Add(task);
                         db.SaveChanges();
                     }
@@ -337,45 +345,49 @@ namespace HseqCentralApp.Controllers
                 catch (Exception e)
                 {
                     ViewData["EditError"] = e.Message;
-                    return PartialView("_TaskNewView", task);
+                    return PartialView("_TaskNewView", taskVM);
                 }
             }
             else
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_TaskNewView", task);
+                return PartialView("_TaskNewView", taskVM);
             }
             return PartialView("_MainContentCallbackPanel");
         }
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult TaskGridViewUpdate(HseqTask item)
+        public ActionResult TaskGridViewUpdate(HseqTaskEditViewModel taskEditVM)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (item != null)
+                    if (taskEditVM != null)
                     {
-                        db.Entry(item).State = EntityState.Modified;
+
+                        HseqTask task = db.HseqTasks.Find(taskEditVM.DelegatableID);
+                        Mapper.Map(taskEditVM, task);
+
+                        db.Entry(task).State = EntityState.Modified;
                         db.SaveChanges();
                     }
                 }
                 catch (Exception e)
                 {
                     ViewData["EditError"] = e.Message;
+                    return PartialView("_TaskEditView", taskEditVM);
                 }
             }
             else
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_TaskEditView", item);
+                return PartialView("_TaskEditView", taskEditVM);
             }
             return PartialView("_MainContentCallbackPanel");
         }
-
         [HttpPost, ValidateInput(false)]
         public ActionResult ApprovalGridViewAdd(HseqApprovalRequest approval)
         {
@@ -513,33 +525,6 @@ namespace HseqCentralApp.Controllers
 
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult CarGridViewUpdate1(HseqCentralApp.Models.Car item)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    if (item != null)
-                    {
-                        db.Entry(item).State = EntityState.Modified;
-                        db.SaveChanges();
-
-                    }
-                }
-                catch (Exception e)
-                {
-                    ViewData["EditError"] = e.Message;
-                }
-            }
-            else {
-                ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_CarEditView", item);
-            }
-            
-            return PartialView("_MainContentCallbackPanel");
-        }
-
-        [HttpPost, ValidateInput(false)]
         public ActionResult CarGridViewUpdate(CarEditViewModel carEditVM)
         {
             if (ModelState.IsValid)
@@ -609,38 +594,6 @@ namespace HseqCentralApp.Controllers
                 Console.WriteLine(errors);
                 ViewData["EditError"] = "Please, correct all errors.";
                 return PartialView("_NcrNewView", ncrVM);
-            }
-            return PartialView("_MainContentCallbackPanel");
-        }
-
-        [HttpPost, ValidateInput(false)]
-        public ActionResult CarGridViewNew1(HseqCentralApp.Models.Car car)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    if (car != null)
-                    {
-                        string caseNo;
-                        HseqCaseFile hseqCaseFile;
-                        car.CreatedBy = _RecordService.GetCurrentUser().FullName;
-                        car = (Car)_RecordService.CreateCaseFile(car, out caseNo, out hseqCaseFile, db);
-
-                        db.HseqRecords.Add(car);
-                        db.SaveChanges();
-
-                    }
-                }
-                catch (Exception e)
-                {
-                    ViewData["EditError"] = e.Message;
-                    return PartialView("_CarNewView",car);
-                }
-            }
-            else {
-                ViewData["EditError"] = "Please, correct all errors.";
-                return PartialView("_CarNewView",car);
             }
             return PartialView("_MainContentCallbackPanel");
         }

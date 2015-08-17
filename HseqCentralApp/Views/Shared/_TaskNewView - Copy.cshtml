@@ -1,9 +1,9 @@
-﻿@model HseqCentralApp.ViewModels.HseqTaskEditViewModel
+﻿@model HseqCentralApp.Models.HseqTask
 
 @using HseqCentralApp.Helpers;
-@*@using HseqCentralApp.Models;*@
+@using HseqCentralApp.Models;
 
-@using (Ajax.BeginForm("TaskGridViewUpdate", "Navigation",
+@using (Ajax.BeginForm("TaskGridViewAdd", "Navigation",
                 new AjaxOptions
                 {
                     HttpMethod = "Post",
@@ -15,15 +15,9 @@
                 }))
 {
 
-    @Html.HiddenFor(m => m.DelegatableID)
+    @*@Html.HiddenFor(m => m.DelegatableID)*@
     @Html.HiddenFor(m => m.HseqRecordID)
-    @Html.HiddenFor(m => m.CaseNo)
-    @Html.HiddenFor(m => m.RecordNo)
-    @Html.HiddenFor(m => m.RecordTitle)
-    @Html.HiddenFor(m => m.RecordDescription)
-    @Html.HiddenFor(m => m.RecordType)
-    @*@Html.HiddenFor(m => m.Assignee)
-    @Html.HiddenFor(m => m.Owner)*@
+    @*@Html.HiddenFor(m => m.HseqRecord)*@
 
 @Html.DevExpress().FormLayout(settings =>
 {
@@ -32,7 +26,7 @@
 
     var groupItem2 = settings.Items.AddGroupItem(groupSettings =>
     {
-        groupSettings.Caption = "Edit Task: " + Model.CaseNo;
+        groupSettings.Caption = "New Task: " + Model.HseqRecord.CaseNo;
 
         groupSettings.ShowCaption = DefaultBoolean.True;
         groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
@@ -45,7 +39,7 @@
 
     groupItem2.ColCount = 2;
 
-    groupItem2.Items.Add(m => m.RecordType, item =>
+    groupItem2.Items.Add(m => m.HseqRecord.RecordType, item =>
     {
         item.NestedExtensionSettings.Width = Unit.Percentage(100);
         item.NestedExtension().Label(s =>
@@ -55,7 +49,7 @@
         });
     });
 
-    groupItem2.Items.Add(m => m.RecordNo, item =>
+    groupItem2.Items.Add(m => m.HseqRecord.RecordNo, item =>
     {
         item.NestedExtensionSettings.Width = Unit.Percentage(100);
         item.NestedExtension().Label(s =>
@@ -65,7 +59,7 @@
         });
     });
 
-    groupItem2.Items.Add(m => m.RecordTitle, item =>
+    groupItem2.Items.Add(m => m.HseqRecord.Title, item =>
     {
         item.ColSpan = 2;
         item.NestedExtensionSettings.Width = Unit.Percentage(100);
@@ -77,7 +71,7 @@
     });
 
 
-    groupItem2.Items.Add(m => m.RecordDescription, item =>
+    groupItem2.Items.Add(m => m.HseqRecord.Description, item =>
     {
         item.ColSpan = 2;
         item.NestedExtensionSettings.Width = Unit.Percentage(100);
@@ -130,7 +124,21 @@
         });
     });
 
-    groupItem.Items.Add(m => m.Status);
+    groupItem.Items.Add(m => m.Status, i =>
+    {
+        i.NestedExtension().ComboBox(s =>
+        {
+            s.Properties.TextField = "Status";
+            s.Properties.ValueField = "Status";
+            s.Properties.ValueType = typeof(string);
+            s.Properties.DropDownStyle = DropDownStyle.DropDown;
+            s.Properties.ClientSideEvents.Init = "function(s,e){if(s.GetValue()=='0'){ s.SetValue(null);} }";
+
+            s.Properties.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+            s.ShowModelErrors = true;
+        });
+    });
+
 
     groupItem.Items.Add(m => m.OwnerID, i =>
     {
@@ -182,8 +190,8 @@
         Html.DevExpress().Button(
             s =>
             {
-                s.Name = "ncrUpdateButton";
-                s.Text = "Update";
+                s.Name = "taskAddButton";
+                s.Text = "Add";
                 s.UseSubmitBehavior = true;
             }).Render();
         Html.DevExpress().Button(

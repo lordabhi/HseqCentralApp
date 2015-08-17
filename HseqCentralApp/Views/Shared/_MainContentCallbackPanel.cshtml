@@ -32,7 +32,7 @@
             }
             else if (mainviewpanel.Contains("TaskEdit"))
             {
-                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.HseqTask)ViewData["record"]);
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.HseqTaskEditViewModel)ViewData["record"]);
             }
             else if (mainviewpanel.Contains("ApprovalEdit"))
             {
@@ -59,7 +59,7 @@
 
             else if (mainviewpanel.Contains("TaskNew"))
             {
-                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.Models.HseqTask)ViewData["record"]);
+                @Html.RenderPartial(mainviewpanel, (HseqCentralApp.ViewModels.HseqTaskCreateViewModel)ViewData["record"]);
             }
             else if (mainviewpanel.Contains("ApprovalNew"))
             {

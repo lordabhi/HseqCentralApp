@@ -1,7 +1,7 @@
-﻿@model HseqCentralApp.Models.HseqTask
+﻿@model HseqCentralApp.ViewModels.HseqTaskCreateViewModel
 
 @using HseqCentralApp.Helpers;
-@using HseqCentralApp.Models;
+@*@using HseqCentralApp.Models;*@
 
 @using (Ajax.BeginForm("TaskGridViewAdd", "Navigation",
                 new AjaxOptions
@@ -15,9 +15,12 @@
                 }))
 {
 
-    @*@Html.HiddenFor(m => m.DelegatableID)*@
     @Html.HiddenFor(m => m.HseqRecordID)
-    @*@Html.HiddenFor(m => m.HseqRecord)*@
+    @Html.HiddenFor(m => m.CaseNo)
+    @Html.HiddenFor(m => m.RecordNo)
+    @Html.HiddenFor(m => m.RecordTitle)
+    @Html.HiddenFor(m => m.RecordDescription)
+    @Html.HiddenFor(m => m.RecordType)
 
 @Html.DevExpress().FormLayout(settings =>
 {
@@ -26,7 +29,7 @@
 
     var groupItem2 = settings.Items.AddGroupItem(groupSettings =>
     {
-        groupSettings.Caption = "New Task: " + Model.HseqRecord.CaseNo;
+        groupSettings.Caption = "New Task: " + Model.CaseNo;
 
         groupSettings.ShowCaption = DefaultBoolean.True;
         groupSettings.GroupBoxDecoration = GroupBoxDecoration.HeadingLine;
@@ -39,7 +42,7 @@
 
     groupItem2.ColCount = 2;
 
-    groupItem2.Items.Add(m => m.HseqRecord.RecordType, item =>
+    groupItem2.Items.Add(m => m.RecordType, item =>
     {
         item.NestedExtensionSettings.Width = Unit.Percentage(100);
         item.NestedExtension().Label(s =>
@@ -49,7 +52,7 @@
         });
     });
 
-    groupItem2.Items.Add(m => m.HseqRecord.RecordNo, item =>
+    groupItem2.Items.Add(m => m.RecordNo, item =>
     {
         item.NestedExtensionSettings.Width = Unit.Percentage(100);
         item.NestedExtension().Label(s =>
@@ -59,7 +62,7 @@
         });
     });
 
-    groupItem2.Items.Add(m => m.HseqRecord.Title, item =>
+    groupItem2.Items.Add(m => m.RecordTitle, item =>
     {
         item.ColSpan = 2;
         item.NestedExtensionSettings.Width = Unit.Percentage(100);
@@ -71,7 +74,7 @@
     });
 
 
-    groupItem2.Items.Add(m => m.HseqRecord.Description, item =>
+    groupItem2.Items.Add(m => m.RecordDescription, item =>
     {
         item.ColSpan = 2;
         item.NestedExtensionSettings.Width = Unit.Percentage(100);
@@ -86,7 +89,7 @@
 
     var groupItem = settings.Items.AddGroupItem(groupSettings =>
     {
-        groupSettings.Caption = "Edit Task: ";
+        groupSettings.Caption = "Add Task: ";
 
         groupSettings.ShowCaption = DefaultBoolean.False;
         groupSettings.GroupBoxDecoration = GroupBoxDecoration.Box;
@@ -155,10 +158,6 @@
             s.ShowModelErrors = true;
         });
     });
-
-
-
-    groupItem.Items.Add(m => m.DelegatableID).Visible = false;
 
     groupItem.Items.Add(m => m.AssigneeID, i =>
     {
